@@ -3,13 +3,14 @@
 #pragma once
 
 #include "AIController.h"
+#include "SandboxAIBaseAIController.h"
 #include "SandboxAIExampleAIController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SANDBOXAI_API ASandboxAIExampleAIController : public AAIController
+class SANDBOXAI_API ASandboxAIExampleAIController : public ASandboxAIBaseAIController
 {
 	GENERATED_BODY()
 	
@@ -27,7 +28,7 @@ protected:
 		FVector PatrolCenter;
 
 	/** Patrol circle timer */
-	UPROPERTY(BlueprintReadWrite, Category = "Patrol", meta = (BlueprintProteted = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Patrol", meta = (BlueprintProteted = "true"))
 		float PatrolTimer;
 
 	/** Patrol circle time multiplier */

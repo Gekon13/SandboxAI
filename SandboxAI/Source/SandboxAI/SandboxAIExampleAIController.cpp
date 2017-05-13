@@ -47,9 +47,11 @@ void ASandboxAIExampleAIController::Tick(float DeltaSeconds)
 		direction.Normalize();
 		float distance = boom.Size();
 
-		float value = distance > PatrolToleranceDistance ? 1.0f : distance / PatrolToleranceDistance;
+		float value = FMath::Clamp<float>(distance / PatrolToleranceDistance, 0.0f, 1.0f);
 
 		PossesedCharacter->AddMovementInput(direction, value);
+		GEngine->AddOnScreenDebugMessage(-1, DeltaSeconds, FColor::Yellow, FString::Printf(TEXT("input: (%f;%f;%f), value: %f"), direction.X, direction.Y, direction.Z, value));
+		//SetFocalPoint(desiredLocation);
 	}
 }
 
