@@ -4,8 +4,20 @@
 
 #include "SandboxAIStructures.generated.h"
 
+// use forward declarations
+// don't include any headers in this file other than generated
+
 class AActor;
 class IEmotionStimulus;
+
+/* 
+In the engine there is a FStimulus struct.
+
+Affecting - these stimulusses are percived and continiously affecting
+
+EmotionStimulus - container
+
+*/
 
 /**
  *
@@ -26,4 +38,44 @@ public:
 public:
 	FAffectingEmotionStimulus();
 	FAffectingEmotionStimulus(AActor* Actor, IEmotionStimulus* EmotionStimulus);
+};
+
+UENUM(BlueprintType)
+enum class EEmotionStimulusElementType : uint8
+{
+	// default
+	EUnknown = 0 UMETA(DisplayName = "Unknown"),
+
+	// this is PAD space - example. Add your own if needed, but always add, never remove.
+	// in case of gr8 merge
+	// (Filip - enum numbers starts with 1xx)
+	// (Krzysztof- enum numbers starts with 2xx)
+	// (Patryk - enum numbers starts with 3xx)
+	// (Mateusz - enum numbers starts with 4xx)
+	EPleasure = 101 UMETA(DisplayName = "Pleasure"),
+	EArousal = 102 UMETA(DisplayName = "Arousal"),
+	EDominance = 103 UMETA(DisplayName = "Dominance"),
+};
+
+USTRUCT(BlueprintType)
+struct SANDBOXAI_API FEmotionStimulusElement
+{
+	GENERATED_BODY()
+public:
+
+	/** Type of affection */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		EEmotionStimulusElementType EmotionStimulusElementType;
+
+	/** Whether affection is continious */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bContinious;
+
+	/** Whether affection is continious */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Valency;
+
+public:
+	FEmotionStimulusElement();
+	FEmotionStimulusElement(EEmotionStimulusElementType EmotionStimulusElementType, bool bContinious, float Valency);
 };

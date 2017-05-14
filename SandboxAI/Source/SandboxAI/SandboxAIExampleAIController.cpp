@@ -10,6 +10,10 @@ ASandboxAIExampleAIController::ASandboxAIExampleAIController()
 	PatrolCenter = FVector::ZeroVector;
 	PatrolTimer = 0.0f;
 	PatrolTimeMultiplier = 1.0f;
+
+	Pleasure = 0.0f;
+	Arousal = 0.0f;
+	Dominance = 0.0f;
 }
 
 void ASandboxAIExampleAIController::Possess(APawn* InPawn)
@@ -31,6 +35,8 @@ void ASandboxAIExampleAIController::UnPossess()
 
 void ASandboxAIExampleAIController::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds); // always remember about super !
+
 	if (PossesedCharacter != nullptr)
 	{
 		PatrolTimer += DeltaSeconds * PatrolTimeMultiplier;
@@ -51,8 +57,22 @@ void ASandboxAIExampleAIController::Tick(float DeltaSeconds)
 
 		PossesedCharacter->AddMovementInput(direction, value);
 		GEngine->AddOnScreenDebugMessage(-1, DeltaSeconds, FColor::Yellow, FString::Printf(TEXT("input: (%f;%f;%f), value: %f"), direction.X, direction.Y, direction.Z, value));
-		//SetFocalPoint(desiredLocation);
 	}
 }
 
 
+void ASandboxAIExampleAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement emotionStimulusElement)
+{
+	switch (emotionStimulusElement.EmotionStimulusElementType)
+	{
+	case EEmotionStimulusElementType::EPleasure:
+		Pleasure += emotionStimulusElement.Valency;
+		break;
+	case EEmotionStimulusElementType::EArousal:
+		Arousal += emotionStimulusElement.Valency;
+		break;
+	case EEmotionStimulusElementType::EDominance:
+		Dominance += emotionStimulusElement.Valency;
+		break;
+	}
+}

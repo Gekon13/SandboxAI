@@ -14,6 +14,7 @@
 
 ASandboxAIBaseAIController::ASandboxAIBaseAIController()
 {
+	PrimaryActorTick.bCanEverTick = true;
 	bAttachToPawn = true;
 
 	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
@@ -77,6 +78,30 @@ FRotator ASandboxAIBaseAIController::GetControlRotation() const
 	}
 }
 
+void ASandboxAIBaseAIController::Tick(float DeltaSeconds)
+{
+	const int32 stimulusCount = AffectingEmotionStimulusses.Num();
+	for (int32 index = 0; index < stimulusCount; ++index)
+	{
+		IEmotionStimulus* emotionStimulus = AffectingEmotionStimulusses[index].EmotionStimulus;
+		AActor* actor = AffectingEmotionStimulusses[index].Actor;
+		if (emotionStimulus != nullptr)
+		{
+			// handle continuous elements
+			const int32 elementCount = emotionStimulus->Execute_GetEmotionStimulusElementCount(actor);
+			for (int32 elementIndex = 0; elementIndex < elementCount; ++elementIndex)
+			{
+				FEmotionStimulusElement emotionStimulusElement = emotionStimulus->Execute_GetEmotionStimulusElement(actor, elementIndex);
+				if (emotionStimulusElement.bContinious)
+				{
+					emotionStimulusElement.Valency = emotionStimulusElement.Valency * DeltaSeconds;
+					HandleEmotionStimulusElement(emotionStimulusElement);
+				}
+			}
+		}
+	}
+}
+
 void ASandboxAIBaseAIController::OnTargetPerceptionUpdatedCB(AActor* Actor, FAIStimulus Stimulus)
 {
 	if (Actor != nullptr)
@@ -86,8 +111,21 @@ void ASandboxAIBaseAIController::OnTargetPerceptionUpdatedCB(AActor* Actor, FAIS
 		if (Stimulus.WasSuccessfullySensed())
 		{
 			IEmotionStimulus* emotionStimulus = Cast<IEmotionStimulus>(Actor);
-			if (emotionStimulus)
+			if (emotionStimulus != nullptr)
 			{
+				// handle one time elements
+				//const int32 elementCount = emotionStimulus->GetEmotionStimulusElementCount();
+				const int32 elementCount = emotionStimulus->Execute_GetEmotionStimulusElementCount(Actor);
+				for (int32 elementIndex = 0; elementIndex < elementCount; ++elementIndex)
+				{
+					//const FEmotionStimulusElement emotionStimulusElement = emotionStimulus->GetEmotionStimulusElement(elementIndex);
+					const FEmotionStimulusElement emotionStimulusElement = emotionStimulus->Execute_GetEmotionStimulusElement(Actor, elementIndex);
+					if (!emotionStimulusElement.bContinious)
+					{
+						HandleEmotionStimulusElement(emotionStimulusElement);
+					}
+				}
+
 				AffectingEmotionStimulusses.Add(FAffectingEmotionStimulus(Actor, emotionStimulus));
 			}
 		}
@@ -119,4 +157,10 @@ void ASandboxAIBaseAIController::OnTargetPerceptionUpdatedCall_Implementation(AA
 void ASandboxAIBaseAIController::OnTargetPerceptionUpdatedInternal(AActor* Actor, FAIStimulus Stimulus)
 {
 
+}
+
+/** Used to handle incomming stimulusses */
+UFUNCTION(BlueprintNativeEvent)
+void ASandboxAIBaseAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement emotionStimulusElement)
+{
 }

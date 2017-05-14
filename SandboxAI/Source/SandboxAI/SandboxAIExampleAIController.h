@@ -39,6 +39,18 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Patrol", meta = (BlueprintProtected = "true"))
 		ACharacter* PossesedCharacter;
 
+	/** Pleasure */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Patrol", meta = (BlueprintProtected = "true"))
+		float Pleasure;
+
+	/** Arousal */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Patrol", meta = (BlueprintProtected = "true"))
+		float Arousal;
+
+	/** Dominanace */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Patrol", meta = (BlueprintProtected = "true"))
+		float Dominance;
+
 public:
 	ASandboxAIExampleAIController();
 
@@ -47,4 +59,6 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 	
+protected:
+	virtual void HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement emotionStimulusElement) override;
 };

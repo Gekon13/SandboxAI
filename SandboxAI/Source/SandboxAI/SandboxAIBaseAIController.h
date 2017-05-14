@@ -44,6 +44,7 @@ public: // public functions and callbacks
 	virtual void UnPossess() override;
 
 	virtual FRotator GetControlRotation() const override;
+	virtual void Tick(float DeltaSeconds) override;
 
 protected: //internal functions and callback
 	
@@ -57,4 +58,8 @@ protected: //internal functions and callback
 
 	/** Called whenever perception componnet starts or stops to perceive stimulus source */
 	virtual void OnTargetPerceptionUpdatedInternal(AActor* Actor, FAIStimulus Stimulus);
+
+	/** Used to handle incomming stimulusses */
+	UFUNCTION(BlueprintNativeEvent)
+		void HandleEmotionStimulusElement(FEmotionStimulusElement emotionStimulusElement);
 };

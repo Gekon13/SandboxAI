@@ -2,10 +2,12 @@
 
 #pragma once
 
+#include "SandboxAIStructures.h"
 #include "EmotionStimulus.generated.h"
 
+//CannotImplementInterfaceInBlueprint
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI, Blueprintable)
+UINTERFACE(MinimalAPI, BlueprintType)
 class UEmotionStimulus : public UInterface
 {
 	GENERATED_UINTERFACE_BODY()
@@ -21,11 +23,9 @@ class SANDBOXAI_API IEmotionStimulus
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	
-	/** Whether this emotional stimulus should affect agent over time */
-	UFUNCTION()
-	virtual bool AffectOverTime() const;
+	UFUNCTION(BlueprintNativeEvent)
+		int32 GetEmotionStimulusElementCount() const;
 
-	/** Strength of the emotional stimulus, this can be positive or negative */
-	UFUNCTION()
-	virtual float GetValency() const;
+	UFUNCTION(BlueprintNativeEvent)
+		FEmotionStimulusElement GetEmotionStimulusElement(const int32& index) const;
 };

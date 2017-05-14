@@ -12,12 +12,12 @@ UEmotionStimulus::UEmotionStimulus(const class FObjectInitializer& ObjectInitial
 
 // Add default functionality here for any IEmotionStimulus functions that are not pure virtual.
 
-bool IEmotionStimulus::AffectOverTime() const
+int32 IEmotionStimulus::GetEmotionStimulusElementCount_Implementation() const
 {
-	return false;
+	return 0;
 }
 
-float IEmotionStimulus::GetValency() const
+FEmotionStimulusElement IEmotionStimulus::GetEmotionStimulusElement_Implementation(const int32& index) const
 {
-	return 0.0f;
+	return FEmotionStimulusElement();
 }
