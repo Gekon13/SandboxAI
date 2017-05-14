@@ -5,7 +5,10 @@
 #include "AIController.h"
 #include "Perception/AIPerceptionTypes.h"
 #include "Perception/AISenseConfig.h"
+#include "SandboxAIStructures.h"
 #include "SandboxAIBaseAIController.generated.h"
+
+class IEmotionStimulus;
 
 /**
  * 
@@ -30,6 +33,9 @@ protected: // make variables always protected
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Perception", meta = (BlueprintProtected = "true"))
 		class UAISenseConfig_Damage* SenseConfig_Damage;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Perception", meta = (BlueprintProtected = "true"))
+		TArray<FAffectingEmotionStimulus> AffectingEmotionStimulusses;
+
 public: // public functions and callbacks
 	
 	ASandboxAIBaseAIController();
@@ -37,7 +43,7 @@ public: // public functions and callbacks
 	virtual void Possess(APawn* InPawn) override;
 	virtual void UnPossess() override;
 
-
+	virtual FRotator GetControlRotation() const override;
 
 protected: //internal functions and callback
 	

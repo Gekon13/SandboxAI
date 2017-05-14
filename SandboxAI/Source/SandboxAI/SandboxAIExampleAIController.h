@@ -16,23 +16,23 @@ class SANDBOXAI_API ASandboxAIExampleAIController : public ASandboxAIBaseAIContr
 	
 protected:
 	/** Patrol radius */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol", meta = (BlueprintProteted = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol", meta = (BlueprintProtected = "true"))
 		float PatrolRadius;
 
 	/** Distance from desired location percived as on point */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol", meta = (BlueprintProteted = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol", meta = (BlueprintProtected = "true"))
 		float PatrolToleranceDistance;
 
 	/** Patrol center of circle */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol", meta = (BlueprintProteted = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol", meta = (BlueprintProtected = "true"))
 		FVector PatrolCenter;
 
 	/** Patrol circle timer */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Patrol", meta = (BlueprintProteted = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Patrol", meta = (BlueprintProtected = "true"))
 		float PatrolTimer;
 
 	/** Patrol circle time multiplier */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol", meta = (BlueprintProteted = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol", meta = (BlueprintProtected = "true"))
 		float PatrolTimeMultiplier;
 
 	/** Cached ptr */

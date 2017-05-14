@@ -9,6 +9,9 @@
 #include "Perception/AISenseConfig_Damage.h"
 #include "Perception/AIPerceptionSystem.h"
 
+#include "EmotionStimulus.h"
+#include "SandboxAIStructures.h"
+
 ASandboxAIBaseAIController::ASandboxAIBaseAIController()
 {
 	bAttachToPawn = true;
@@ -61,12 +64,45 @@ void ASandboxAIBaseAIController::UnPossess()
 	Super::UnPossess();
 }
 
+FRotator ASandboxAIBaseAIController::GetControlRotation() const
+{
+	APawn* pawn = GetPawn();
+	if (pawn != nullptr)
+	{
+		return pawn->GetActorRotation();
+	}
+	else
+	{
+		return FRotator::ZeroRotator;
+	}
+}
+
 void ASandboxAIBaseAIController::OnTargetPerceptionUpdatedCB(AActor* Actor, FAIStimulus Stimulus)
 {
 	if (Actor != nullptr)
 	{
 		FString message = FString::Printf(TEXT("%stected: %s"), Stimulus.WasSuccessfullySensed() ? TEXT("De") : TEXT("Unde"), *Actor->GetName());
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, message);
+		if (Stimulus.WasSuccessfullySensed())
+		{
+			IEmotionStimulus* emotionStimulus = Cast<IEmotionStimulus>(Actor);
+			if (emotionStimulus)
+			{
+				AffectingEmotionStimulusses.Add(FAffectingEmotionStimulus(Actor, emotionStimulus));
+			}
+		}
+		else
+		{
+			const int32 count = AffectingEmotionStimulusses.Num();
+			for (int32 index = 0; index < count; ++index)
+			{
+				if (AffectingEmotionStimulusses[index].Actor == Actor)
+				{
+					AffectingEmotionStimulusses.RemoveAt(index);
+					break;
+				}
+			}
+		}
 	}
 	else
 	{
