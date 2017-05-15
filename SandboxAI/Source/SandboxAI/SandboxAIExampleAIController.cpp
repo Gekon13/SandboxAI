@@ -66,13 +66,13 @@ void ASandboxAIExampleAIController::HandleEmotionStimulusElement_Implementation(
 	switch (emotionStimulusElement.EmotionStimulusElementType)
 	{
 	case EEmotionStimulusElementType::EPleasure:
-		Pleasure += emotionStimulusElement.Valency;
+		Pleasure += emotionStimulusElement.Power;
 		break;
 	case EEmotionStimulusElementType::EArousal:
-		Arousal += emotionStimulusElement.Valency;
+		Arousal += emotionStimulusElement.Power;
 		break;
 	case EEmotionStimulusElementType::EDominance:
-		Dominance += emotionStimulusElement.Valency;
+		Dominance += emotionStimulusElement.Power;
 		break;
 	}
 }

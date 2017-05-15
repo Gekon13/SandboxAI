@@ -94,7 +94,7 @@ void ASandboxAIBaseAIController::Tick(float DeltaSeconds)
 				FEmotionStimulusElement emotionStimulusElement = emotionStimulus->Execute_GetEmotionStimulusElement(actor, elementIndex);
 				if (emotionStimulusElement.bContinious)
 				{
-					emotionStimulusElement.Valency = emotionStimulusElement.Valency * DeltaSeconds;
+					emotionStimulusElement.Power = emotionStimulusElement.Power * DeltaSeconds;
 					HandleEmotionStimulusElement(emotionStimulusElement);
 				}
 			}

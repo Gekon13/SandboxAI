@@ -17,12 +17,12 @@ FAffectingEmotionStimulus::FAffectingEmotionStimulus(AActor* Actor, IEmotionStim
 FEmotionStimulusElement::FEmotionStimulusElement() :
 	EmotionStimulusElementType(EEmotionStimulusElementType::EUnknown),
 	bContinious(true),
-	Valency(0.0f)
+	Power(0.0f)
 {
 }
-FEmotionStimulusElement::FEmotionStimulusElement(EEmotionStimulusElementType EmotionStimulusElementType, bool bContinious, float Valency) :
+FEmotionStimulusElement::FEmotionStimulusElement(EEmotionStimulusElementType EmotionStimulusElementType, bool bContinious, float Power) :
 	EmotionStimulusElementType(EmotionStimulusElementType),
 	bContinious(bContinious),
-	Valency(Valency)
+	Power(Power)
 {
 }

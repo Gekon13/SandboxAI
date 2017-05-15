@@ -55,6 +55,9 @@ enum class EEmotionStimulusElementType : uint8
 	EPleasure = 101 UMETA(DisplayName = "Pleasure"),
 	EArousal = 102 UMETA(DisplayName = "Arousal"),
 	EDominance = 103 UMETA(DisplayName = "Dominance"),
+	EValence = 104 UMETA(Display = "Valence"),
+	EMood = 105 UMETA(Display = "Mood"),
+	EBoredoom = 106 UMETA(Display = "Boredoom"),
 };
 
 USTRUCT(BlueprintType)
@@ -73,9 +76,9 @@ public:
 
 	/** Whether affection is continious */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float Valency;
+		float Power;
 
 public:
 	FEmotionStimulusElement();
-	FEmotionStimulusElement(EEmotionStimulusElementType EmotionStimulusElementType, bool bContinious, float Valency);
+	FEmotionStimulusElement(EEmotionStimulusElementType EmotionStimulusElementType, bool bContinious, float Power);
 };
