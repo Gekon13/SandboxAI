@@ -1,0 +1,36 @@
+Disclaimer: 
+Tekst ten ma za zadanie ujednolicenie oraz wyjaœnienie pojêæ jak usuniêcie nieœcis³oœci zwi¹zanych z ³¹czeniem nomenklatur Silnikowych i Teoretycznych. 
+Dodatkowo opisuje przeznaczenie poszczególnych klas.
+Proszê o zg³aszanie nieœcis³osci logicznych, bêd¹ one rozwi¹zywane. (Sekcja "Nieœcis³oœci" na koñcu tekstu.)
+
+SandboxAI - projekt maj¹cy na celu stworzenie œrodowiska bazowego pod modu³y wbogacaj¹ce modu³ steruj¹cy NPC(w rozumieniu AI) o stan emocjonalny.
+
+Za³o¿enia:
+- wspólne œrodowisko
+- wspólnie postacie
+- ró¿ne implementacje klasy AIController odpowiadaj¹ce za sterowanie aktorami
+
+S³owniczek:
+Postaæ (Character)(implementacje ACharacter) - model pokazuj¹cy postaæ
+Kontroler (Controller)(implementacje AIController) - obiektu steruj¹cy Postaci¹.
+Aktor - (Actor)(implementacje AActor) - dowolny obiekt w œwiecie symulacji posiadaj¹cy wizualizacjê. (Zazwyczaj nie s¹ to Postacie, ale mog¹ byæ.)
+NCP - (NonPlayerCharacter) (okreœlenie teoretyczne) - Zestawienie Postaci oraz Kontrollera, potencjalny gracz widzi go jako jednoœæ.
+Bodziec Emocjonalny - (Emotion Stimulus) (Dowolny Aktor implementuj¹cy interfejs IEmotionStimulus) - aktorzy ci s¹ postrzegani przez bazow¹ klasê Kontrollera i przekazywani do klas dziedzicz¹cych z Kontrollera.
+
+Opis klas:
+ASandboxAITestCharacter - bazowa klasa dla Postaci.
+ASandboxAIBaseAIController - bazowa klasa dla ró¿nych implementacji Konotrolera zapewniaj¹ca jednorodne wejœcia(bodŸce emocjonalne) dla modu³ów
+
+IEmotionStimulus - interface dla przedmiotów aktorów (w rozumieniu UE4) umo¿liwiaj¹cy wp³yw emocjonalny (patrz S³owniczek: Bodziec Emocjonalny)
+
+ASandboxAISimpleStimulus - przyk³adowa implementacja BodŸca Emocjonalnego
+
+AExampleAIController - klasa przyk³adowa - pokazuje przyk³adowy sposób implementacji klasy bazowej dla Kontrolera.
+
+ASandboxAISplineAIController - klasa bazowa dla Kontrolera w iteracji z ustalon¹ œcie¿k¹
+ASandboxAISplineCharacter - klasa bazowa dla Postaci w iteracji z ustalon¹ œcie¿k¹
+
+AExampleSplineAIController - klasa przyk³adowa w iteracji z ustalon¹ œcie¿k¹ - pokazuje przyk³adowy sposób implementacji klasy bazowej dla AIControllerów w iteracji z ustalon¹ œcie¿k¹
+
+Nieœcis³oœci:
+- ...
