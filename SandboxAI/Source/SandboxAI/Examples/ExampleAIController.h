@@ -4,13 +4,13 @@
 
 #include "AIController.h"
 #include "SandboxAIBaseAIController.h"
-#include "SandboxAIExampleAIController.generated.h"
+#include "ExampleAIController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SANDBOXAI_API ASandboxAIExampleAIController : public ASandboxAIBaseAIController
+class SANDBOXAI_API AExampleAIController : public ASandboxAIBaseAIController
 {
 	GENERATED_BODY()
 	
@@ -39,20 +39,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Patrol", meta = (BlueprintProtected = "true"))
 		ACharacter* PossesedCharacter;
 
-	/** Pleasure */
+	/** Valence */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Patrol", meta = (BlueprintProtected = "true"))
-		float Pleasure;
-
-	/** Arousal */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Patrol", meta = (BlueprintProtected = "true"))
-		float Arousal;
-
-	/** Dominanace */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Patrol", meta = (BlueprintProtected = "true"))
-		float Dominance;
+		float Valence;
 
 public:
-	ASandboxAIExampleAIController();
+	AExampleAIController();
 
 	virtual void Possess(APawn* InPawn) override;
 	virtual void UnPossess() override;

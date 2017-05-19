@@ -12,6 +12,8 @@
 #include "EmotionStimulus.h"
 #include "SandboxAIStructures.h"
 
+#include "DrawDebugHelpers.h"
+
 ASandboxAIBaseAIController::ASandboxAIBaseAIController()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -23,8 +25,8 @@ ASandboxAIBaseAIController::ASandboxAIBaseAIController()
 	
 	// sight sense
 	SenseConfig_Sight = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sense Config Sight"));
-	SenseConfig_Sight->PeripheralVisionAngleDegrees = 45.0f;
-	SenseConfig_Sight->SightRadius = 3000.0f;
+	SenseConfig_Sight->PeripheralVisionAngleDegrees = 30.0f;
+	SenseConfig_Sight->SightRadius = 1000.0f;
 	SenseConfig_Sight->LoseSightRadius = SenseConfig_Sight->SightRadius + 50.0f;
 	SenseConfig_Sight->DetectionByAffiliation.bDetectEnemies = true;
 	SenseConfig_Sight->DetectionByAffiliation.bDetectFriendlies = true;
@@ -33,6 +35,8 @@ ASandboxAIBaseAIController::ASandboxAIBaseAIController()
 
 	// hearing sense
 	SenseConfig_Hearing = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("Sense Config Hearing"));
+	SenseConfig_Hearing->HearingRange = 750.0f;
+	SenseConfig_Hearing->LoSHearingRange = SenseConfig_Hearing->HearingRange + 50.0f;
 	SenseConfig_Hearing->DetectionByAffiliation.bDetectEnemies = true;
 	SenseConfig_Hearing->DetectionByAffiliation.bDetectFriendlies = true;
 	SenseConfig_Hearing->DetectionByAffiliation.bDetectNeutrals = true;
@@ -49,14 +53,9 @@ ASandboxAIBaseAIController::ASandboxAIBaseAIController()
 void ASandboxAIBaseAIController::Possess(APawn* InPawn)
 {
 	Super::Possess(InPawn);
-	if (InPawn != nullptr)
+	if (InPawn != nullptr && SenseConfig_Sight != nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("register"));
 		UAIPerceptionSystem::RegisterPerceptionStimuliSource(this, SenseConfig_Sight->GetSenseImplementation(), InPawn);
-	}
-	else 
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("No pawn"));
 	}
 }
 
@@ -80,6 +79,9 @@ FRotator ASandboxAIBaseAIController::GetControlRotation() const
 
 void ASandboxAIBaseAIController::Tick(float DeltaSeconds)
 {
+#if ENABLE_DRAW_DEBUG
+	DrawDebug(DeltaSeconds);
+#endif
 	const int32 stimulusCount = AffectingEmotionStimulusses.Num();
 	for (int32 index = 0; index < stimulusCount; ++index)
 	{
@@ -163,4 +165,29 @@ void ASandboxAIBaseAIController::OnTargetPerceptionUpdatedInternal(AActor* Actor
 UFUNCTION(BlueprintNativeEvent)
 void ASandboxAIBaseAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement emotionStimulusElement)
 {
+}
+
+
+void ASandboxAIBaseAIController::DrawDebug(float DeltaSeconds)
+{
+#if ENABLE_DRAW_DEBUG
+	UWorld* world = GetWorld();
+	APawn* pawn = GetPawn();
+	if (world != nullptr && pawn != nullptr)
+	{
+		FTransform pawnTransform = pawn->GetTransform();
+		FVector location = pawnTransform.GetLocation();
+		
+		if (SenseConfig_Sight != nullptr)
+		{
+			DrawDebugAltCone(world, pawnTransform.GetLocation(), FRotator( pawnTransform.GetRotation() ), SenseConfig_Sight->SightRadius, SenseConfig_Sight->PeripheralVisionAngleDegrees, SenseConfig_Sight->PeripheralVisionAngleDegrees, FColor::Green.WithAlpha(50));
+			DrawDebugAltCone(world, pawnTransform.GetLocation(), FRotator( pawnTransform.GetRotation() ), SenseConfig_Sight->LoseSightRadius, SenseConfig_Sight->PeripheralVisionAngleDegrees, SenseConfig_Sight->PeripheralVisionAngleDegrees, FColor::Green.WithAlpha(15));
+		}
+		if (SenseConfig_Hearing != nullptr)
+		{
+			DrawDebugSphere(world, location, SenseConfig_Hearing->HearingRange, 16, FColor::Yellow.WithAlpha(50));
+			DrawDebugSphere(world, location, SenseConfig_Hearing->LoSHearingRange, 16, FColor::Yellow.WithAlpha(15));
+		}
+	}
+#endif
 }

@@ -46,6 +46,9 @@ enum class EEmotionStimulusElementType : uint8
 	// default
 	EUnknown = 0 UMETA(DisplayName = "Unknown"),
 
+	EPositive = 1 UMETA (DisplayName = "Positive"),
+	ENegative = 2 UMETA(DisplayName = "Negative"),
+
 	// this is PAD space - example. Add your own if needed, but always add, never remove.
 	// in case of gr8 merge
 	// (Filip - enum numbers starts with 1xx)

@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SandboxAI.h"
-#include "SandboxAIExampleAIController.h"
+#include "ExampleAIController.h"
 
-ASandboxAIExampleAIController::ASandboxAIExampleAIController()
+AExampleAIController::AExampleAIController()
 {
 	PatrolRadius = 300.0f;
 	PatrolToleranceDistance = 75.0f;
@@ -11,12 +11,10 @@ ASandboxAIExampleAIController::ASandboxAIExampleAIController()
 	PatrolTimer = 0.0f;
 	PatrolTimeMultiplier = 1.0f;
 
-	Pleasure = 0.0f;
-	Arousal = 0.0f;
-	Dominance = 0.0f;
+	Valence = 0.0f;
 }
 
-void ASandboxAIExampleAIController::Possess(APawn* InPawn)
+void AExampleAIController::Possess(APawn* InPawn)
 {
 	Super::Possess(InPawn);
 	PossesedCharacter = Cast<ACharacter>(InPawn);
@@ -24,16 +22,17 @@ void ASandboxAIExampleAIController::Possess(APawn* InPawn)
 	{
 		PatrolCenter = PossesedCharacter->GetActorLocation();
 		PatrolTimer = 0.0f;
+		Valence = 0.0f;
 	}
 }
 
-void ASandboxAIExampleAIController::UnPossess()
+void AExampleAIController::UnPossess()
 {
 	Super::UnPossess();
 	PossesedCharacter = nullptr;
 }
 
-void ASandboxAIExampleAIController::Tick(float DeltaSeconds)
+void AExampleAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds); // always remember about super !
 
@@ -61,18 +60,15 @@ void ASandboxAIExampleAIController::Tick(float DeltaSeconds)
 }
 
 
-void ASandboxAIExampleAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement emotionStimulusElement)
+void AExampleAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement emotionStimulusElement)
 {
 	switch (emotionStimulusElement.EmotionStimulusElementType)
 	{
-	case EEmotionStimulusElementType::EPleasure:
-		Pleasure += emotionStimulusElement.Power;
+	case EEmotionStimulusElementType::EPositive:
+		Valence += emotionStimulusElement.Power;
 		break;
-	case EEmotionStimulusElementType::EArousal:
-		Arousal += emotionStimulusElement.Power;
-		break;
-	case EEmotionStimulusElementType::EDominance:
-		Dominance += emotionStimulusElement.Power;
+	case EEmotionStimulusElementType::ENegative:
+		Valence -= emotionStimulusElement.Power;
 		break;
 	}
 }

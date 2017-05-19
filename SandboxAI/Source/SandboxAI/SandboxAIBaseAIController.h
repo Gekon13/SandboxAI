@@ -43,7 +43,7 @@ public: // public functions and callbacks
 	virtual void Possess(APawn* InPawn) override;
 	virtual void UnPossess() override;
 
-	virtual FRotator GetControlRotation() const override;
+	virtual FRotator GetControlRotation() const override; // this has to be ovrriden in order for Sight sense to work properly
 	virtual void Tick(float DeltaSeconds) override;
 
 protected: //internal functions and callback
@@ -62,4 +62,6 @@ protected: //internal functions and callback
 	/** Used to handle incomming stimulusses */
 	UFUNCTION(BlueprintNativeEvent)
 		void HandleEmotionStimulusElement(FEmotionStimulusElement emotionStimulusElement);
+
+	void DrawDebug(float DeltaSeconds);
 };
