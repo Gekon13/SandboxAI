@@ -29,8 +29,11 @@ void AExampleSplineAIController::Tick(float DeltaSeconds)
 	float value = FMath::Abs(EmotionValence);
 	float sign = FMath::Sign(EmotionValence);
 
+	GEngine->AddOnScreenDebugMessage(-1, DeltaSeconds, FColor::Blue, FString::Printf(TEXT("valnce: %.4f, value: %.4f, sign %.4f"), EmotionValence, value, sign));
+
 	value = FMath::Max(0.0f, value - EmotionValenceNullifyRate * DeltaSeconds);
 	EmotionValence = value * sign;
+	UpdateActorEmotionalStateConsequences();
 }
 
 void AExampleSplineAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement emotionStimulusElement)

@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SandboxAI.h"
-#include "SandboxAISplineAIController.h"
-#include "SandboxAISplineCharacter.h"
+#include "FixedPath/SandboxAISplineAIController.h"
+#include "FixedPath/SandboxAISplineCharacter.h"
 #include "Components/SplineComponent.h"
 
 ASandboxAISplineAIController::ASandboxAISplineAIController()

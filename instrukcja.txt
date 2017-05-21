@@ -32,5 +32,24 @@ ASandboxAISplineCharacter - klasa bazowa dla Postaci w iteracji z ustalon¹ œcie¿
 
 AExampleSplineAIController - klasa przyk³adowa w iteracji z ustalon¹ œcie¿k¹ - pokazuje przyk³adowy sposób implementacji klasy bazowej dla AIControllerów w iteracji z ustalon¹ œcie¿k¹
 
+Iteracje:
+
+1. Fixed Path:
+	Scenariusz:
+	Aktor wyposa¿ony w modu³ emocji przechodzi zaplanowan¹ œcie¿k¹, mija kolejne bodŸce emocjonalne.
+
+	Wejœcia do modu³u:
+	bodŸce emocjonalne (ognisko, ha³as)
+
+	Wyjœcia z modu³u:
+	prêdkoœæ poruszania siê agenta, kolor reprezentuj¹cy aktualny stan emocjonalny.
+
+	Emocje: 
+	joy - distress (zadowolenie - niepokój)
+
+	Dodatkowo:
+	PSI -  zak³adamy potrzebê bezpieczeñstwa
+
+
 Nieœcis³oœci:
 - ...

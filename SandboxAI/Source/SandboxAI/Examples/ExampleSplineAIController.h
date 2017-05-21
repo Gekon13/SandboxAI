@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "../SandboxAISplineAIController.h"
+#include "FixedPath/SandboxAISplineAIController.h"
 #include "ExampleSplineAIController.generated.h"
 
 /**

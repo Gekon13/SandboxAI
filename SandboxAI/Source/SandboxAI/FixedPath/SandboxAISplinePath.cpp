@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SandboxAI.h"
-#include "SandboxAISplinePath.h"
+#include "FixedPath/SandboxAISplinePath.h"
 #include "Components/SceneComponent.h"
 #include "Components/SplineComponent.h"
 

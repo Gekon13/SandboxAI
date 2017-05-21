@@ -3,14 +3,14 @@
 #pragma once
 
 #include "GameFramework/Character.h"
-#include "SandboxAITestCharacter.generated.h"
+#include "SandboxAIBaseCharacter.generated.h"
 
 UCLASS()
-class SANDBOXAI_API ASandboxAITestCharacter : public ACharacter
+class SANDBOXAI_API ASandboxAIBaseCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	ASandboxAITestCharacter();
+	ASandboxAIBaseCharacter();
 	
 };

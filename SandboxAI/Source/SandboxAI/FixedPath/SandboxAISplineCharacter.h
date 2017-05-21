@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "SandboxAITestCharacter.h"
+#include "SandboxAIBaseCharacter.h"
 #include "SandboxAISplineCharacter.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SANDBOXAI_API ASandboxAISplineCharacter : public ASandboxAITestCharacter
+class SANDBOXAI_API ASandboxAISplineCharacter : public ASandboxAIBaseCharacter
 {
 	GENERATED_BODY()
 	

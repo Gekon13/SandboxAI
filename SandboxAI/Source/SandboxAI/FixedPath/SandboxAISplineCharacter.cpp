@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SandboxAI.h"
-#include "SandboxAISplineCharacter.h"
-#include "SandboxAISplineAIController.h"
+#include "FixedPath/SandboxAISplineCharacter.h"
+#include "FixedPath/SandboxAISplineAIController.h"
+#include "FixedPath/SandboxAISplinePath.h"
 #include "Components/SplineComponent.h"
-#include "SandboxAISplinePath.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -27,6 +27,8 @@ void ASandboxAISplineCharacter::OnConstruction(const FTransform& Transform)
 	{
 		FVector location = SplinePath->GetSplineComponent()->GetWorldLocationAtSplinePoint(0);
 	 	FRotator rotation = SplinePath->GetSplineComponent()->GetRotationAtSplinePoint(0, ESplineCoordinateSpace::World);
+
+		location += FVector::UpVector * GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight();
 
 		SetActorLocation(location);
 		SetActorRotation(rotation);
