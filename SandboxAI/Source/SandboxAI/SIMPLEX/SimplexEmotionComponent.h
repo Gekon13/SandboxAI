@@ -20,12 +20,17 @@ protected:
 		FSimplexPersonality Personality;
 
 	UPROPERTY(EditAnywhere, Category = "Emotions")
-		float ReturnToNeutralStateSpeed;
+		bool bCanPersonalityInfluenceEmotions;
+
+	UPROPERTY(EditAnywhere, Category = "Emotions")
+		float BaseDecayFactor;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotions")
 		FSimplexPADPoint NeutralEmotionalState;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotions")
 		FSimplexPADPoint CurrentEmotionalState;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotions")
+		float DecayFactor;
 
 public:	
 	USimplexEmotionComponent();

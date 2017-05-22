@@ -123,7 +123,7 @@ struct SANDBOXAI_API FSimplexPersonality
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "-1.0", ClampMax = "1.0", UIMin = "-1.0", UIMax = "1.0"))
-		float OpennessToExperience;
+		float OpenessToExperience;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "-1.0", ClampMax = "1.0", UIMin = "-1.0", UIMax = "1.0"))
 		float Conscientiousness;
@@ -143,8 +143,8 @@ public:
 		//Mehrabian’s Big Five to PAD transformation rules
 		return FSimplexPADPoint(
 			0.21f * Extroversion + 0.59f * Agreeableness + 0.19f * Neuroticism,
-			0.15f * OpennessToExperience + 0.3f * Agreeableness + 0.57 * Neuroticism,
-			0.25f * OpennessToExperience + 0.17f * Conscientiousness + 0.6f * Extroversion - 0.32f * Agreeableness
+			0.15f * OpenessToExperience + 0.3f * Agreeableness + 0.57 * Neuroticism,
+			0.25f * OpenessToExperience + 0.17f * Conscientiousness + 0.6f * Extroversion - 0.32f * Agreeableness
 		);
 	}
 };
