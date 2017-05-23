@@ -18,7 +18,7 @@ void USimplexEmotionComponent::BeginPlay()
 	CurrentEmotionalState = NeutralEmotionalState;
 
 	//Calculate DecayFactor as combination of chosen factors in personality
-	DecayFactor = Personality.OpenessToExperience - Personality.Conscientiousness - Personality.Neuroticism;
+	DecayFactor = Personality.OpennessToExperience - Personality.Conscientiousness + Personality.Neuroticism;
 	//Here the DecayFactor values from -3 to 3
 	//We need to map decay factor from [-3, 3] to [BaseDecayFactor, 1 + BaseDecayFactor] so it can be easily scaled (if needed) and increased or decreased by some fixed value
 	DecayFactor = (DecayFactor + 3.0f) / 6.0f + BaseDecayFactor;
@@ -44,14 +44,14 @@ void USimplexEmotionComponent::HandleEmotionStimulusElement(const FEmotionStimul
 	float EmotionPower = EmotionStimulusElement.Power;
 
 	//High openess increases influence (person that is open to experience is not emotional stable so every emotion has great impact on that person)
-	float Influence = Personality.OpenessToExperience;
+	float Influence = Personality.OpennessToExperience;
 	//High Conscientiousness decreases influence (Conscientiousness means emotional stability)
 	Influence -= Personality.Conscientiousness;
 
 	switch(EmotionStimulusElement.EmotionStimulusElementType)
 	{
 	case EEmotionStimulusElementType::EPositive:
-		Influence += Personality.Extroversion;
+		Influence += Personality.Extraversion;
 		GeneratedEmotion = FSimplexPADPoint::Joy;
 		break;
 	case EEmotionStimulusElementType::ENegative:
