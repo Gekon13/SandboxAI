@@ -147,4 +147,42 @@ public:
 			0.25f * OpennessToExperience + 0.17f * Conscientiousness + 0.6f * Extraversion - 0.32f * Agreeableness
 		);
 	}
+
+	//Maps personality to influence on input events (generating emotions)
+	//Returns value between 0 (inclusive) and 1 (inclusive)
+	FORCEINLINE float GetInfluenceOnEmotion(bool bIsPositiveEmotion) const
+	{
+		static const float ConscientiousnessWeight = 1.0f;
+		static const float OpennessWeight = 0.5f;
+		static const float ExtraversionNeuroticismWeight = 1.0f;
+
+		static const float MaxInfluence = ConscientiousnessWeight + OpennessWeight + ExtraversionNeuroticismWeight;
+		static const float DoubleMaxInfluence = 2.0f * MaxInfluence;
+
+		float Influence = ConscientiousnessWeight * -Conscientiousness;
+		Influence += OpennessWeight * OpennessToExperience;
+		Influence += ExtraversionNeuroticismWeight * (bIsPositiveEmotion ? Extraversion : Neuroticism);
+
+		Influence = FMath::Clamp((Influence + MaxInfluence) / DoubleMaxInfluence, 0.0f, 1.0f);
+
+		return Influence;
+	}
+
+	//Maps personality to decay factor (return to neutral state speed)
+	//Returns value greater or equal to 0
+	FORCEINLINE float GetDecayFactor() const
+	{
+		static const float ConscientiousnessWeight = 1.0f;
+		static const float OpennessWeight = 1.0f;
+		static const float NeuroticismWeight = 0.5f;
+
+		static const float MaxDecay = ConscientiousnessWeight + OpennessWeight + NeuroticismWeight;
+		static const float DoubleMaxDecay = 2.0f * MaxDecay;
+
+		float DecayFactor = OpennessWeight * OpennessToExperience;
+		DecayFactor += ConscientiousnessWeight * -Conscientiousness;
+		DecayFactor += NeuroticismWeight * Neuroticism;
+
+		return (DecayFactor + MaxDecay) / DoubleMaxDecay;
+	}
 };
