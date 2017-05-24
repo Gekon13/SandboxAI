@@ -15,13 +15,14 @@ class SANDBOXAI_API UWasabiEngineBase : public UObject
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi/State")
 		FWasabiSpacePointPAD WasabiSpacePointPAD;
 	
 public:
 	UWasabiEngineBase();
-	UWasabiEngineBase(const FWasabiSpacePointPAD& startSpacePointPAD);
 
+	UFUNCTION(BlueprintCallable)
+		virtual void Initialize();
 	UFUNCTION(BlueprintCallable)
 		virtual void Impulse(float value);
 	UFUNCTION(BlueprintCallable)
