@@ -29,19 +29,21 @@ void UPsiEmotions::BeginPlay()
 void UPsiEmotions::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
+	Timer += DeltaTime;
+	Emotions[0].Value = FMath::Lerp(Emotions[0].Value, 0.5f, Timer * 0.2f);
 	// ...
 }
 
 void UPsiEmotions::ProcessEmotionStimulusElement(const FEmotionStimulusElement & EmotionStimulusElement)
 {
+	Timer = 0.0f;
 	switch (EmotionStimulusElement.EmotionStimulusElementType)
 	{
 	case EEmotionStimulusElementType::EPositive:
-		Emotions[0].Value = FMath::Clamp(Emotions[0].Value - EmotionStimulusElement.Power * 0.1f, -1.0f, 1.0f) /** 0.8f*/;
+		Emotions[0].Value = FMath::Clamp(Emotions[0].Value - EmotionStimulusElement.Power * 0.02f, -1.0f, 1.0f) /** 0.8f*/;
 		break;
 	case EEmotionStimulusElementType::ENegative:
-		Emotions[0].Value = FMath::Clamp(Emotions[0].Value + EmotionStimulusElement.Power * 0.1f, -1.0f, 1.0f)/* * 0.8f*/;
+		Emotions[0].Value = FMath::Clamp(Emotions[0].Value + EmotionStimulusElement.Power * 0.02f, -1.0f, 1.0f)/* * 0.8f*/;
 		break;
 	}
 }

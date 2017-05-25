@@ -37,6 +37,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 	TArray<FPsiEmotion> Emotions;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
+		float Timer;
 	// Sets default values for this component's properties
 
 protected:
