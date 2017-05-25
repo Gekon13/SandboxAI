@@ -25,8 +25,10 @@ void APsiAIController::UnPossess()
 
 void APsiAIController::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds);
+
 	ProcessPsiTheory();
-	SetEmotionVisualColor(FMath::Lerp<FLinearColor>(FLinearColor::Green, FLinearColor::Red, PsiEmotionsComponent->Emotions[0].Value));
+	SetEmotionVisualColor(FMath::Lerp<FLinearColor>(FLinearColor::Green, FLinearColor::Red, (PsiEmotionsComponent->Emotions[0].Value + 1 ) / 2));
 }
 
 void APsiAIController::ProcessPsiTheory()
@@ -38,15 +40,15 @@ void APsiAIController::ProcessPsiTheory()
 	{
 	case EPsiDrive::ECuriosity:
 		if (PsiEmotionsComponent->Emotions[0].Value > 0.0f)
-			MoveFaster(0.5f * (PsiGoal.Value + 1.f) * PsiEmotionsComponent->Emotions[0].Value);
+			MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
 		else
-			MoveFaster(0.5f * (PsiGoal.Value + 1.f) * PsiEmotionsComponent->Emotions[0].Value);
+			MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
 		break;
 	case EPsiDrive::ESafety:
 		if (PsiEmotionsComponent->Emotions[0].Value > 0.0f)
-			MoveFaster(0.5f * (PsiGoal.Value + 1.f) * PsiEmotionsComponent->Emotions[0].Value);
+			MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
 		else
-			MoveFaster(0.5f * (PsiGoal.Value + 1.f) * PsiEmotionsComponent->Emotions[0].Value);
+			MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
 		break;
 	}
 }
@@ -61,12 +63,12 @@ void APsiAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimu
 	switch (EmotionStimulusElement.EmotionStimulusElementType)
 	{
 	case EEmotionStimulusElementType::EPositive:
-		PsiDrives.Drives[0].Value = FMath::Clamp((PsiDrives.Drives[0].Value - (EmotionStimulusElement.Power / 100.f) * 0.8f), 0.0f, 1.0f);
-		PsiDrives.Drives[1].Value = FMath::Clamp((PsiDrives.Drives[1].Value + (EmotionStimulusElement.Power / 100.f) * 0.8f), 0.0f, 1.0f);
+		PsiDrives.Drives[0].Value = FMath::Clamp((PsiDrives.Drives[0].Value - (EmotionStimulusElement.Power / 100.f) * 0.5f), 0.0f, 1.0f);
+		PsiDrives.Drives[1].Value = FMath::Clamp((PsiDrives.Drives[1].Value + (EmotionStimulusElement.Power / 100.f) * 0.3f), 0.0f, 1.0f);
 		break;
 	case EEmotionStimulusElementType::ENegative:
-		PsiDrives.Drives[0].Value = FMath::Clamp((PsiDrives.Drives[0].Value + (EmotionStimulusElement.Power / 100.f) * 0.8f), 0.0f, 1.0f);
-		PsiDrives.Drives[1].Value = FMath::Clamp((PsiDrives.Drives[0].Value - (EmotionStimulusElement.Power / 100.f) * 0.8f), 0.0f, 1.0f);
+		PsiDrives.Drives[0].Value = FMath::Clamp((PsiDrives.Drives[0].Value + (EmotionStimulusElement.Power / 100.f) * 0.5f), 0.0f, 1.0f);
+		PsiDrives.Drives[1].Value = FMath::Clamp((PsiDrives.Drives[0].Value - (EmotionStimulusElement.Power / 100.f) * 0.3f), 0.0f, 1.0f);
 		break;
 	}
 }

@@ -38,10 +38,10 @@ void UPsiEmotions::ProcessEmotionStimulusElement(const FEmotionStimulusElement &
 	switch (EmotionStimulusElement.EmotionStimulusElementType)
 	{
 	case EEmotionStimulusElementType::EPositive:
-		Emotions[0].Value = FMath::Clamp(Emotions[0].Value - (EmotionStimulusElement.Power / 100.f), -1.0f, 1.0f) * 0.8f;
+		Emotions[0].Value = FMath::Clamp(Emotions[0].Value - EmotionStimulusElement.Power * 0.1f, -1.0f, 1.0f) /** 0.8f*/;
 		break;
 	case EEmotionStimulusElementType::ENegative:
-		Emotions[0].Value = FMath::Clamp(Emotions[0].Value + (EmotionStimulusElement.Power / 100.f), -1.0f, 1.0f) * 0.8f;
+		Emotions[0].Value = FMath::Clamp(Emotions[0].Value + EmotionStimulusElement.Power * 0.1f, -1.0f, 1.0f)/* * 0.8f*/;
 		break;
 	}
 }

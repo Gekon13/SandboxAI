@@ -15,9 +15,13 @@ class SANDBOXAI_API APsiAIController : public ASandboxAISplineAIController
 	GENERATED_BODY()
 
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 	class UPsiEmotions* PsiEmotionsComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 	FPsiDrives PsiDrives;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 	FPsiMotivations PsiMotivations;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 	FPsiGoal PsiGoal;
 
 public:
