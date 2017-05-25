@@ -66,14 +66,14 @@ void UWasabiEngine::Tick(float DeltaSeconds)
 	{
 		float localDeltaValence = deltaValence / valenceSign;
 
-		if (valenceValue > localDeltaValence)
+		if (FMath::Abs(valenceValue) > FMath::Abs(localDeltaValence))
 		{
-			valenceValue = valenceValue - localDeltaValence;
+			valenceValue = valenceValue + localDeltaValence;
 			WasabiSpacePointVMB.SetValence(valenceValue * valenceSign);
 		}
 		else 
 		{
-			localDeltaValence = localDeltaValence - valenceValue;
+			localDeltaValence = localDeltaValence + valenceValue;
 			valenceValue = 0.0f;
 			WasabiSpacePointVMB.SetValence(valenceValue);
 
@@ -134,14 +134,14 @@ void UWasabiEngine::Tick(float DeltaSeconds)
 	{
 		float localDeltaMood = deltaMood / moodSign;
 
-		if (moodValue > localDeltaMood)
+		if (FMath::Abs(moodValue) > FMath::Abs(localDeltaMood))
 		{
-			moodValue = moodValue - localDeltaMood;
+			moodValue = moodValue + localDeltaMood;
 			transformedMood = (moodValue * moodSign);
 		}
 		else
 		{
-			localDeltaMood = localDeltaMood - moodValue;
+			localDeltaMood = localDeltaMood + moodValue;
 			moodValue = 0.0f;
 
 			deltaValence = localDeltaMood * valenceSign; // for consistency
