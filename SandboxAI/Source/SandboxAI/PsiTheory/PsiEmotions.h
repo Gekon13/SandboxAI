@@ -34,6 +34,8 @@ class SANDBOXAI_API UPsiEmotions : public UActorComponent
 	GENERATED_BODY()
 
 public:	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 	TArray<FPsiEmotion> Emotions;
 	// Sets default values for this component's properties
 

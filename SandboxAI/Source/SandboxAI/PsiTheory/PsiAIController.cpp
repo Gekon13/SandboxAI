@@ -3,7 +3,7 @@
 #include "SandboxAI.h"
 #include "PsiAIController.h"
 
-APsiAIController::APsiAIController() : PsiEmotionsComponent(nullptr), PsiDrives(FPsiDrives()), PsiMotivations(FPsiMotivations()), PsiGoal(FPsiGoal())
+APsiAIController::APsiAIController() : Super(), PsiEmotionsComponent(nullptr), PsiDrives(FPsiDrives()), PsiMotivations(FPsiMotivations()), PsiGoal(FPsiGoal())
 {
 
 }
