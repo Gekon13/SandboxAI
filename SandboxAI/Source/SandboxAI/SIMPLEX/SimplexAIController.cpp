@@ -42,9 +42,10 @@ void ASimplexAIController::UpdateEmotionalStateConsequences()
 		const float DistanceFromPureDistress = FSimplexPADPoint::Dist(CurrentEmotionalState, FSimplexPADPoint::Distress);
 
 		float JoyDistress = FMath::Clamp(DistanceFromPureDistress - DistanceFromPureJoy, -1.0f, 1.0f);
-		GEngine->AddOnScreenDebugMessage(-1, GetWorld()->GetDeltaSeconds(), FColor::Yellow, FString::Printf(TEXT("JoyDistress:%.4f"), JoyDistress));
 
 		float Value = 0.5f * (-JoyDistress + 1.0f);
+		FString OwnerName = GetPawn()->GetName();
+		GEngine->AddOnScreenDebugMessage(-1, GetWorld()->GetDeltaSeconds(), FColor::Yellow, OwnerName.Append(FString::Printf(TEXT(", Speed coeficcient:%.4f"), Value)));
 		SetFollowSpeedCoefficient(Value);
 		SetEmotionVisualColor(FMath::Lerp<FLinearColor>(FLinearColor::Green, FLinearColor::Red, Value));
 	}

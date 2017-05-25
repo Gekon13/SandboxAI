@@ -31,7 +31,8 @@ void USimplexEmotionComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 	}
 
 	CurrentEmotionalState = FSimplexPADPoint::InterpTo(CurrentEmotionalState, NeutralEmotionalState, DeltaTime, InterpSpeed);
-	GEngine->AddOnScreenDebugMessage(-1, DeltaTime, FColor::Yellow, FString::Printf(TEXT("Current Emotional State:%s"), *(CurrentEmotionalState.ToString())));
+	FString OwnerName = GetOwner()->GetName();
+	GEngine->AddOnScreenDebugMessage(-1, DeltaTime, FColor::Yellow, OwnerName.Append(FString::Printf(TEXT(", Current Emotional State:%s"), *(CurrentEmotionalState.ToString()))));
 }
 
 void USimplexEmotionComponent::HandleEmotionStimulusElement(const FEmotionStimulusElement& EmotionStimulusElement)
