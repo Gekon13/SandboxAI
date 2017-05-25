@@ -3,17 +3,36 @@
 #pragma once
 
 #include "SandboxAIBaseAIController.h"
+#include "FixedPath/SandboxAISplineAIController.h"
 #include "WasabiBaseAIController.generated.h"
 
 /**
  * 
  */
-UCLASS()
-class SANDBOXAI_API AWasabiBaseAIController : public ASandboxAIBaseAIController
+UCLASS(BlueprintType)
+class SANDBOXAI_API AWasabiBaseAIController : public ASandboxAISplineAIController
 {
 	GENERATED_BODY()
 	
-	
-	
-	
+protected:
+
+	/** Emotion component */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi")
+		class UWasabiBaseEmotionComponent* WasabiEmotionComponent;
+
+	/** Emotion component */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi")
+		FLinearColor MinColor;
+
+	/** Emotion component */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi")
+		FLinearColor MaxColor;
+
+public:
+	AWasabiBaseAIController();
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaSeconds) override;
+	virtual void HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement emotionStimulusElement) override;
+
 };

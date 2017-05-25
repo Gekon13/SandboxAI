@@ -64,6 +64,14 @@ enum class EEmotionStimulusElementType : uint8
 };
 
 USTRUCT(BlueprintType)
+struct SANDBOXAI_API FCollisionProfiles
+{
+	GENERATED_BODY()
+public:
+	static const FName CharacterGhost;
+};
+
+USTRUCT(BlueprintType)
 struct SANDBOXAI_API FEmotionStimulusElement
 {
 	GENERATED_BODY()

@@ -9,6 +9,8 @@
 #include "Perception/AISenseConfig_Damage.h"
 #include "Perception/AIPerceptionSystem.h"
 
+#include "SandboxAIGameInstance.h"
+
 #include "EmotionStimulus.h"
 #include "SandboxAIStructures.h"
 
@@ -80,7 +82,22 @@ FRotator ASandboxAIBaseAIController::GetControlRotation() const
 void ASandboxAIBaseAIController::Tick(float DeltaSeconds)
 {
 #if ENABLE_DRAW_DEBUG
-	DrawDebug(DeltaSeconds);
+	UWorld* world = GetWorld();
+	if (world != nullptr)
+	{
+		UGameInstance* gameInstance = world->GetGameInstance();
+		if (gameInstance != nullptr)
+		{
+			USandboxAIGameInstance* sandboxAIGameInstance = Cast<USandboxAIGameInstance>(gameInstance);
+			if (sandboxAIGameInstance != nullptr)
+			{
+				if (sandboxAIGameInstance->ShouldShowGizmos())
+				{
+					DrawDebug(DeltaSeconds);
+				}
+			}
+		}
+	}
 #endif
 	const int32 stimulusCount = AffectingEmotionStimulusses.Num();
 	for (int32 index = 0; index < stimulusCount; ++index)
@@ -108,8 +125,25 @@ void ASandboxAIBaseAIController::OnTargetPerceptionUpdatedCB(AActor* Actor, FAIS
 {
 	if (Actor != nullptr)
 	{
-		FString message = FString::Printf(TEXT("%stected: %s"), Stimulus.WasSuccessfullySensed() ? TEXT("De") : TEXT("Unde"), *Actor->GetName());
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, message);
+
+		UWorld* world = GetWorld();
+		if (world != nullptr)
+		{
+			UGameInstance* gameInstance = world->GetGameInstance();
+			if (gameInstance != nullptr)
+			{
+				USandboxAIGameInstance* sandboxAIGameInstance = Cast<USandboxAIGameInstance>(gameInstance);
+				if (sandboxAIGameInstance != nullptr)
+				{
+					if (sandboxAIGameInstance->ShouldShowLogs())
+					{
+						FString message = FString::Printf(TEXT("%stected: %s"), Stimulus.WasSuccessfullySensed() ? TEXT("De") : TEXT("Unde"), *Actor->GetName());
+						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, message);
+					}
+				}
+			}
+		}
+
 		if (Stimulus.WasSuccessfullySensed())
 		{
 			IEmotionStimulus* emotionStimulus = Cast<IEmotionStimulus>(Actor);

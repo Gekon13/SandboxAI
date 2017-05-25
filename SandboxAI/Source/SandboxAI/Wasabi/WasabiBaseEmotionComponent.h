@@ -12,17 +12,22 @@ class SANDBOXAI_API UWasabiBaseEmotionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	UWasabiBaseEmotionComponent();
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi", meta = (AllowPrivateAcces = "true", MakeEditWidget = "true"))
+		class UWasabiEngine* WasabiEngine;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Wasabi")
+		float JoyDistance;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Wasabi")
+		float DistressDistance;
 
 public:	
-	// Called every frame
+	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
 	
+	virtual void ReceiveImpulse(float value);
+
+	FORCEINLINE const float GetJoyDistance() const { return JoyDistance; }
+	FORCEINLINE const float GetDistressDistance() const { return DistressDistance; }
 };

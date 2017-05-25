@@ -8,11 +8,9 @@ UWasabiEngineBase::UWasabiEngineBase() :
 {
 }
 
-UWasabiEngineBase::UWasabiEngineBase(const FWasabiSpacePointPAD& startSpacePointPAD) :
-	WasabiSpacePointPAD(startSpacePointPAD)
+void UWasabiEngineBase::Initialize()
 {
 }
-
 void UWasabiEngineBase::Impulse(float value)
 {
 }
