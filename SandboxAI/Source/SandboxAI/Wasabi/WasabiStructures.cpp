@@ -4,12 +4,17 @@
 #include "WasabiStructures.h"
 
 const float FWasabiConstants::WasabiSpaceRadius = 100.0f;
+const float FWasabiConstants::FWasabiEmotionDefaultInnerRadius = 10.0f;
+const float FWasabiConstants::FWasabiEmotionDefaultOuterRadius = 25.0f;
 
 const FWasabiSpacePointPAD FWasabiSpacePointPAD::WasabiSpacePointPADMin = FWasabiSpacePointPAD( -FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius);
 const FWasabiSpacePointPAD FWasabiSpacePointPAD::WasabiSpacePointPADMax = FWasabiSpacePointPAD(FWasabiConstants::WasabiSpaceRadius, FWasabiConstants::WasabiSpaceRadius, FWasabiConstants::WasabiSpaceRadius);
 
 const FWasabiSpacePointVMB FWasabiSpacePointVMB::WasabiSpacePointVMBMin = FWasabiSpacePointVMB(-FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius);
 const FWasabiSpacePointVMB FWasabiSpacePointVMB::WasabiSpacePointVMBMax = FWasabiSpacePointVMB(FWasabiConstants::WasabiSpaceRadius, FWasabiConstants::WasabiSpaceRadius, 0.0f);
+
+const FWasabiSpacePointPADEmotion FWasabiSpacePointPADEmotion::Joy = FWasabiSpacePointPADEmotion(50.0f, 0.0f, -FWasabiConstants::WasabiSpaceRadius);
+const FWasabiSpacePointPADEmotion FWasabiSpacePointPADEmotion::Distress = FWasabiSpacePointPADEmotion(-50.0f, 0.0f, -FWasabiConstants::WasabiSpaceRadius);
 
 void FWasabiSpacePointPAD::ClampPleasureBySpace()
 {

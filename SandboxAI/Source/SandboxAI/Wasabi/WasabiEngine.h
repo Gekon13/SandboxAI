@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, EditInlineNew)
 class SANDBOXAI_API UWasabiEngine : public UWasabiEngineBase
 {
 	GENERATED_BODY()
@@ -39,16 +39,16 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi/Params")
 		float Prevalence; // default from wasabi is 30
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi/Params")
+		float OverrideDominance; // for now
+
 	/** Whether to use implementation or theory from papers */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi/Params")
 		bool bUseTheoryMoodAffecting; // default from wasabi is 30
 	
 	/** Whether to affect mood from Valence */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi/Params")
-		bool bValenceAffectMood; 
-
-	
-
+		bool bValenceAffectMood;
 
 public:
 	UWasabiEngine();
@@ -59,4 +59,7 @@ public:
 		virtual void Impulse(float value) override;
 	UFUNCTION(BlueprintCallable)
 		virtual void Tick(float DeltaSeconds) override;
+
+protected:
+	void MapVMBToPAD();
 };

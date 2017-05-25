@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class SANDBOXAI_API UWasabiEngineBase : public UObject
 {
 	GENERATED_BODY()
@@ -27,4 +27,7 @@ public:
 		virtual void Impulse(float value);
 	UFUNCTION(BlueprintCallable)
 		virtual void Tick(float DeltaSeconds);
+
+	UFUNCTION(BlueprintPure)
+		FORCEINLINE FWasabiSpacePointPAD GetWasabiSpacePointPAD() { return WasabiSpacePointPAD; }
 };

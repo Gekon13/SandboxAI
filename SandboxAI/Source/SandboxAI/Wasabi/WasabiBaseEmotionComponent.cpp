@@ -2,16 +2,18 @@
 
 #include "SandboxAI.h"
 #include "WasabiBaseEmotionComponent.h"
-
+#include "Wasabi/WasabiEngine.h"
+#include "Wasabi/WasabiStructures.h"
 
 // Sets default values for this component's properties
 UWasabiBaseEmotionComponent::UWasabiBaseEmotionComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	WasabiEngine = CreateDefaultSubobject<UWasabiEngine>(TEXT("Wasabi Engine"));
+
+	JoyDistance = 0.0f;
+	DistressDistance = 0.0f;
 }
 
 
@@ -20,16 +22,32 @@ void UWasabiBaseEmotionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	if (WasabiEngine != nullptr)
+	{
+		WasabiEngine->Initialize();
+	}
 }
-
 
 // Called every frame
 void UWasabiBaseEmotionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	if (WasabiEngine != nullptr)
+	{
+		WasabiEngine->Tick(DeltaTime);
+
+		FWasabiSpacePointPAD currentSpacePointPAD = WasabiEngine->GetWasabiSpacePointPAD();
+
+		JoyDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::Joy);
+		DistressDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::Distress);
+	}
 }
 
+void UWasabiBaseEmotionComponent::ReceiveImpulse(float value)
+{
+	if (WasabiEngine != nullptr)
+	{
+		WasabiEngine->Impulse(value);
+	}
+}

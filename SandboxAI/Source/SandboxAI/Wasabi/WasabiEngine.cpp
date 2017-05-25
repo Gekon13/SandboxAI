@@ -16,6 +16,8 @@ UWasabiEngine::UWasabiEngine() :
 	BoredoomPerSecond = 50.0f; // default from wasabi is 50
 	Prevalence = 30.0f; // default from wasabi is 30
 
+	OverrideDominance = -FWasabiConstants::WasabiSpaceRadius;
+
 	bUseTheoryMoodAffecting = false; // whether to use implementation or theory from papers
 	bValenceAffectMood = false;
 
@@ -27,6 +29,12 @@ UWasabiEngine::UWasabiEngine() :
 void UWasabiEngine::Initialize()
 {
 	Super::Initialize();
+
+	WasabiSpacePointVMB = FWasabiSpacePointVMB(0.0f, Prevalence, 0.0f);
+	ValenceVelocity = 0.0f;
+	MoodVelocity = 0.0f;
+
+	MapVMBToPAD();
 }
 void UWasabiEngine::Impulse(float value)
 {
@@ -67,6 +75,7 @@ void UWasabiEngine::Tick(float DeltaSeconds)
 		{
 			localDeltaValence = localDeltaValence - valenceValue;
 			valenceValue = 0.0f;
+			WasabiSpacePointVMB.SetValence(valenceValue);
 
 			deltaValence = localDeltaValence * valenceSign; // for later use with mood affecting
 		}
@@ -103,7 +112,8 @@ void UWasabiEngine::Tick(float DeltaSeconds)
 		float deltaMoodFromValence = WasabiSpacePointVMB.GetValence() * deltaValence * Temperament; // theory wise
 		if (bValenceAffectMood)
 		{
-			deltaMood += deltaMoodFromValence;
+			//deltaMood += deltaMoodFromValence;
+			WasabiSpacePointVMB.SetMood(WasabiSpacePointVMB.GetMood() + deltaMoodFromValence);
 		}
 	}
 	else
@@ -111,7 +121,7 @@ void UWasabiEngine::Tick(float DeltaSeconds)
 		float deltaMoodFromValence = WasabiSpacePointVMB.GetValence() * (Temperament / 100.0f) / Mass; // implementation wise
 		if (bValenceAffectMood)
 		{
-			deltaMood += deltaMoodFromValence;
+			WasabiSpacePointVMB.SetMood(WasabiSpacePointVMB.GetMood() + deltaMoodFromValence);
 		}
 	}
 
@@ -164,4 +174,14 @@ void UWasabiEngine::Tick(float DeltaSeconds)
 	WasabiSpacePointVMB.ClampValenceBySpace();
 	WasabiSpacePointVMB.ClampMoodBySpace();
 	WasabiSpacePointVMB.ClampBoredoomBySpace();
+
+	MapVMBToPAD();
+}
+
+void UWasabiEngine::MapVMBToPAD()
+{
+	WasabiSpacePointPAD.SetDominance(OverrideDominance);
+
+	WasabiSpacePointPAD.SetPleasure((WasabiSpacePointVMB.GetValence() + WasabiSpacePointVMB.GetMood()) * 0.5f);
+	WasabiSpacePointPAD.SetArousal(FMath::Abs(WasabiSpacePointVMB.GetValence()) + WasabiSpacePointVMB.GetBoredoom());
 }

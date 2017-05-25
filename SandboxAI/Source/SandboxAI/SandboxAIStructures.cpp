@@ -26,3 +26,5 @@ FEmotionStimulusElement::FEmotionStimulusElement(EEmotionStimulusElementType Emo
 	Power(Power)
 {
 }
+
+const FName FCollisionProfiles::CharacterGhost = FName(TEXT("CharacterGhost"));
