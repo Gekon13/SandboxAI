@@ -20,9 +20,6 @@ protected:
 		FSimplexPersonality Personality;
 
 	UPROPERTY(EditAnywhere, Category = "Emotions")
-		bool bCanPersonalityInfluenceEmotions;
-
-	UPROPERTY(EditAnywhere, Category = "Emotions")
 		float BaseDecayFactor;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotions")

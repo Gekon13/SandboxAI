@@ -6,16 +6,12 @@
 
 ASimplexAIController::ASimplexAIController() : Super(), SimplexEmotionComponent(nullptr)
 {
-	
+	SimplexEmotionComponent = CreateDefaultSubobject<USimplexEmotionComponent>("EmotionComponent");
 }
 
 void ASimplexAIController::Possess(APawn* InPawn)
 {
 	Super::Possess(InPawn);
-	if(InPawn != nullptr)
-	{
-		SimplexEmotionComponent = Cast<USimplexEmotionComponent>(InPawn->GetComponentByClass(USimplexEmotionComponent::StaticClass()));
-	}
 }
 
 void ASimplexAIController::UnPossess()
