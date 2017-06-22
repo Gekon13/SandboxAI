@@ -12,7 +12,8 @@ class SANDBOXAI_API ASimplexAIController : public ASandboxAISplineAIController
 	GENERATED_BODY()
 	
 protected:
-	class USimplexEmotionComponent* SimplexEmotionComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Simplex")
+		class USimplexEmotionComponent* SimplexEmotionComponent;
 
 public:
 	ASimplexAIController();

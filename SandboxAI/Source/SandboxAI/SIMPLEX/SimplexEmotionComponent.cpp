@@ -7,7 +7,6 @@ USimplexEmotionComponent::USimplexEmotionComponent()
 
 	BaseDecayFactor = 0.1f;
 	DecayFactor = 1.0f;
-	bCanPersonalityInfluenceEmotions = false;
 }
 
 void USimplexEmotionComponent::BeginPlay()
@@ -25,10 +24,6 @@ void USimplexEmotionComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	float InterpSpeed = DecayFactor;
-	if(!bCanPersonalityInfluenceEmotions)
-	{
-		InterpSpeed = BaseDecayFactor;
-	}
 
 	CurrentEmotionalState = FSimplexPADPoint::InterpTo(CurrentEmotionalState, NeutralEmotionalState, DeltaTime, InterpSpeed);
 	FString OwnerName = GetOwner()->GetName();
@@ -54,10 +49,5 @@ void USimplexEmotionComponent::HandleEmotionStimulusElement(const FEmotionStimul
 
 	float Influence = Personality.GetInfluenceOnEmotion(EmotionStimulusElement.EmotionStimulusElementType == EEmotionStimulusElementType::EPositive);
 
-	if(!bCanPersonalityInfluenceEmotions)
-	{
-		Influence = 1.0f;
-	}
-	
 	CurrentEmotionalState += GeneratedEmotion * EmotionPower * Influence;
 }
