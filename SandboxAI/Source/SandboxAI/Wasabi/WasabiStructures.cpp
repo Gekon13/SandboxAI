@@ -86,9 +86,9 @@ FString FWasabiEngineStepState::ToStringLine()
 	result.Append(FString::Printf(TEXT("%d"),Index));
 	result.Append(separator);
 
-	result.Append(FString::Printf(TEXT("%d%s%d%s%d%s"), PAD.GetPleasure(), *separator, PAD.GetArousal(), *separator, PAD.GetDominance(), *separator));
+	result.Append(FString::Printf(TEXT("%f%s%f%s%f%s"), PAD.X, *separator, PAD.Y, *separator, PAD.Z, *separator));
 
-	result.Append(FString::Printf(TEXT("%d%s%d%s%d%s"), VMB.GetValence(), *separator, VMB.GetMood(), *separator, VMB.GetBoredoom(), *separator));
+	result.Append(FString::Printf(TEXT("%f%s%f%s%f%s"), VMB.X, *separator, VMB.Y, *separator, VMB.Z, *separator));
 
 	result.Append(FString::Printf(TEXT("%f"), InputValency));
 	result.Append(separator);

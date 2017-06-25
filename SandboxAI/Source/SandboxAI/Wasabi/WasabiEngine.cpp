@@ -195,6 +195,7 @@ void UWasabiEngine::Tick(float DeltaSeconds)
 
 	LastEngineStepState = FWasabiEngineStepState(WasabiSpacePointPAD, WasabiSpacePointVMB, LastEngineStepState.Index + 1, PendingImpulseValue);
 	PendingImpulseValue = 0.0f;
+	bPendingImpulse = false;
 }
 
 FWasabiEngineStepState UWasabiEngine::GetEngineStateState()

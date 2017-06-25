@@ -41,7 +41,7 @@ void AWasabiStateLogger::SaveFile()
 	{
 		APawn* pawnToLog = LogTargets[targetIndex].LogTarget;
 
-		FString fileName = FString::Printf(TEXT("%s_%s_%s.log"), *LogFilePrefix, *LogTargets[targetIndex].LogName,*dateTime);
+		FString fileName = FString::Printf(TEXT("%s_%s_%s.log"), *LogFilePrefix, *dateTime, *LogTargets[targetIndex].LogName);
 
 		UE_LOG(WasabiLog, Log, TEXT("This is my log"));
 		UE_LOG(WasabiLog, Warning, TEXT("FileName: %s"), *fileName);

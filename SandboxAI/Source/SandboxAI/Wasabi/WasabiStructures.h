@@ -130,10 +130,14 @@ struct SANDBOXAI_API FWasabiEngineStepState
 	GENERATED_BODY()
 
 public:
-	FWasabiSpacePointPAD PAD;
-	FWasabiSpacePointVMB VMB;
-	int32 Index;
-	float InputValency;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FWasabiSpacePointPAD PAD;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FWasabiSpacePointVMB VMB;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int32 Index;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float InputValency;
 
 public:
 	FORCEINLINE FWasabiEngineStepState();
@@ -146,7 +150,7 @@ public:
 
 FWasabiEngineStepState::FWasabiEngineStepState() : PAD(FWasabiSpacePointPAD::ZeroVector), VMB(FWasabiSpacePointVMB::ZeroVector), Index(0), InputValency(0) {}
 //FWasabiEngineStepState::FWasabiEngineStepState(const FWasabiEngineStepState& source) : PAD(source.PAD), VMB(source.VMB), StateIndex(source.StateIndex), InputValency(source.InputValency) {}
-FWasabiEngineStepState::FWasabiEngineStepState(const FWasabiSpacePointPAD& PAD, const FWasabiSpacePointVMB& VMB, int32 StateIndex, float InputValency) : PAD(PAD), VMB(VMB), Index(Index), InputValency(InputValency) {}
+FWasabiEngineStepState::FWasabiEngineStepState(const FWasabiSpacePointPAD& iPAD, const FWasabiSpacePointVMB& iVMB, int32 iIndex, float iInputValency) : PAD(iPAD), VMB(iVMB), Index(iIndex), InputValency(iInputValency) {}
 
 USTRUCT(BlueprintType)
 struct SANDBOXAI_API FWasabiEngineStepStateCGI : public FWasabiEngineStepState
@@ -154,10 +158,14 @@ struct SANDBOXAI_API FWasabiEngineStepStateCGI : public FWasabiEngineStepState
 	GENERATED_BODY()
 
 public:
-	float Joy;
-	float Distress;
-	float DistanceCovered;
-	float Speed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Joy;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Distress;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float DistanceCovered;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Speed;
 
 public:
 	FORCEINLINE FWasabiEngineStepStateCGI();
@@ -170,6 +178,6 @@ public:
 
 FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI() : FWasabiEngineStepState(), Joy(0.0f), Distress(0.0f), DistanceCovered(0.0f), Speed(0.0f) {}
 FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI(const FWasabiEngineStepState& source) : Super(source.PAD, source.VMB, source.Index, source.InputValency), Joy(0.0f), Distress(0.0f), DistanceCovered(0.0f), Speed(0.0f) {}
-FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI(const FWasabiSpacePointPAD& PAD, const FWasabiSpacePointVMB& VMB, int32 Index, float InputValency, float Joy, float Distress, float DistanceCovered, float Speed)
-	: FWasabiEngineStepState(PAD, VMB, Index, InputValency), Joy(Joy), Distress(Distress), DistanceCovered(DistanceCovered), Speed(Speed) {}
+FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI(const FWasabiSpacePointPAD& iPAD, const FWasabiSpacePointVMB& iVMB, int32 iIndex, float iInputValency, float iJoy, float iDistress, float iDistanceCovered, float iSpeed)
+	: FWasabiEngineStepState(iPAD, iVMB, iIndex, iInputValency), Joy(iJoy), Distress(iDistress), DistanceCovered(iDistanceCovered), Speed(iSpeed) {}
 
