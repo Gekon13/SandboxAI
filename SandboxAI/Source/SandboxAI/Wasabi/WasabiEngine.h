@@ -22,20 +22,28 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|State")
 		float MoodVelocity;
 
+	/** default from wasabi is 69 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float ValenceTension; // default from wasabi is 69
+	/** default from wasabi is 10 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float MoodTension; // default from wasabi is 10
+	/** default from wasabi is 5000 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float Mass; // default from wasabi is 5000
+	/** default from wasabi is 500 | in wasabi engine it's called Slope */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float Temperament; // default from wasabi is 500 // in wasabi engine it's called Slope
+	/** default from wasabi is 5 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float ValenceBoredoomRegion; // default from wasabi is 5
+	/** default from wasabi is 5 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float MoodBoredoomRegion; // default from wasabi is 5
+	/** default from wasabi is 50 | My default is 10*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float BoredoomPerSecond; // default from wasabi is 50
+	/** default from wasabi is 30 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float Prevalence; // default from wasabi is 30
 

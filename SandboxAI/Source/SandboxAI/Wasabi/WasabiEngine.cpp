@@ -7,19 +7,19 @@ UWasabiEngine::UWasabiEngine() :
 	Super()
 {
 	// in default wasabi does calculations in doubles and than clamps then converts them to ints
-	ValenceTension = 70.0f; // default from wasabi is 69
-	MoodTension = 10.0f; // default from wasabi is 10
+	ValenceTension = 140.0f; // default from wasabi is 69 // my later default was 70
+	MoodTension = 20.0f; // default from wasabi is 10
 	Mass = 5000.0f; // default from wasabi is 5000
 	Temperament = 500.0f; // default from wasabi is 500 // in wasabi engine it's called Slope
 	ValenceBoredoomRegion = 5.0f; // default from wasabi is 5
 	MoodBoredoomRegion = 5.0f; // default from wasabi is 5
-	BoredoomPerSecond = 50.0f; // default from wasabi is 50
+	BoredoomPerSecond = 10.0f; // default from wasabi is 50
 	Prevalence = 30.0f; // default from wasabi is 30
 
 	OverrideDominance = -FWasabiConstants::WasabiSpaceRadius;
 
 	bUseTheoryMoodAffecting = false; // whether to use implementation or theory from papers
-	bValenceAffectMood = false;
+	bValenceAffectMood = true;
 
 	ValenceVelocity = 0.0f;
 	MoodVelocity = 0.0f;

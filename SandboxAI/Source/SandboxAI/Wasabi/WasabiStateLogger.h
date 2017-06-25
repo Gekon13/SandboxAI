@@ -33,6 +33,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Logger")
 		TArray<FLogTarget> LogTargets;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Logger", meta = (ClampMin=1, ClampMax=60, UIMin=1, UIMax=60))
+		int32 PrintEvery;
+
 public:	
 	AWasabiStateLogger();
 
@@ -42,4 +45,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SaveFile();
 
+	UFUNCTION(BlueprintCallable)
+		void SaveFileHorizontal();
 };
