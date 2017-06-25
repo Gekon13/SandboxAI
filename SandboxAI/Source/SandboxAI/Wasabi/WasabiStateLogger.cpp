@@ -2,6 +2,8 @@
 
 #include "SandboxAI.h"
 #include "WasabiStateLogger.h"
+#include "Wasabi/WasabiBaseAIController.h"
+#include "Wasabi/WasabiStructures.h"
 #include <ctime>
 #include <iomanip>
 
@@ -26,7 +28,6 @@ void AWasabiStateLogger::BeginPlay()
 void AWasabiStateLogger::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AWasabiStateLogger::SaveFile()
@@ -36,42 +37,100 @@ void AWasabiStateLogger::SaveFile()
 	
 	FString dateTime = FString::Printf(TEXT("%d-%d-%d_%d-%d-%d"), localTime->tm_year + 1990, localTime->tm_mon+1, localTime->tm_mday, localTime->tm_hour, localTime->tm_min, localTime->tm_sec);
 
-	FString fileName = FString::Printf(TEXT("%s_%s.log"),*LogFilePrefix,*dateTime);
-	if (GEngine) 
+	for (int32 targetIndex = 0; targetIndex < LogTargets.Num(); ++targetIndex)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, FString::Printf(TEXT("FileName: %s"),*fileName) );
-	}
+		APawn* pawnToLog = LogTargets[targetIndex].LogTarget;
 
-	IFileManager* fileManager = &IFileManager::Get();
-	if (fileManager != nullptr)
-	{
-		FArchive* archive = fileManager->CreateFileWriter(*fileName);
-		if (archive != nullptr)
+		FString fileName = FString::Printf(TEXT("%s_%s_%s.log"), *LogFilePrefix, *LogTargets[targetIndex].LogName,*dateTime);
+
+		UE_LOG(WasabiLog, Log, TEXT("This is my log"));
+		UE_LOG(WasabiLog, Warning, TEXT("FileName: %s"), *fileName);
+
+		IFileManager* fileManager = &IFileManager::Get();
+		if (fileManager != nullptr)
 		{
-			FString filePath = fileManager->GetFilenameOnDisk(*fileName);
-			if (GEngine)
+			FArchive* archive = fileManager->CreateFileWriter(*fileName);
+			if (archive != nullptr)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, FString::Printf(TEXT("FilePath: %s"), *filePath));
+				FString filePath = fileManager->GetFilenameOnDisk(*fileName);
+
+				UE_LOG(WasabiLog, Warning, TEXT("FilePath: %s"), *filePath);
+
+				FString someString = FString(TEXT("Hello to the world\r\n"));
+				archive->Serialize((void*)(*someString), someString.Len() * 2); // times two because DWORDS
+
+				if (pawnToLog != nullptr)
+				{
+					AController* tmpAIController = pawnToLog->GetController();
+					if (tmpAIController != nullptr)
+					{
+						AWasabiBaseAIController* wasabiBaseAIController = Cast<AWasabiBaseAIController>(tmpAIController);
+						if (wasabiBaseAIController != nullptr)
+						{
+							TArray<FWasabiEngineStepStateCGI>* tmpWasabiStatesPtr = wasabiBaseAIController->GetWasabiStepStates();
+							if (tmpWasabiStatesPtr != nullptr)
+							{
+								if (tmpWasabiStatesPtr->Num() > 0)
+								{
+									FString columnNames = (*tmpWasabiStatesPtr)[0].ToStringColumnNames();
+									columnNames.Append(LINE_TERMINATOR);
+
+									archive->Serialize((void*)(*columnNames), columnNames.Len() * 2);
+
+									int32 lineNumber = tmpWasabiStatesPtr->Num();
+									for (int32 i = 0; i < lineNumber; ++i)
+									{
+										FString tmpLine = (*tmpWasabiStatesPtr)[i].ToStringLine();
+										tmpLine.Append(LINE_TERMINATOR);
+
+										archive->Serialize((void*)(*tmpLine), tmpLine.Len() * 2);
+									}
+									//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, FString::Printf(TEXT("Saved data to file: %s")));
+									UE_LOG(WasabiLog, Warning, TEXT("Saved data to file: %s"), *filePath);
+								}
+								else
+								{
+									GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, FString::Printf(TEXT("Array is empty")));
+								}
+							}
+							else
+							{
+								GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, FString::Printf(TEXT("Array is null")));
+							}
+						}
+						else
+						{
+							GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, FString::Printf(TEXT("Failed to cast ai controller to wasabi ai controller")));
+						}
+					}
+					else
+					{
+						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, FString::Printf(TEXT("Pawn returned null ai controller")));
+					}
+				}
+				else
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, FString::Printf(TEXT("pawn is null")));
+				}
+
+
+				archive->Close();
+
 			}
-
-			FString someString = FString(TEXT("Hello to the world"));
-			archive->Serialize( (void*)(*someString) , someString.Len() * 2); // times two because DWORDS
-			archive->Close();
-
+			else
+			{
+				if (GEngine)
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Failed to open file"), *fileName));
+				}
+			}
 		}
 		else
 		{
 			if (GEngine)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Failed to open file"), *fileName));
+				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("FileManager did not get."), *fileName));
 			}
-		}
-	}
-	else
-	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("FileManager did not get."), *fileName));
 		}
 	}
 }

@@ -3,7 +3,23 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "Wasabi/WasabiStructures.h"
 #include "WasabiStateLogger.generated.h"
+
+USTRUCT(BlueprintType)
+struct SANDBOXAI_API FLogTarget
+{
+	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString LogName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		APawn* LogTarget;
+
+};
 
 UCLASS()
 class SANDBOXAI_API AWasabiStateLogger : public AActor
@@ -13,6 +29,9 @@ class SANDBOXAI_API AWasabiStateLogger : public AActor
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Logger")
 		FString LogFilePrefix;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Logger")
+		TArray<FLogTarget> LogTargets;
 
 public:	
 	AWasabiStateLogger();

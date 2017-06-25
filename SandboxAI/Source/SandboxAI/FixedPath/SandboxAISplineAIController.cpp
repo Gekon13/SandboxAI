@@ -14,6 +14,7 @@ ASandboxAISplineAIController::ASandboxAISplineAIController()
 	FollowSpeedCurrent = 600.0f;
 	FollowSpeedCoefficient = 0.5f;
 	CurrentSplineDistance = 0.0f;
+	TotalDistanceCovered = 0.0f;
 }
 
 void ASandboxAISplineAIController::Possess(APawn* InPawn)
@@ -60,6 +61,7 @@ void ASandboxAISplineAIController::Tick(float DeltaSeconds)
 
 			float distanceDone = FVector::Distance(location, LastLocation);
 			CurrentSplineDistance += distanceDone;
+			TotalDistanceCovered += distanceDone;
 
 			GetNewDesiredLocation();
 			

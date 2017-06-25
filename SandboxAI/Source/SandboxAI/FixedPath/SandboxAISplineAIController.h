@@ -41,6 +41,7 @@ protected:
 	FVector DesiredLocation;
 	FVector LastLocation;
 	float SplineLength;
+	float TotalDistanceCovered;
 
 public:
 	ASandboxAISplineAIController();

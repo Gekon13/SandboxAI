@@ -30,4 +30,6 @@ public:
 
 	FORCEINLINE const float GetJoyDistance() const { return JoyDistance; }
 	FORCEINLINE const float GetDistressDistance() const { return DistressDistance; }
+
+	FORCEINLINE class UWasabiEngine* GetWasabiEngine() const { return WasabiEngine; }
 };

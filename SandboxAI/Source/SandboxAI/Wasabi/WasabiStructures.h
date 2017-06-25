@@ -15,6 +15,8 @@ public:
 
 	static const float FWasabiEmotionDefaultInnerRadius;
 	static const float FWasabiEmotionDefaultOuterRadius;
+
+	//static const FString ColumnSeparator;
 };
 
 
@@ -121,3 +123,53 @@ FWasabiSpacePointPADEmotion::FWasabiSpacePointPADEmotion(const FVector& source) 
 FWasabiSpacePointPADEmotion::FWasabiSpacePointPADEmotion(const FWasabiSpacePointPADEmotion& source) : Super(source), InnerRadius(FWasabiConstants::FWasabiEmotionDefaultInnerRadius), OuterRadius(FWasabiConstants::FWasabiEmotionDefaultOuterRadius) {}
 FWasabiSpacePointPADEmotion::FWasabiSpacePointPADEmotion(float Pleasure, float Arousal, float Dominance) : Super(Pleasure, Arousal, Dominance), InnerRadius(FWasabiConstants::FWasabiEmotionDefaultInnerRadius), OuterRadius(FWasabiConstants::FWasabiEmotionDefaultOuterRadius) {}
 FWasabiSpacePointPADEmotion::FWasabiSpacePointPADEmotion(float Pleasure, float Arousal, float Dominance, float InnerRadius, float OuterRadius) : Super(Pleasure, Arousal, Dominance), InnerRadius(InnerRadius), OuterRadius(OuterRadius) {}
+
+USTRUCT(BlueprintType)
+struct SANDBOXAI_API FWasabiEngineStepState
+{
+	GENERATED_BODY()
+
+public:
+	FWasabiSpacePointPAD PAD;
+	FWasabiSpacePointVMB VMB;
+	int32 Index;
+	float InputValency;
+
+public:
+	FORCEINLINE FWasabiEngineStepState();
+	//FORCEINLINE FWasabiEngineStepState(const FWasabiEngineStepState& source);
+	FORCEINLINE FWasabiEngineStepState(const FWasabiSpacePointPAD& PAD, const FWasabiSpacePointVMB& VMB, int32 Index, float InputValency);
+
+	virtual FString ToStringColumnNames();
+	virtual FString ToStringLine();
+};
+
+FWasabiEngineStepState::FWasabiEngineStepState() : PAD(FWasabiSpacePointPAD::ZeroVector), VMB(FWasabiSpacePointVMB::ZeroVector), Index(0), InputValency(0) {}
+//FWasabiEngineStepState::FWasabiEngineStepState(const FWasabiEngineStepState& source) : PAD(source.PAD), VMB(source.VMB), StateIndex(source.StateIndex), InputValency(source.InputValency) {}
+FWasabiEngineStepState::FWasabiEngineStepState(const FWasabiSpacePointPAD& PAD, const FWasabiSpacePointVMB& VMB, int32 StateIndex, float InputValency) : PAD(PAD), VMB(VMB), Index(Index), InputValency(InputValency) {}
+
+USTRUCT(BlueprintType)
+struct SANDBOXAI_API FWasabiEngineStepStateCGI : public FWasabiEngineStepState
+{
+	GENERATED_BODY()
+
+public:
+	float Joy;
+	float Distress;
+	float DistanceCovered;
+	float Speed;
+
+public:
+	FORCEINLINE FWasabiEngineStepStateCGI();
+	FORCEINLINE FWasabiEngineStepStateCGI(const FWasabiEngineStepState& source);
+	FORCEINLINE FWasabiEngineStepStateCGI(const FWasabiSpacePointPAD& PAD, const FWasabiSpacePointVMB& VMB, int32 Index, float InputValency, float Joy = 0.0f, float Distress = 0.0f, float DistanceCovered = 0.0f, float Speed = 0.0f);
+
+	virtual FString ToStringColumnNames() override;
+	virtual FString ToStringLine() override;
+};
+
+FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI() : FWasabiEngineStepState(), Joy(0.0f), Distress(0.0f), DistanceCovered(0.0f), Speed(0.0f) {}
+FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI(const FWasabiEngineStepState& source) : Super(source.PAD, source.VMB, source.Index, source.InputValency), Joy(0.0f), Distress(0.0f), DistanceCovered(0.0f), Speed(0.0f) {}
+FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI(const FWasabiSpacePointPAD& PAD, const FWasabiSpacePointVMB& VMB, int32 Index, float InputValency, float Joy, float Distress, float DistanceCovered, float Speed)
+	: FWasabiEngineStepState(PAD, VMB, Index, InputValency), Joy(Joy), Distress(Distress), DistanceCovered(DistanceCovered), Speed(Speed) {}
+

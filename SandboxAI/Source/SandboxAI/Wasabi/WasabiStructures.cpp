@@ -6,6 +6,9 @@
 const float FWasabiConstants::WasabiSpaceRadius = 100.0f;
 const float FWasabiConstants::FWasabiEmotionDefaultInnerRadius = 10.0f;
 const float FWasabiConstants::FWasabiEmotionDefaultOuterRadius = 25.0f;
+//const FString FWasabiConstants::ColumnSeparator = FString(TEXT(","));
+
+#define ColumnSeparator FString(TEXT(","))
 
 const FWasabiSpacePointPAD FWasabiSpacePointPAD::WasabiSpacePointPADMin = FWasabiSpacePointPAD( -FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius);
 const FWasabiSpacePointPAD FWasabiSpacePointPAD::WasabiSpacePointPADMax = FWasabiSpacePointPAD(FWasabiConstants::WasabiSpaceRadius, FWasabiConstants::WasabiSpaceRadius, FWasabiConstants::WasabiSpaceRadius);
@@ -40,4 +43,97 @@ void FWasabiSpacePointVMB::ClampMoodBySpace()
 void FWasabiSpacePointVMB::ClampBoredoomBySpace()
 {
 	Z = FMath::Clamp<float>(Z, WasabiSpacePointVMBMin.Z, WasabiSpacePointVMBMax.Z);
+}
+
+FString FWasabiEngineStepState::ToStringColumnNames()
+{
+	FString result = FString();
+
+	FString separator = ColumnSeparator;
+
+	result.Append(TEXT("Index"));
+	result.Append(separator);
+
+	result.Append(TEXT("Pleasure"));
+	result.Append(separator);
+
+	result.Append(TEXT("Arousal"));
+	result.Append(separator);
+
+	result.Append(TEXT("Dominance"));
+	result.Append(separator);
+
+	result.Append(TEXT("Valence"));
+	result.Append(separator);
+
+	result.Append(TEXT("Mood"));
+	result.Append(separator);
+
+	result.Append(TEXT("Boredoom"));
+	result.Append(separator);
+
+	result.Append(TEXT("InputValency"));
+	result.Append(separator);
+
+	return result;
+}
+FString FWasabiEngineStepState::ToStringLine()
+{
+	FString result = FString();
+
+	FString separator = ColumnSeparator;
+
+	result.Append(FString::Printf(TEXT("%d"),Index));
+	result.Append(separator);
+
+	result.Append(FString::Printf(TEXT("%d%s%d%s%d%s"), PAD.GetPleasure(), *separator, PAD.GetArousal(), *separator, PAD.GetDominance(), *separator));
+
+	result.Append(FString::Printf(TEXT("%d%s%d%s%d%s"), VMB.GetValence(), *separator, VMB.GetMood(), *separator, VMB.GetBoredoom(), *separator));
+
+	result.Append(FString::Printf(TEXT("%f"), InputValency));
+	result.Append(separator);
+
+	return result;
+}
+
+FString FWasabiEngineStepStateCGI::ToStringColumnNames()
+{
+	FString result = Super::ToStringColumnNames();
+
+	FString separator = ColumnSeparator;
+
+	result.Append(TEXT("Joy"));
+	result.Append(separator);
+
+	result.Append(TEXT("Distress"));
+	result.Append(separator);
+
+	result.Append(TEXT("DistanceCovered"));
+	result.Append(separator);
+
+	result.Append(TEXT("Speed"));
+	result.Append(separator);
+
+	return result;
+}
+
+FString FWasabiEngineStepStateCGI::ToStringLine()
+{
+	FString result = Super::ToStringLine();
+
+	FString separator = ColumnSeparator;
+
+	result.Append(FString::Printf(TEXT("%f"), Joy));
+	result.Append(separator);
+
+	result.Append(FString::Printf(TEXT("%f"), Distress));
+	result.Append(separator);
+
+	result.Append(FString::Printf(TEXT("%f"), DistanceCovered));
+	result.Append(separator);
+
+	result.Append(FString::Printf(TEXT("%f"), Speed));
+	result.Append(separator);
+
+	return result;
 }

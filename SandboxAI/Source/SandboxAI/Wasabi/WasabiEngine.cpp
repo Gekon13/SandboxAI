@@ -34,18 +34,34 @@ void UWasabiEngine::Initialize()
 	ValenceVelocity = 0.0f;
 	MoodVelocity = 0.0f;
 
+	bPendingImpulse = false;
+	PendingImpulseValue = 0.0f;
+
 	MapVMBToPAD();
+
+	LastEngineStepState = FWasabiEngineStepState(WasabiSpacePointPAD, WasabiSpacePointVMB, -1, 0.0f);
 }
 void UWasabiEngine::Impulse(float value)
+{
+	bPendingImpulse = true;
+	PendingImpulseValue += value;
+}
+void UWasabiEngine::InternalImpulse(float value)
 {
 	WasabiSpacePointVMB.SetValence(WasabiSpacePointVMB.GetValence() + value);
 	WasabiSpacePointVMB.ClampValenceBySpace();
 	ValenceVelocity = 0.0f;
 	MoodVelocity = 0.0f;
 }
+
 void UWasabiEngine::Tick(float DeltaSeconds)
 {
 	const FWasabiSpacePointVMB lastFrameSpacePointVMB = WasabiSpacePointVMB;
+
+	if (bPendingImpulse) 
+	{
+		InternalImpulse(PendingImpulseValue);
+	}
 
 	// calculate forces
 	float valenceForce = -ValenceTension * WasabiSpacePointVMB.GetValence();
@@ -176,6 +192,14 @@ void UWasabiEngine::Tick(float DeltaSeconds)
 	WasabiSpacePointVMB.ClampBoredoomBySpace();
 
 	MapVMBToPAD();
+
+	LastEngineStepState = FWasabiEngineStepState(WasabiSpacePointPAD, WasabiSpacePointVMB, LastEngineStepState.Index + 1, PendingImpulseValue);
+	PendingImpulseValue = 0.0f;
+}
+
+FWasabiEngineStepState UWasabiEngine::GetEngineStateState()
+{
+	return LastEngineStepState;
 }
 
 void UWasabiEngine::MapVMBToPAD()
