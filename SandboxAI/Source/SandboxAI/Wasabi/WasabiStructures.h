@@ -146,6 +146,7 @@ public:
 
 	virtual FString ToStringColumnNames();
 	virtual FString ToStringLine();
+	virtual FString ToStringLineOverrideInputValency(float inputValency);
 };
 
 FWasabiEngineStepState::FWasabiEngineStepState() : PAD(FWasabiSpacePointPAD::ZeroVector), VMB(FWasabiSpacePointVMB::ZeroVector), Index(0), InputValency(0) {}
@@ -174,6 +175,10 @@ public:
 
 	virtual FString ToStringColumnNames() override;
 	virtual FString ToStringLine() override;
+	virtual FString ToStringLineOverrideInputValency(float inputValency) override;
+
+	FString ToStringColumnNamesCustom();
+	FString ToStringLineCustom(float inputValency);
 };
 
 FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI() : FWasabiEngineStepState(), Joy(0.0f), Distress(0.0f), DistanceCovered(0.0f), Speed(0.0f) {}

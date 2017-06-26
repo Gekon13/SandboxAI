@@ -60,6 +60,9 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE float GetFollowSpeedCoefficient(float newFollowSpeedCoefficient) { return FollowSpeedCoefficient; }
 
+	UFUNCTION(BlueprintPure)
+		FORCEINLINE float GetSplineLength() const { return SplineLength; }
+
 protected:
 	
 	void GetNewDesiredLocation();

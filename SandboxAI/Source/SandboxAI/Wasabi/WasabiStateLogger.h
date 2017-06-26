@@ -31,6 +31,9 @@ protected:
 		FString LogFilePrefix;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Logger")
+		bool bCumulateInputValency;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Logger")
 		TArray<FLogTarget> LogTargets;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Logger", meta = (ClampMin=1, ClampMax=60, UIMin=1, UIMax=60))

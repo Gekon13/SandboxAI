@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#define _CRT_SECURE_NO_WARNINGS_
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "SandboxAI.h"
 #include "WasabiStateLogger.h"
@@ -17,7 +17,7 @@ AWasabiStateLogger::AWasabiStateLogger()
 	LogFilePrefix = FString( TEXT("WASABI_LOG") );
 
 	PrintEvery = 1;
-
+	bCumulateInputValency = true;
 }
 
 // Called when the game starts or when spawned
@@ -78,27 +78,37 @@ void AWasabiStateLogger::SaveFile()
 									size_t charSize = sizeof(TCHAR);
 									int32 recordNumber = tmpWasabiStatesPtr->Num();
 									int32 startLine = 1;
-
 									int32 printCount = recordNumber / PrintEvery;
+									float loopLength = 0.0f;
 
-									FString header = FString::Printf(TEXT("Entity, %s, recordCount, %d, print every, %d, printed, %d"), *LogTargets[targetIndex].LogName, recordNumber, PrintEvery, printCount);
+									ASandboxAISplineAIController* splineAIController = Cast<ASandboxAISplineAIController>(tmpAIController);
+									if (splineAIController != nullptr)
+									{
+										loopLength = splineAIController->GetSplineLength();
+									}
+
+									FString header = FString::Printf(TEXT("Entity, %s, recordCount, %d, print every, %d, printed, %d, Loop length, %f"), *LogTargets[targetIndex].LogName, recordNumber, PrintEvery, printCount, loopLength);
 									header.Append(LINE_TERMINATOR);
 									archive->Serialize((void*)(*header), header.Len() * charSize);
 
-									FString columnNames = (*tmpWasabiStatesPtr)[0].ToStringColumnNames();
+									FString columnNames = (*tmpWasabiStatesPtr)[0].ToStringColumnNamesCustom();
 									columnNames.Append(LINE_TERMINATOR);
 									archive->Serialize((void*)(*columnNames), columnNames.Len() * charSize);
 
+									float valencyAccumulator = 0.0f;
 									for (int32 i = startLine; i < recordNumber; ++i)
 									{
-										if ((startLine - i) % PrintEvery != 0)
+										valencyAccumulator += (*tmpWasabiStatesPtr)[i].InputValency;
+										
+										if ((startLine - i) % PrintEvery == 0)
 										{
-											continue;
-										}
-										FString tmpLine = (*tmpWasabiStatesPtr)[i].ToStringLine();
-										tmpLine.Append(LINE_TERMINATOR);
+											FString tmpLine = (*tmpWasabiStatesPtr)[i].ToStringLineCustom(valencyAccumulator);
+											valencyAccumulator = 0.0f;
 
-										archive->Serialize((void*)(*tmpLine), tmpLine.Len() * charSize);
+											tmpLine.Append(LINE_TERMINATOR);
+
+											archive->Serialize((void*)(*tmpLine), tmpLine.Len() * charSize);
+										}
 									}
 									//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, FString::Printf(TEXT("Saved data to file: %s")));
 									UE_LOG(WasabiLog, Warning, TEXT("Saved data to file: %s"), *filePath);
