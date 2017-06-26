@@ -63,5 +63,5 @@ protected: //internal functions and callback
 	UFUNCTION(BlueprintNativeEvent)
 		void HandleEmotionStimulusElement(FEmotionStimulusElement emotionStimulusElement);
 
-	void DrawDebug(float DeltaSeconds);
+	void DrawDebug(float DeltaSeconds, bool bDrawSight = true, bool bDrawHearing = true);
 };

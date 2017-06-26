@@ -8,5 +8,7 @@
 USandboxAIGameInstance::USandboxAIGameInstance()
 {
 	bShowGizmos = false;
+	bShowSightGizmos = false;
+	bShowHearingGizmos = false;
 	bShowLogs = false;
 }
