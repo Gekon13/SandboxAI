@@ -41,7 +41,6 @@ void UEmotionalComponent::RemoveContinuousStimulus(AActor* Instigator) {
 		if (EmotionStimuluses[i].Instigator == Instigator) {
 			SetEmotionContinuous(*EmotionStimuluses[i].Appraisal, false);
 			EmotionStimuluses.RemoveAt(i);
-			GEngine->AddOnScreenDebugMessage(-1, 0.7f, FColor::Yellow, FString("usunieto element"));
 			break;
 		}
 	}
@@ -64,7 +63,7 @@ void UEmotionalComponent::BeginPlay() {
 	if (Character) {
 		MovementComponent = Character->GetCharacterMovement();
 		MinMovementSpeed = MovementComponent->GetMaxSpeed() / SpeedFactor;
-		MaxMovementSpeed = MovementComponent->GetMaxSpeed() * SpeedFactor;
+		MaxMovementSpeed = MovementComponent->GetMaxSpeed() + (MovementComponent->GetMaxSpeed() - MinMovementSpeed);
 	}
 
 	GetWorld()->GetTimerManager().SetTimer(ContinuousTimerHandle, this, &UEmotionalComponent::UpdateContinuousStimulus, ContinuousEmotionsInterval, true);
@@ -80,7 +79,6 @@ void UEmotionalComponent::UpdateContinuousStimulus() {
 
 void UEmotionalComponent::UpdateGoals() {
 	for (auto Goal : Goals) {
-		GEngine->AddOnScreenDebugMessage(-1, 0.4f, FColor::Yellow, FString::SanitizeFloat(*Goal.Variable));
 		auto GoalStatus = (*Goal.Variable - Goal.StartValue) / (Goal.SuccessValue - Goal.StartValue);
 		auto Appraisal = FAppraisal::UpdateAppraisal(FAppraisal(0, 0, 0, 0, GoalStatus, 0, 0), GoalsInterval);
 		OnEventUpdated(Appraisal);
@@ -88,8 +86,6 @@ void UEmotionalComponent::UpdateGoals() {
 }
 
 void UEmotionalComponent::OnEventUpdated(FAppraisal Appraisal) {
-	//GEngine->AddOnScreenDebugMessage(-1, 0.7f, FColor::Yellow, FString("odebrano event"));
-
 	auto MoodFactor = Mood * MoodRelevance / MaxMood;
 	UpdateEmotions(&Appraisal, MoodFactor);
 }
@@ -111,7 +107,7 @@ void UEmotionalComponent::UpdateEmotions(FAppraisal* Appraisal, float MoodFactor
 void UEmotionalComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Red, FString("Mood: ").Append(FString::SanitizeFloat(Mood)));
+	/*GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Red, FString("Mood: ").Append(FString::SanitizeFloat(Mood)));
 	GEngine->AddOnScreenDebugMessage(2, 1.f, FColor::Red, FString("JoyDistress: ").Append(FString::SanitizeFloat(Emotions.JoyDistress.Amount)));
 	GEngine->AddOnScreenDebugMessage(3, 1.f, FColor::Red, FString("HappyforResentment: ").Append(FString::SanitizeFloat(Emotions.HappyforResentment.Amount)));
 	GEngine->AddOnScreenDebugMessage(4, 1.f, FColor::Red, FString("GloatingPity: ").Append(FString::SanitizeFloat(Emotions.GloatingPity.Amount)));
@@ -122,7 +118,7 @@ void UEmotionalComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	GEngine->AddOnScreenDebugMessage(9, 1.f, FColor::Red, FString("LoveHate: ").Append(FString::SanitizeFloat(Emotions.LoveHate.Amount)));
 	GEngine->AddOnScreenDebugMessage(10, 1.f, FColor::Red, FString("HopeFear: ").Append(FString::SanitizeFloat(Emotions.HopeFear.Amount)));
 	GEngine->AddOnScreenDebugMessage(11, 1.f, FColor::Red, FString("ReliefDisappointment: ").Append(FString::SanitizeFloat(Emotions.ReliefDisappointment.Amount)));
-	GEngine->AddOnScreenDebugMessage(12, 1.f, FColor::Red, FString("SatisfactionFearsconfirmed: ").Append(FString::SanitizeFloat(Emotions.SatisfactionFearsconfirmed.Amount)));
+	GEngine->AddOnScreenDebugMessage(12, 1.f, FColor::Red, FString("SatisfactionFearsconfirmed: ").Append(FString::SanitizeFloat(Emotions.SatisfactionFearsconfirmed.Amount)));*/
 
 
 	CalculateMood(DeltaTime);
@@ -165,7 +161,6 @@ void UEmotionalComponent::UpdateActions() const {
 	if (MovementComponent) {
 		auto CurrentSpeed = FMath::Lerp<float>(MinMovementSpeed, MaxMovementSpeed, 1 - EmotionCoefficient);
 		MovementComponent->MaxWalkSpeed = CurrentSpeed;
-		GEngine->AddOnScreenDebugMessage(13, 1.f, FColor::Cyan, FString("CurrentSpeed: ").Append(FString::SanitizeFloat(CurrentSpeed)));
 	}
 	auto Inteface = Cast<IReactsToEmotions>(GetOwner());
 	if (Inteface) {
