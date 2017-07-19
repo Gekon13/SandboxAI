@@ -93,7 +93,9 @@ void ASandboxAIBaseAIController::Tick(float DeltaSeconds)
 			{
 				if (sandboxAIGameInstance->ShouldShowGizmos())
 				{
-					DrawDebug(DeltaSeconds);
+					bool bDrawSight = sandboxAIGameInstance->ShouldShowSightGizmos();
+					bool bDrawHearing = sandboxAIGameInstance->ShouldShowHearingGizmos();
+					DrawDebug(DeltaSeconds, bDrawSight, bDrawHearing);
 				}
 			}
 		}
@@ -202,7 +204,7 @@ void ASandboxAIBaseAIController::HandleEmotionStimulusElement_Implementation(FEm
 }
 
 
-void ASandboxAIBaseAIController::DrawDebug(float DeltaSeconds)
+void ASandboxAIBaseAIController::DrawDebug(float DeltaSeconds, bool bDrawSight, bool bDrawHearing)
 {
 #if ENABLE_DRAW_DEBUG
 	UWorld* world = GetWorld();
@@ -212,15 +214,15 @@ void ASandboxAIBaseAIController::DrawDebug(float DeltaSeconds)
 		FTransform pawnTransform = pawn->GetTransform();
 		FVector location = pawnTransform.GetLocation();
 		
-		if (SenseConfig_Sight != nullptr)
+		if (SenseConfig_Sight != nullptr && bDrawSight)
 		{
-			DrawDebugAltCone(world, pawnTransform.GetLocation(), FRotator( pawnTransform.GetRotation() ), SenseConfig_Sight->SightRadius, SenseConfig_Sight->PeripheralVisionAngleDegrees, SenseConfig_Sight->PeripheralVisionAngleDegrees, FColor::Green.WithAlpha(50));
-			DrawDebugAltCone(world, pawnTransform.GetLocation(), FRotator( pawnTransform.GetRotation() ), SenseConfig_Sight->LoseSightRadius, SenseConfig_Sight->PeripheralVisionAngleDegrees, SenseConfig_Sight->PeripheralVisionAngleDegrees, FColor::Green.WithAlpha(15));
+			DrawDebugAltCone(world, pawnTransform.GetLocation(), FRotator( pawnTransform.GetRotation() ), SenseConfig_Sight->SightRadius, SenseConfig_Sight->PeripheralVisionAngleDegrees, SenseConfig_Sight->PeripheralVisionAngleDegrees, FColor::Red.WithAlpha(50));
+			DrawDebugAltCone(world, pawnTransform.GetLocation(), FRotator( pawnTransform.GetRotation() ), SenseConfig_Sight->LoseSightRadius, SenseConfig_Sight->PeripheralVisionAngleDegrees, SenseConfig_Sight->PeripheralVisionAngleDegrees, FColor::Red.WithAlpha(15));
 		}
-		if (SenseConfig_Hearing != nullptr)
+		if (SenseConfig_Hearing != nullptr && bDrawHearing)
 		{
-			DrawDebugSphere(world, location, SenseConfig_Hearing->HearingRange, 16, FColor::Yellow.WithAlpha(50));
-			DrawDebugSphere(world, location, SenseConfig_Hearing->LoSHearingRange, 16, FColor::Yellow.WithAlpha(15));
+			DrawDebugSphere(world, location, SenseConfig_Hearing->HearingRange, 16, FColor::Blue.WithAlpha(50));
+			DrawDebugSphere(world, location, SenseConfig_Hearing->LoSHearingRange, 16, FColor::Blue.WithAlpha(15));
 		}
 	}
 #endif

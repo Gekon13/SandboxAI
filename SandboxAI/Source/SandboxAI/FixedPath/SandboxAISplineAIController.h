@@ -41,6 +41,7 @@ protected:
 	FVector DesiredLocation;
 	FVector LastLocation;
 	float SplineLength;
+	float TotalDistanceCovered;
 
 public:
 	ASandboxAISplineAIController();
@@ -58,6 +59,9 @@ public:
 
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE float GetFollowSpeedCoefficient(float newFollowSpeedCoefficient) { return FollowSpeedCoefficient; }
+
+	UFUNCTION(BlueprintPure)
+		FORCEINLINE float GetSplineLength() const { return SplineLength; }
 
 protected:
 	

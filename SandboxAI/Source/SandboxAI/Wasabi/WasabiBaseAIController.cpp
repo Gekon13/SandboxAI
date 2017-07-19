@@ -3,6 +3,7 @@
 #include "SandboxAI.h"
 #include "WasabiBaseAIController.h"
 #include "Wasabi/WasabiBaseEmotionComponent.h"
+#include "Wasabi/WasabiEngine.h"
 
 AWasabiBaseAIController::AWasabiBaseAIController() : Super()
 {
@@ -31,6 +32,14 @@ void AWasabiBaseAIController::Tick(float DeltaSeconds)
 			SetFollowSpeedCoefficient(coeficient);
 			SetEmotionVisualColor(FMath::Lerp<FLinearColor>(MinColor, MaxColor, coeficient));
 		}
+
+		FWasabiEngineStepState stepState = WasabiEmotionComponent->GetWasabiEngine()->GetEngineStateState();
+		FWasabiEngineStepStateCGI stepStateCGI = FWasabiEngineStepStateCGI(stepState);
+		stepStateCGI.Joy = JoyDistance;
+		stepStateCGI.Distress = DistressDistance;
+		stepStateCGI.Speed = FollowSpeedCurrent;
+		stepStateCGI.DistanceCovered = TotalDistanceCovered;
+		WasabiStates.Add(stepStateCGI);
 	}
 }
 void AWasabiBaseAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement emotionStimulusElement)

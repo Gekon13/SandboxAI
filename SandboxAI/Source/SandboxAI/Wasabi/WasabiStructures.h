@@ -15,6 +15,8 @@ public:
 
 	static const float FWasabiEmotionDefaultInnerRadius;
 	static const float FWasabiEmotionDefaultOuterRadius;
+
+	//static const FString ColumnSeparator;
 };
 
 
@@ -121,3 +123,66 @@ FWasabiSpacePointPADEmotion::FWasabiSpacePointPADEmotion(const FVector& source) 
 FWasabiSpacePointPADEmotion::FWasabiSpacePointPADEmotion(const FWasabiSpacePointPADEmotion& source) : Super(source), InnerRadius(FWasabiConstants::FWasabiEmotionDefaultInnerRadius), OuterRadius(FWasabiConstants::FWasabiEmotionDefaultOuterRadius) {}
 FWasabiSpacePointPADEmotion::FWasabiSpacePointPADEmotion(float Pleasure, float Arousal, float Dominance) : Super(Pleasure, Arousal, Dominance), InnerRadius(FWasabiConstants::FWasabiEmotionDefaultInnerRadius), OuterRadius(FWasabiConstants::FWasabiEmotionDefaultOuterRadius) {}
 FWasabiSpacePointPADEmotion::FWasabiSpacePointPADEmotion(float Pleasure, float Arousal, float Dominance, float InnerRadius, float OuterRadius) : Super(Pleasure, Arousal, Dominance), InnerRadius(InnerRadius), OuterRadius(OuterRadius) {}
+
+USTRUCT(BlueprintType)
+struct SANDBOXAI_API FWasabiEngineStepState
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FWasabiSpacePointPAD PAD;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FWasabiSpacePointVMB VMB;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int32 Index;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float InputValency;
+
+public:
+	FORCEINLINE FWasabiEngineStepState();
+	//FORCEINLINE FWasabiEngineStepState(const FWasabiEngineStepState& source);
+	FORCEINLINE FWasabiEngineStepState(const FWasabiSpacePointPAD& PAD, const FWasabiSpacePointVMB& VMB, int32 Index, float InputValency);
+
+	virtual FString ToStringColumnNames();
+	virtual FString ToStringLine();
+	virtual FString ToStringLineOverrideInputValency(float inputValency);
+};
+
+FWasabiEngineStepState::FWasabiEngineStepState() : PAD(FWasabiSpacePointPAD::ZeroVector), VMB(FWasabiSpacePointVMB::ZeroVector), Index(0), InputValency(0) {}
+//FWasabiEngineStepState::FWasabiEngineStepState(const FWasabiEngineStepState& source) : PAD(source.PAD), VMB(source.VMB), StateIndex(source.StateIndex), InputValency(source.InputValency) {}
+FWasabiEngineStepState::FWasabiEngineStepState(const FWasabiSpacePointPAD& iPAD, const FWasabiSpacePointVMB& iVMB, int32 iIndex, float iInputValency) : PAD(iPAD), VMB(iVMB), Index(iIndex), InputValency(iInputValency) {}
+
+USTRUCT(BlueprintType)
+struct SANDBOXAI_API FWasabiEngineStepStateCGI : public FWasabiEngineStepState
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Joy;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Distress;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float DistanceCovered;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Speed;
+
+public:
+	FORCEINLINE FWasabiEngineStepStateCGI();
+	FORCEINLINE FWasabiEngineStepStateCGI(const FWasabiEngineStepState& source);
+	FORCEINLINE FWasabiEngineStepStateCGI(const FWasabiSpacePointPAD& PAD, const FWasabiSpacePointVMB& VMB, int32 Index, float InputValency, float Joy = 0.0f, float Distress = 0.0f, float DistanceCovered = 0.0f, float Speed = 0.0f);
+
+	virtual FString ToStringColumnNames() override;
+	virtual FString ToStringLine() override;
+	virtual FString ToStringLineOverrideInputValency(float inputValency) override;
+
+	FString ToStringColumnNamesCustom();
+	FString ToStringLineCustom(float inputValency);
+};
+
+FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI() : FWasabiEngineStepState(), Joy(0.0f), Distress(0.0f), DistanceCovered(0.0f), Speed(0.0f) {}
+FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI(const FWasabiEngineStepState& source) : Super(source.PAD, source.VMB, source.Index, source.InputValency), Joy(0.0f), Distress(0.0f), DistanceCovered(0.0f), Speed(0.0f) {}
+FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI(const FWasabiSpacePointPAD& iPAD, const FWasabiSpacePointVMB& iVMB, int32 iIndex, float iInputValency, float iJoy, float iDistress, float iDistanceCovered, float iSpeed)
+	: FWasabiEngineStepState(iPAD, iVMB, iIndex, iInputValency), Joy(iJoy), Distress(iDistress), DistanceCovered(iDistanceCovered), Speed(iSpeed) {}
+

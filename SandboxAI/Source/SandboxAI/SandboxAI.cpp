@@ -3,3 +3,6 @@
 #include "SandboxAI.h"
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, SandboxAI, "SandboxAI" );
+
+//General Log
+DEFINE_LOG_CATEGORY(WasabiLog);

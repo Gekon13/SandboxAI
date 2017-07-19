@@ -15,7 +15,7 @@ class SANDBOXAI_API UWasabiEngineBase : public UObject
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi/State")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|State")
 		FWasabiSpacePointPAD WasabiSpacePointPAD;
 	
 public:
