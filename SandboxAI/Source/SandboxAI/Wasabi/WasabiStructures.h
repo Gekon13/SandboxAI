@@ -15,10 +15,7 @@ public:
 
 	static const float FWasabiEmotionDefaultInnerRadius;
 	static const float FWasabiEmotionDefaultOuterRadius;
-
-	//static const FString ColumnSeparator;
 };
-
 
 USTRUCT(BlueprintType)
 struct SANDBOXAI_API FWasabiSpacePointPAD : public FVector

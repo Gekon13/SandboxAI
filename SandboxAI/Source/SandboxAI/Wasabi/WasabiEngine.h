@@ -70,6 +70,8 @@ protected:
 
 	int32 _stepCounter;
 
+	
+
 public:
 	UWasabiEngine();
 	

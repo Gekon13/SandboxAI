@@ -11,6 +11,8 @@ AWasabiBaseAIController::AWasabiBaseAIController() : Super()
 
 	MinColor = FLinearColor::Green;
 	MaxColor = FLinearColor::Red;
+
+	bSaveWasabiStates = false;
 }
 void AWasabiBaseAIController::BeginPlay()
 {
@@ -34,12 +36,13 @@ void AWasabiBaseAIController::Tick(float DeltaSeconds)
 		}
 
 		FWasabiEngineStepState stepState = WasabiEmotionComponent->GetWasabiEngine()->GetEngineStateState();
-		FWasabiEngineStepStateCGI stepStateCGI = FWasabiEngineStepStateCGI(stepState);
-		stepStateCGI.Joy = JoyDistance;
-		stepStateCGI.Distress = DistressDistance;
-		stepStateCGI.Speed = FollowSpeedCurrent;
-		stepStateCGI.DistanceCovered = TotalDistanceCovered;
-		WasabiStates.Add(stepStateCGI);
+		WasabiStates.Add(stepState);
+		//FWasabiEngineStepStateCGI stepStateCGI = FWasabiEngineStepStateCGI(stepState);
+		//stepStateCGI.Joy = JoyDistance;
+		//stepStateCGI.Distress = DistressDistance;
+		//stepStateCGI.Speed = FollowSpeedCurrent;
+		//stepStateCGI.DistanceCovered = TotalDistanceCovered;
+		//WasabiStates.Add(stepStateCGI);
 	}
 }
 void AWasabiBaseAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement emotionStimulusElement)
