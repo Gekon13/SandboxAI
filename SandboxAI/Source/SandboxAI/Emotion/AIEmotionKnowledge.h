@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "AIEmotionConstants.h"
-#include "AIEmotionKnoledge.generated.h"
+#include "AIEmotionKnowledge.generated.h"
 
 USTRUCT(BlueprintType)
-class PROJECT_API FAIEmotionKnowledge
+struct PROJECT_API FAIEmotionKnowledge
 {
 	GENERATED_BODY()
 

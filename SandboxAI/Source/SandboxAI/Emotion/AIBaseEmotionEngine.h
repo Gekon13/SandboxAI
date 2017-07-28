@@ -3,21 +3,22 @@
 #pragma once
 
 #include "AIEmotionConstants.h"
+#include "AIEmotionKnowledge.h"
 #include "AIBaseEmotionEngine.generated.h"
-
-class FAIEmotionKnowledge;
 
 USTRUCT(BlueprintType)
 struct PROJECT_API FAIBaseEmotionEngine
 {
 	GENERATED_BODY()
 
-public: //members
+protected: //members
 	FAIEmotionKnowledge* EmotionKnowledge;
 
 public: //methods
 	FAIBaseEmotionEngine();
 
-	virtual void InitializeEmotionEngine(FAIEmotionKnowledge* EmotionKnowledge) = 0;
-	virtual void TickEmotionEngine(float DeltaSeconds) = 0;
+	virtual void InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge);
+	virtual void TickEmotionEngine(float deltaSeconds);
+	
+	FORCEINLINE FAIEmotionKnowledge* GetEmotionKnowledge() const { return EmotionKnowledge; }
 };

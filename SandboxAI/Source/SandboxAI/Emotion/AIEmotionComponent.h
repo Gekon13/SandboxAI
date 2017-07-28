@@ -4,11 +4,15 @@
 
 #include "Components/ActorComponent.h"
 #include "AIEmotionConstants.h"
-#include "AIEmotionKnoledge.h"
+#include "AIEmotionKnowledge.h"
 #include "AIBaseEmotionEngine.h"
-#include "AIEmotionComponent.generated.h"
 
-class AIEmotionKnowledge;
+#include "Fatima/AIFatimaEmotionEngine.h"
+#include "Psi/AIPsiEmotionEngine.h"
+#include "Simplex/AISimplexEmotionEngine.h"
+#include "Wasabi/AIWasabiEmotionEngine.h"
+
+#include "AIEmotionComponent.generated.h"
 
 /// Component responsible for simulating agents emotional state and taking actions respecting emotional state
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -17,15 +21,22 @@ class PROJECT_API UAIEmotionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BluepritReadWrite, Category = "Emotion | Parameters")
-		AIEmotionKnowledge EmotionKnowledge;
-
-	UPROPERTY(EditAnywhere, BluepritReadWrite, Category = "Emotion | Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
+		FAIEmotionKnowledge EmotionKnowledge;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
 		EEmotionEngineModel EmotionEngineModel;
 
 protected:
-	UPROPERTY(VisiableAnywhere, BlueprintReadOnly, Category = "Emotion | Parameters")
-		FAIBaseEmotionEngine* EmotionEnginePtr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
+		FAIFatimaEmotionEngine FatimaEmotionEngine;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
+		FAIPsiEmotionEngine PsiEmotionEngine;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
+		FAISimplexEmotionEngine SimplexEmotionEngine;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
+		FAIWasabiEmotionEngine WasabiEmotionEngine;
+
+	FAIBaseEmotionEngine* EmotionEnginePtr;
 
 public:	
 	UAIEmotionComponent();
