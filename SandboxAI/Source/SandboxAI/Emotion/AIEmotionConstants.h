@@ -20,8 +20,10 @@ satisfaction	disapointment
 concentration	bore
 */
 
+#define PROJECT_API SANDBOXAI_API
+
 UENUM(BlueprintType)
-enum class EWasabiEmotionPrimary : uint8
+enum class EEmotionPrimary : uint8
 {
 	None = 0 UMETA(DisplayName = "None"),
 
@@ -57,4 +59,15 @@ enum class EWasabiEmotionPrimary : uint8
 
 	Concentration = 22 UMETA(DisplayName = "Concentration"),
 	Bore = 23 UMETA(DisplayName = "Bore"),
+};
+
+
+UENUM(BlueprintType)
+enum class EEmotionEngineModel : uint8
+{
+	None = 0 UMETA(DisplayName = "No model choosen"),
+	Fatima = 1 UMETA(DisplayName = "FATIMA"),
+	Psi = 2 UMETA(DisplayName = "PSI"),
+	Simplex = 3 UMETA(DisplayName = "SIMPLEX"),
+	Wasabi = 4 UMETA(DisplayName = "WASABI"),
 };

@@ -1,4 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "SandboxAI.h"
-#include "EmotionConstants.h"
+#pragma once
+
+#include "CoreMinimal.h"
+#include "AIEmotionConstants.h"
+
+
