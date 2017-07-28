@@ -3,7 +3,7 @@
 #pragma once
 
 #include "UObject/NoExportTypes.h"
-#include "Wasabi/WasabiStructures.h"
+#include "WasabiStructures.h"
 #include "WasabiEngineBase.generated.h"
 
 /**

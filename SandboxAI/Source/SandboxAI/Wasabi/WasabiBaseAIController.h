@@ -4,7 +4,7 @@
 
 #include "SandboxAIBaseAIController.h"
 #include "FixedPath/SandboxAISplineAIController.h"
-#include "Wasabi/WasabiStructures.h"
+#include "Emotion/Wasabi/WasabiStructures.h"
 #include "WasabiBaseAIController.generated.h"
 
 /**

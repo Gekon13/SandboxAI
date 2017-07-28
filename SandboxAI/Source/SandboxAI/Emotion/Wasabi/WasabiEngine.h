@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Wasabi/WasabiEngineBase.h"
-#include "Wasabi/WasabiStructures.h"
+#include "WasabiEngineBase.h"
+#include "WasabiStructures.h"
 #include "WasabiEngine.generated.h"
 
 /**

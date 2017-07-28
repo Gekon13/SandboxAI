@@ -3,8 +3,8 @@
 
 #include "SandboxAI.h"
 #include "WasabiStateLogger.h"
-#include "Wasabi/WasabiBaseAIController.h"
-#include "Wasabi/WasabiStructures.h"
+#include "WasabiBaseAIController.h"
+#include "Emotion/Wasabi/WasabiStructures.h"
 #include <ctime>
 #include <iomanip>
 

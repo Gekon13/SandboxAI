@@ -2,8 +2,8 @@
 
 #include "SandboxAI.h"
 #include "WasabiBaseEmotionComponent.h"
-#include "Wasabi/WasabiEngine.h"
-#include "Wasabi/WasabiStructures.h"
+#include "Emotion/Wasabi/WasabiEngine.h"
+#include "Emotion/Wasabi/WasabiStructures.h"
 
 // Sets default values for this component's properties
 UWasabiBaseEmotionComponent::UWasabiBaseEmotionComponent()
