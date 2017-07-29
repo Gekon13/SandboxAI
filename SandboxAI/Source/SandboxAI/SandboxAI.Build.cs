@@ -4,7 +4,7 @@ using UnrealBuildTool;
 
 public class SandboxAI : ModuleRules
 {
-	public SandboxAI(TargetInfo Target)
+	public SandboxAI(ReadOnlyTargetRules readOnlyTargetRules)
 	{
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule" });
 
