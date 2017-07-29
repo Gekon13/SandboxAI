@@ -7,6 +7,9 @@
 #include "AIEmotionKnowledge.h"
 #include "AIEmotionState.h"
 #include "AIEmotionDecisionInfo.h"
+#include "Perception/AIPerceptionTypes.h"
+#include "Perception/AISense.h"
+#include "Perception/AIPerceptionSystem.h"
 #include "AIBaseEmotionEngine.generated.h"
 
 DECLARE_DELEGATE_OneParam(FPassDecision, const FEmotionDecisionInfo&);
@@ -40,6 +43,10 @@ public: //methods
 	 */	
 	void DirectValencedImpulse(float value, bool bContinuous = false);				// DON't TOuch
 
+	//DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FActorPerceptionUpdatedDelegate, AActor*, Actor, FAIStimulus, Stimulus);
+
+	//callback used by Teyon from AIPerceptionComponent, there will be call in here some day, so think about implementation
+	virtual void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);	// <<< OVERRIDE <<< real input
 
 protected:
 	/** 
@@ -47,7 +54,7 @@ protected:
 	 */
 	virtual float GetEngineScale() const;											// <<< OVERRIDE <<<
 
-	virtual void DirectValencedImpulseInternal(float value, bool bContinuous);		// <<< OVERRIDE <<<
+	virtual void DirectValencedImpulseInternal(float value, bool bContinuous);		// <<< OVERRIDE <<< fake input
 
 	/** Use this to pass decisions made by emotion engine */
 	void MakeDecision(const FEmotionDecisionInfo& decisionInfo);					// <<< CALL WHEN ENGINE MAKES DECISION <<<

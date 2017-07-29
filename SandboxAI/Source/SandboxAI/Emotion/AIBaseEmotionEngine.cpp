@@ -2,6 +2,9 @@
 
 #include "SandboxAI.h"
 #include "AIBaseEmotionEngine.h"
+#include "Perception/AIPerceptionTypes.h"
+#include "Perception/AISense.h"
+#include "Perception/AIPerceptionSystem.h"
 
 UAIBaseEmotionEngine::UAIBaseEmotionEngine()
 {
@@ -28,6 +31,11 @@ float UAIBaseEmotionEngine::GetEngineScale() const
 void UAIBaseEmotionEngine::DirectValencedImpulse(float value, bool bContinuous)
 {
 	DirectValencedImpulseInternal(value * GetEngineScale(), bContinuous);
+}
+
+void UAIBaseEmotionEngine::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
+{
+
 }
 
 void UAIBaseEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
