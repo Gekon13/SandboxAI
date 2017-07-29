@@ -2,17 +2,44 @@
 
 #include "SandboxAI.h"
 #include "AIWasabiEmotionEngine.h"
+#include "AIWasabiBaseEngineCore.h"
+#include "AIWasabiOriginalEngineCore.h"
 
-FAIWasabiEmotionEngine::FAIWasabiEmotionEngine()
+UAIWasabiEmotionEngine::UAIWasabiEmotionEngine()
 {
+	OriginalEngineCore = CreateDefaultSubobject<UAIWasabiOriginalEngineCore>(TEXT("OriginalEngineCore"));
+
+	SomeName = TEXT("Wasabi");
+	SomeOtherName = TEXT("Wasabi");
 }
 
-void FAIWasabiEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* EmotionKnowledge)
+void UAIWasabiEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
 {
-	Super::InitializeEmotionEngine(EmotionKnowledge);
+	Super::InitializeEmotionEngine(emotionKnowledge);
+
+	EngineCore = OriginalEngineCore;
 }
 
-void FAIWasabiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
+void UAIWasabiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 {	
 	Super::TickEmotionEngine(DeltaSeconds);
+
+	if (GetEngineCore() != nullptr)
+	{
+		GetEngineCore()->Tick(DeltaSeconds);
+	}
+}
+
+float UAIWasabiEmotionEngine::GetEngineScale() const
+{
+	return 100.0f;
+}
+
+void UAIWasabiEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
+{
+	// this method handles stuff like bonfires
+	if (GetEngineCore() != nullptr)
+	{
+		GetEngineCore()->Impulse(value);
+	}
 }

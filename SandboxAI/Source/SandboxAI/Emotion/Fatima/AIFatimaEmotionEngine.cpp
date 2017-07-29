@@ -3,16 +3,28 @@
 #include "SandboxAI.h"
 #include "AIFatimaEmotionEngine.h"
 
-FAIFatimaEmotionEngine::FAIFatimaEmotionEngine()
+UAIFatimaEmotionEngine::UAIFatimaEmotionEngine()
 {
+	SomeName = TEXT("Fatima");
+	SomeOtherName = TEXT("Fatima");
 }
 
-void FAIFatimaEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* EmotionKnowledge)
+void UAIFatimaEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
 {
-	Super::InitializeEmotionEngine(EmotionKnowledge);
+	Super::InitializeEmotionEngine(emotionKnowledge);
 }
 
-void FAIFatimaEmotionEngine::TickEmotionEngine(float DeltaSeconds)
+void UAIFatimaEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 {
 	Super::TickEmotionEngine(DeltaSeconds);
+}
+
+float UAIFatimaEmotionEngine::GetEngineScale() const
+{
+	return 1.0f;
+}
+
+void UAIFatimaEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
+{
+	// this method handles stuff like bonfires
 }

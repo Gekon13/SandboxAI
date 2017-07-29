@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "AIEmotionConstants.h"
-#include "AIEmotionActionInfo.generated.h"
+#include "AIEmotionDecisionInfo.generated.h"
 
 /// Info about action that emotion component decided to take
 USTRUCT(BlueprintType)
-struct PROJECT_API FEmotionActionInfo
+struct PROJECT_API FEmotionDecisionInfo
 {
 	GENERATED_BODY()
 public:
@@ -30,8 +30,8 @@ public:
 		EEmotionPrimary Emotion;
 public:
 
-	FEmotionActionInfo();
-	FEmotionActionInfo(FString actionName, EEmotionPrimary emotion = EEmotionPrimary::None);
-	FEmotionActionInfo(FString actionName, float value, EEmotionPrimary emotion = EEmotionPrimary::None);
-	FEmotionActionInfo(FString actionName, int32 value, EEmotionPrimary emotion = EEmotionPrimary::None);
+	FEmotionDecisionInfo();
+	FEmotionDecisionInfo(FString actionName, EEmotionPrimary emotion = EEmotionPrimary::None);
+	FEmotionDecisionInfo(FString actionName, float value, EEmotionPrimary emotion = EEmotionPrimary::None);
+	FEmotionDecisionInfo(FString actionName, int32 value, EEmotionPrimary emotion = EEmotionPrimary::None);
 };

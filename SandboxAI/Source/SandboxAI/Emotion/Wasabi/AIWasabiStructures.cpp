@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SandboxAI.h"
-#include "WasabiStructures.h"
+#include "AIWasabiStructures.h"
 
 const float FWasabiConstants::WasabiSpaceRadius = 100.0f;
 const float FWasabiConstants::FWasabiEmotionDefaultInnerRadius = 10.0f;

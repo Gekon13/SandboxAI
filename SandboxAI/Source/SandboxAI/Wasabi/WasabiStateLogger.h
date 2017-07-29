@@ -3,7 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "Emotion/Wasabi/WasabiStructures.h"
+#include "Emotion/Wasabi/AIWasabiStructures.h"
 #include "WasabiStateLogger.generated.h"
 
 USTRUCT(BlueprintType)

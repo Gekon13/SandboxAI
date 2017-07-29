@@ -5,14 +5,26 @@
 #include "../AIBaseEmotionEngine.h"
 #include "AIFatimaEmotionEngine.generated.h"
 
-USTRUCT(BlueprintType)
-struct PROJECT_API FAIFatimaEmotionEngine : public FAIBaseEmotionEngine
+UCLASS(BlueprintType)
+class PROJECT_API UAIFatimaEmotionEngine : public UAIBaseEmotionEngine
 {
 	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString SomeName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString SomeOtherName;
+
 public:
 
-	FAIFatimaEmotionEngine();
+	UAIFatimaEmotionEngine();
 
-	virtual void InitializeEmotionEngine(FAIEmotionKnowledge* EmotionKnowledge) override;
+	virtual void InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge) override;
 	virtual void TickEmotionEngine(float DeltaSeconds) override;
+
+protected:
+	virtual float GetEngineScale() const override;
+
+	virtual void DirectValencedImpulseInternal(float value, bool bContinuous);
 };

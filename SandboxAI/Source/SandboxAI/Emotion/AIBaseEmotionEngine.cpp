@@ -3,14 +3,38 @@
 #include "SandboxAI.h"
 #include "AIBaseEmotionEngine.h"
 
-FAIBaseEmotionEngine::FAIBaseEmotionEngine()
+UAIBaseEmotionEngine::UAIBaseEmotionEngine()
 {
 }
 
-void FAIBaseEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
+void UAIBaseEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
 {
 	EmotionKnowledge = emotionKnowledge;
 }
-void FAIBaseEmotionEngine::TickEmotionEngine(float deltaSeconds)
+void UAIBaseEmotionEngine::TickEmotionEngine(float deltaSeconds)
 {
+}
+
+FAIEmotionState UAIBaseEmotionEngine::GetEmotiomState() const
+{
+	return FAIEmotionState();
+}
+
+float UAIBaseEmotionEngine::GetEngineScale() const
+{
+	return 100.0f;
+}
+
+void UAIBaseEmotionEngine::DirectValencedImpulse(float value, bool bContinuous)
+{
+	DirectValencedImpulseInternal(value * GetEngineScale(), bContinuous);
+}
+
+void UAIBaseEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
+{
+}
+
+void UAIBaseEmotionEngine::MakeDecision(const FEmotionDecisionInfo& decisionInfo)
+{
+	OnPassDecision.Execute(decisionInfo);
 }

@@ -2,15 +2,15 @@
 
 #pragma once
 
-#include "WasabiEngineBase.h"
-#include "WasabiStructures.h"
-#include "WasabiEngine.generated.h"
+#include "AIWasabiBaseEngineCore.h"
+#include "AIWasabiStructures.h"
+#include "AIWasabiOriginalEngineCore.generated.h"
 
 /**
  * 
  */
 UCLASS(BlueprintType, EditInlineNew)
-class SANDBOXAI_API UWasabiEngine : public UWasabiEngineBase
+class SANDBOXAI_API UAIWasabiOriginalEngineCore : public UAIWasabiBaseEngineCore
 {
 	GENERATED_BODY()
 	
@@ -73,7 +73,7 @@ protected:
 	
 
 public:
-	UWasabiEngine();
+	UAIWasabiOriginalEngineCore();
 	
 	UFUNCTION(BlueprintCallable)
 		virtual void Initialize() override;

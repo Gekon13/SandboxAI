@@ -7,6 +7,11 @@ UAIEmotionComponent::UAIEmotionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 
+	FatimaEmotionEngine = CreateDefaultSubobject<UAIFatimaEmotionEngine>(TEXT("FATIMA"));
+	PsiEmotionEngine = CreateDefaultSubobject<UAIPsiEmotionEngine>(TEXT("PSI"));
+	SimplexEmotionEngine = CreateDefaultSubobject<UAISimplexEmotionEngine>(TEXT("SIMPLEX"));
+	WasabiEmotionEngine = CreateDefaultSubobject<UAIWasabiEmotionEngine>(TEXT("WASABI"));
+
 	EmotionEnginePtr = nullptr;
 	EEmotionEngineModel::None;
 }
@@ -20,22 +25,22 @@ void UAIEmotionComponent::BeginPlay()
 		{
 		case EEmotionEngineModel::Fatima:
 			{
-				EmotionEnginePtr = &FatimaEmotionEngine;
+				EmotionEnginePtr = FatimaEmotionEngine;
 			}
 			break;
 		case EEmotionEngineModel::Psi:
 			{
-				EmotionEnginePtr = &PsiEmotionEngine;
+				EmotionEnginePtr = PsiEmotionEngine;
 			}
 			break;
 		case EEmotionEngineModel::Simplex:
 			{
-				EmotionEnginePtr = &SimplexEmotionEngine;
+				EmotionEnginePtr = SimplexEmotionEngine;
 			}
 			break;
 		case EEmotionEngineModel::Wasabi:
 			{
-				EmotionEnginePtr = &WasabiEmotionEngine;
+				EmotionEnginePtr = WasabiEmotionEngine;
 			}
 			break;
 		}
@@ -43,6 +48,7 @@ void UAIEmotionComponent::BeginPlay()
 		if (GetEmotionEngine() != nullptr)
 		{
 			GetEmotionEngine()->InitializeEmotionEngine(&EmotionKnowledge);
+			GetEmotionEngine()->OnPassDecision.BindSP(TSharedRef<UAIEmotionComponent>(this), &UAIEmotionComponent::ReceivePassedDecision);
 		}
 	}
 }
@@ -56,8 +62,12 @@ void UAIEmotionComponent::TickComponent(float DeltaSeconds, ELevelTick TickType,
 	{
 		if (GetEmotionEngine() != nullptr)
 		{
-
+			GetEmotionEngine()->TickEmotionEngine(DeltaSeconds);
 		}
 	}
 }
 
+void UAIEmotionComponent::ReceivePassedDecision(const FEmotionDecisionInfo& decisionInfo)
+{
+	OnDecisionMade.Broadcast(decisionInfo);
+}

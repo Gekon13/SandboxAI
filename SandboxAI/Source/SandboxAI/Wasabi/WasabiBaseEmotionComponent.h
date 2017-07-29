@@ -5,6 +5,7 @@
 #include "Components/ActorComponent.h"
 #include "WasabiBaseEmotionComponent.generated.h"
 
+class UAIWasabiOriginalEngineCore;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SANDBOXAI_API UWasabiBaseEmotionComponent : public UActorComponent
@@ -14,8 +15,8 @@ class SANDBOXAI_API UWasabiBaseEmotionComponent : public UActorComponent
 public:	
 	UWasabiBaseEmotionComponent();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi", meta = (AllowPrivateAcces = "true", MakeEditWidget = "true"))
-		class UWasabiEngine* WasabiEngine;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi", meta = (AllowPrivateAcces = "true", MakeEditWidget = "true"), Instanced)
+		UAIWasabiOriginalEngineCore* WasabiEngineCore;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Wasabi")
 		float JoyDistance;
@@ -31,5 +32,5 @@ public:
 	FORCEINLINE const float GetJoyDistance() const { return JoyDistance; }
 	FORCEINLINE const float GetDistressDistance() const { return DistressDistance; }
 
-	FORCEINLINE class UWasabiEngine* GetWasabiEngine() const { return WasabiEngine; }
+	FORCEINLINE UAIWasabiOriginalEngineCore* GetWasabiEngineCore() const { return WasabiEngineCore; }
 };

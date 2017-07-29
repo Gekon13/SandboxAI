@@ -3,7 +3,7 @@
 #pragma once
 
 #include "SandboxAI.h"
-#include "WasabiStructures.generated.h"
+#include "AIWasabiStructures.generated.h"
 
 USTRUCT(BlueprintType)
 struct SANDBOXAI_API FWasabiConstants

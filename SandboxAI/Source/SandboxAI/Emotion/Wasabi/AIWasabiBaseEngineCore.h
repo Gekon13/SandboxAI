@@ -3,14 +3,14 @@
 #pragma once
 
 #include "UObject/NoExportTypes.h"
-#include "WasabiStructures.h"
-#include "WasabiEngineBase.generated.h"
+#include "AIWasabiStructures.h"
+#include "AIWasabiBaseEngineCore.generated.h"
 
 /**
  * 
  */
 UCLASS(BlueprintType)
-class SANDBOXAI_API UWasabiEngineBase : public UObject
+class SANDBOXAI_API UAIWasabiBaseEngineCore : public UObject
 {
 	GENERATED_BODY()
 
@@ -19,7 +19,7 @@ protected:
 		FWasabiSpacePointPAD WasabiSpacePointPAD;
 	
 public:
-	UWasabiEngineBase();
+	UAIWasabiBaseEngineCore();
 
 	UFUNCTION(BlueprintCallable)
 		virtual void Initialize();

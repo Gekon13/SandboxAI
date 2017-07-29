@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SandboxAI.h"
-#include "WasabiEngine.h"
+#include "AIWasabiOriginalEngineCore.h"
 
-UWasabiEngine::UWasabiEngine() :
+UAIWasabiOriginalEngineCore::UAIWasabiOriginalEngineCore() :
 	Super()
 {
 	// in default wasabi does calculations in doubles and than clamps then converts them to ints
@@ -26,7 +26,7 @@ UWasabiEngine::UWasabiEngine() :
 	WasabiSpacePointVMB = FWasabiSpacePointVMB( 0.0f, Prevalence, 0.0f);
 }
 
-void UWasabiEngine::Initialize()
+void UAIWasabiOriginalEngineCore::Initialize()
 {
 	Super::Initialize();
 
@@ -41,12 +41,12 @@ void UWasabiEngine::Initialize()
 
 	LastEngineStepState = FWasabiEngineStepState(WasabiSpacePointPAD, WasabiSpacePointVMB, -1, 0.0f);
 }
-void UWasabiEngine::Impulse(float value)
+void UAIWasabiOriginalEngineCore::Impulse(float value)
 {
 	bPendingImpulse = true;
 	PendingImpulseValue += value;
 }
-void UWasabiEngine::InternalImpulse(float value)
+void UAIWasabiOriginalEngineCore::InternalImpulse(float value)
 {
 	WasabiSpacePointVMB.SetValence(WasabiSpacePointVMB.GetValence() + value);
 	WasabiSpacePointVMB.ClampValenceBySpace();
@@ -54,7 +54,7 @@ void UWasabiEngine::InternalImpulse(float value)
 	MoodVelocity = 0.0f;
 }
 
-void UWasabiEngine::Tick(float DeltaSeconds)
+void UAIWasabiOriginalEngineCore::Tick(float DeltaSeconds)
 {
 	const FWasabiSpacePointVMB lastFrameSpacePointVMB = WasabiSpacePointVMB;
 
@@ -198,12 +198,12 @@ void UWasabiEngine::Tick(float DeltaSeconds)
 	bPendingImpulse = false;
 }
 
-FWasabiEngineStepState UWasabiEngine::GetEngineStateState()
+FWasabiEngineStepState UAIWasabiOriginalEngineCore::GetEngineStateState()
 {
 	return LastEngineStepState;
 }
 
-void UWasabiEngine::MapVMBToPAD()
+void UAIWasabiOriginalEngineCore::MapVMBToPAD()
 {
 	WasabiSpacePointPAD.SetDominance(OverrideDominance);
 

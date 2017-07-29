@@ -4,7 +4,7 @@
 #include "SandboxAI.h"
 #include "WasabiStateLogger.h"
 #include "WasabiBaseAIController.h"
-#include "Emotion/Wasabi/WasabiStructures.h"
+#include "Emotion/Wasabi/AIWasabiStructures.h"
 #include <ctime>
 #include <iomanip>
 

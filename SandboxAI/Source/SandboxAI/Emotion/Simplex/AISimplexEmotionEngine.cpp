@@ -3,16 +3,28 @@
 #include "SandboxAI.h"
 #include "AISimplexEmotionEngine.h"
 
-FAISimplexEmotionEngine::FAISimplexEmotionEngine()
+UAISimplexEmotionEngine::UAISimplexEmotionEngine()
 {
+	SomeName = TEXT("Simplex");
+	SomeOtherName = TEXT("Simplex");
 }
 
-void FAISimplexEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* EmotionKnowledge)
+void UAISimplexEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
 {
-	Super::InitializeEmotionEngine(EmotionKnowledge);
+	Super::InitializeEmotionEngine(emotionKnowledge);
 }
 
-void FAISimplexEmotionEngine::TickEmotionEngine(float DeltaSeconds)
+void UAISimplexEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 {
 	Super::TickEmotionEngine(DeltaSeconds);
+}
+
+float UAISimplexEmotionEngine::GetEngineScale() const
+{
+	return 1.0f;
+}
+
+void UAISimplexEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
+{
+	// this method handles stuff like bonfires
 }

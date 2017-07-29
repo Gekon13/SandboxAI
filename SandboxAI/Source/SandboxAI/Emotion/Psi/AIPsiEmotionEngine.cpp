@@ -3,16 +3,28 @@
 #include "SandboxAI.h"
 #include "AIPsiEmotionEngine.h"
 
-FAIPsiEmotionEngine::FAIPsiEmotionEngine()
+UAIPsiEmotionEngine::UAIPsiEmotionEngine()
 {
+	SomeName = TEXT("Psi");
+	SomeOtherName = TEXT("Psi");
 }
 
-void FAIPsiEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* EmotionKnowledge)
+void UAIPsiEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
 {
-	Super::InitializeEmotionEngine(EmotionKnowledge);
+	Super::InitializeEmotionEngine(emotionKnowledge);
 }
 
-void FAIPsiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
+void UAIPsiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 {
 	Super::TickEmotionEngine(DeltaSeconds);
+}
+
+float UAIPsiEmotionEngine::GetEngineScale() const
+{
+	return 1.0f;
+}
+
+void UAIPsiEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
+{
+	// this method handles stuff like bonfires
 }

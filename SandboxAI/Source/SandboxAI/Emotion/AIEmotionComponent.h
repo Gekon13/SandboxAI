@@ -6,6 +6,7 @@
 #include "AIEmotionConstants.h"
 #include "AIEmotionKnowledge.h"
 #include "AIBaseEmotionEngine.h"
+#include "AIEmotionDecisionInfo.h"
 
 #include "Fatima/AIFatimaEmotionEngine.h"
 #include "Psi/AIPsiEmotionEngine.h"
@@ -14,6 +15,10 @@
 
 #include "AIEmotionComponent.generated.h"
 
+class UAIEmotionComponent;
+
+DECLARE_EVENT_OneParam(UAIEmotionComponent, FDecisionMade, const FEmotionDecisionInfo&)
+
 /// Component responsible for simulating agents emotional state and taking actions respecting emotional state
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECT_API UAIEmotionComponent : public UActorComponent
@@ -21,27 +26,33 @@ class PROJECT_API UAIEmotionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Knowledge")
 		FAIEmotionKnowledge EmotionKnowledge;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
 		EEmotionEngineModel EmotionEngineModel;
 
-protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
-		FAIFatimaEmotionEngine FatimaEmotionEngine;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
-		FAIPsiEmotionEngine PsiEmotionEngine;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
-		FAISimplexEmotionEngine SimplexEmotionEngine;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
-		FAIWasabiEmotionEngine WasabiEmotionEngine;
+	FDecisionMade OnDecisionMade;
 
-	FAIBaseEmotionEngine* EmotionEnginePtr;
+protected:
+	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Emotion | Fatima")
+		UAIFatimaEmotionEngine* FatimaEmotionEngine;
+	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Emotion | Psi")
+		UAIPsiEmotionEngine* PsiEmotionEngine;
+	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Emotion | Simplex")
+		UAISimplexEmotionEngine* SimplexEmotionEngine;
+	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Emotion | Wasabi")
+		UAIWasabiEmotionEngine* WasabiEmotionEngine;
+
+	UAIBaseEmotionEngine* EmotionEnginePtr;
 
 public:	
 	UAIEmotionComponent();
 	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaSeconds, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;		
 	
-	FORCEINLINE FAIBaseEmotionEngine* GetEmotionEngine() const { return EmotionEnginePtr; }
+	FORCEINLINE UAIBaseEmotionEngine* GetEmotionEngine() const { return EmotionEnginePtr; }
+
+protected:
+
+	void ReceivePassedDecision(const FEmotionDecisionInfo& decisionInfo);
 };
