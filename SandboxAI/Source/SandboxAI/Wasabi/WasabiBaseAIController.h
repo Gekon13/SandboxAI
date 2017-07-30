@@ -4,7 +4,7 @@
 
 #include "SandboxAIBaseAIController.h"
 #include "FixedPath/SandboxAISplineAIController.h"
-#include "Wasabi/WasabiStructures.h"
+#include "Emotion/Wasabi/AIWasabiStructures.h"
 #include "WasabiBaseAIController.generated.h"
 
 /**
@@ -29,8 +29,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi")
 		FLinearColor MaxColor;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Logger")
+		bool bSaveWasabiStates;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Logger")
-		TArray<FWasabiEngineStepStateCGI> WasabiStates;
+		TArray<FWasabiEngineStepState> WasabiStates;
 
 public:
 	AWasabiBaseAIController();
@@ -39,5 +42,5 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement emotionStimulusElement) override;
 
-	FORCEINLINE TArray<FWasabiEngineStepStateCGI>* GetWasabiStepStates() { return &WasabiStates; }
+	FORCEINLINE TArray<FWasabiEngineStepState>* GetWasabiStepStates() { return &WasabiStates; }
 };

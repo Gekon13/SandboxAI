@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SandboxAI.h"
+#include "WasabiBaseEmotionComponent.h"
+#include "Emotion/Wasabi/AIWasabiOriginalEngineCore.h"
 #include "WasabiBaseAIController.h"
-#include "Wasabi/WasabiBaseEmotionComponent.h"
-#include "Wasabi/WasabiEngine.h"
 
 AWasabiBaseAIController::AWasabiBaseAIController() : Super()
 {
@@ -11,6 +11,8 @@ AWasabiBaseAIController::AWasabiBaseAIController() : Super()
 
 	MinColor = FLinearColor::Green;
 	MaxColor = FLinearColor::Red;
+
+	bSaveWasabiStates = false;
 }
 void AWasabiBaseAIController::BeginPlay()
 {
@@ -33,13 +35,14 @@ void AWasabiBaseAIController::Tick(float DeltaSeconds)
 			SetEmotionVisualColor(FMath::Lerp<FLinearColor>(MinColor, MaxColor, coeficient));
 		}
 
-		FWasabiEngineStepState stepState = WasabiEmotionComponent->GetWasabiEngine()->GetEngineStateState();
-		FWasabiEngineStepStateCGI stepStateCGI = FWasabiEngineStepStateCGI(stepState);
-		stepStateCGI.Joy = JoyDistance;
-		stepStateCGI.Distress = DistressDistance;
-		stepStateCGI.Speed = FollowSpeedCurrent;
-		stepStateCGI.DistanceCovered = TotalDistanceCovered;
-		WasabiStates.Add(stepStateCGI);
+		FWasabiEngineStepState stepState = WasabiEmotionComponent->GetWasabiEngineCore()->GetEngineStateState();
+		WasabiStates.Add(stepState);
+		//FWasabiEngineStepStateCGI stepStateCGI = FWasabiEngineStepStateCGI(stepState);
+		//stepStateCGI.Joy = JoyDistance;
+		//stepStateCGI.Distress = DistressDistance;
+		//stepStateCGI.Speed = FollowSpeedCurrent;
+		//stepStateCGI.DistanceCovered = TotalDistanceCovered;
+		//WasabiStates.Add(stepStateCGI);
 	}
 }
 void AWasabiBaseAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement emotionStimulusElement)

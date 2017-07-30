@@ -2,15 +2,15 @@
 
 #include "SandboxAI.h"
 #include "WasabiBaseEmotionComponent.h"
-#include "Wasabi/WasabiEngine.h"
-#include "Wasabi/WasabiStructures.h"
+#include "Emotion/Wasabi/AIWasabiOriginalEngineCore.h"
+#include "Emotion/Wasabi/AIWasabiStructures.h"
 
 // Sets default values for this component's properties
 UWasabiBaseEmotionComponent::UWasabiBaseEmotionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 
-	WasabiEngine = CreateDefaultSubobject<UWasabiEngine>(TEXT("Wasabi Engine"));
+	WasabiEngineCore = CreateDefaultSubobject<UAIWasabiOriginalEngineCore>(TEXT("Wasabi Engine"));
 
 	JoyDistance = 0.0f;
 	DistressDistance = 0.0f;
@@ -22,9 +22,9 @@ void UWasabiBaseEmotionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (WasabiEngine != nullptr)
+	if (WasabiEngineCore != nullptr)
 	{
-		WasabiEngine->Initialize();
+		WasabiEngineCore->Initialize();
 	}
 }
 
@@ -33,11 +33,11 @@ void UWasabiBaseEmotionComponent::TickComponent(float DeltaTime, ELevelTick Tick
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (WasabiEngine != nullptr)
+	if (WasabiEngineCore != nullptr)
 	{
-		WasabiEngine->Tick(DeltaTime);
+		WasabiEngineCore->Tick(DeltaTime);
 
-		FWasabiSpacePointPAD currentSpacePointPAD = WasabiEngine->GetWasabiSpacePointPAD();
+		FWasabiSpacePointPAD currentSpacePointPAD = WasabiEngineCore->GetWasabiSpacePointPAD();
 
 		JoyDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::Joy);
 		DistressDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::Distress);
@@ -46,8 +46,8 @@ void UWasabiBaseEmotionComponent::TickComponent(float DeltaTime, ELevelTick Tick
 
 void UWasabiBaseEmotionComponent::ReceiveImpulse(float value)
 {
-	if (WasabiEngine != nullptr)
+	if (WasabiEngineCore != nullptr)
 	{
-		WasabiEngine->Impulse(value);
+		WasabiEngineCore->Impulse(value);
 	}
 }

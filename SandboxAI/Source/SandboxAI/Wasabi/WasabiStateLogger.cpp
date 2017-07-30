@@ -3,8 +3,8 @@
 
 #include "SandboxAI.h"
 #include "WasabiStateLogger.h"
-#include "Wasabi/WasabiBaseAIController.h"
-#include "Wasabi/WasabiStructures.h"
+#include "WasabiBaseAIController.h"
+#include "Emotion/Wasabi/AIWasabiStructures.h"
 #include <ctime>
 #include <iomanip>
 
@@ -70,7 +70,7 @@ void AWasabiStateLogger::SaveFile()
 						AWasabiBaseAIController* wasabiBaseAIController = Cast<AWasabiBaseAIController>(tmpAIController);
 						if (wasabiBaseAIController != nullptr)
 						{
-							TArray<FWasabiEngineStepStateCGI>* tmpWasabiStatesPtr = wasabiBaseAIController->GetWasabiStepStates();
+							TArray<FWasabiEngineStepState>* tmpWasabiStatesPtr = wasabiBaseAIController->GetWasabiStepStates();
 							if (tmpWasabiStatesPtr != nullptr)
 							{
 								if (tmpWasabiStatesPtr->Num() > 0)
@@ -91,7 +91,7 @@ void AWasabiStateLogger::SaveFile()
 									header.Append(LINE_TERMINATOR);
 									archive->Serialize((void*)(*header), header.Len() * charSize);
 
-									FString columnNames = (*tmpWasabiStatesPtr)[0].ToStringColumnNamesCustom();
+									FString columnNames = (*tmpWasabiStatesPtr)[0].ToStringColumnNames();
 									columnNames.Append(LINE_TERMINATOR);
 									archive->Serialize((void*)(*columnNames), columnNames.Len() * charSize);
 
@@ -102,7 +102,7 @@ void AWasabiStateLogger::SaveFile()
 										
 										if ((startLine - i) % PrintEvery == 0)
 										{
-											FString tmpLine = (*tmpWasabiStatesPtr)[i].ToStringLineCustom(valencyAccumulator);
+											FString tmpLine = (*tmpWasabiStatesPtr)[i].ToStringLineOverrideInputValency(valencyAccumulator);
 											valencyAccumulator = 0.0f;
 
 											tmpLine.Append(LINE_TERMINATOR);
@@ -201,7 +201,7 @@ void AWasabiStateLogger::SaveFileHorizontal()
 						AWasabiBaseAIController* wasabiBaseAIController = Cast<AWasabiBaseAIController>(tmpAIController);
 						if (wasabiBaseAIController != nullptr)
 						{
-							TArray<FWasabiEngineStepStateCGI>* tmpWasabiStatesPtr = wasabiBaseAIController->GetWasabiStepStates();
+							TArray<FWasabiEngineStepState>* tmpWasabiStatesPtr = wasabiBaseAIController->GetWasabiStepStates();
 							if (tmpWasabiStatesPtr != nullptr)
 							{
 								if (tmpWasabiStatesPtr->Num() > 1)
@@ -299,45 +299,45 @@ void AWasabiStateLogger::SaveFileHorizontal()
 									}
 									archive->Serialize((void*)(*lineEnd), lineEnd.Len() * wordSize);
 
-									// Joy
-									rowName = FString(TEXT("Joy,"));
-									archive->Serialize((void*)(*rowName), rowName.Len() * wordSize);
-									for (int32 i = startIndex; i < recordNumber; ++i)
-									{
-										FString tmpString = FString::Printf(TEXT("%f,"), (*tmpWasabiStatesPtr)[i].Joy);
-										archive->Serialize((void*)(*tmpString), tmpString.Len() * wordSize);
-									}
-									archive->Serialize((void*)(*lineEnd), lineEnd.Len() * wordSize);
-
-									// Distress
-									rowName = FString(TEXT("Distress,"));
-									archive->Serialize((void*)(*rowName), rowName.Len() * wordSize);
-									for (int32 i = startIndex; i < recordNumber; ++i)
-									{
-										FString tmpString = FString::Printf(TEXT("%f,"), (*tmpWasabiStatesPtr)[i].Distress);
-										archive->Serialize((void*)(*tmpString), tmpString.Len() * wordSize);
-									}
-									archive->Serialize((void*)(*lineEnd), lineEnd.Len() * wordSize);
-
-									// DistanceCovered
-									rowName = FString(TEXT("DistanceCovered,"));
-									archive->Serialize((void*)(*rowName), rowName.Len() * wordSize);
-									for (int32 i = startIndex; i < recordNumber; ++i)
-									{
-										FString tmpString = FString::Printf(TEXT("%f,"), (*tmpWasabiStatesPtr)[i].DistanceCovered);
-										archive->Serialize((void*)(*tmpString), tmpString.Len() * wordSize);
-									}
-									archive->Serialize((void*)(*lineEnd), lineEnd.Len() * wordSize);
-
-									// Speed
-									rowName = FString(TEXT("Speed,"));
-									archive->Serialize((void*)(*rowName), rowName.Len() * wordSize);
-									for (int32 i = startIndex; i < recordNumber; ++i)
-									{
-										FString tmpString = FString::Printf(TEXT("%f,"), (*tmpWasabiStatesPtr)[i].Speed);
-										archive->Serialize((void*)(*tmpString), tmpString.Len() * wordSize);
-									}
-									archive->Serialize((void*)(*lineEnd), lineEnd.Len() * wordSize);
+									//// Joy
+									//rowName = FString(TEXT("Joy,"));
+									//archive->Serialize((void*)(*rowName), rowName.Len() * wordSize);
+									//for (int32 i = startIndex; i < recordNumber; ++i)
+									//{
+									//	FString tmpString = FString::Printf(TEXT("%f,"), (*tmpWasabiStatesPtr)[i].Joy);
+									//	archive->Serialize((void*)(*tmpString), tmpString.Len() * wordSize);
+									//}
+									//archive->Serialize((void*)(*lineEnd), lineEnd.Len() * wordSize);
+									//
+									//// Distress
+									//rowName = FString(TEXT("Distress,"));
+									//archive->Serialize((void*)(*rowName), rowName.Len() * wordSize);
+									//for (int32 i = startIndex; i < recordNumber; ++i)
+									//{
+									//	FString tmpString = FString::Printf(TEXT("%f,"), (*tmpWasabiStatesPtr)[i].Distress);
+									//	archive->Serialize((void*)(*tmpString), tmpString.Len() * wordSize);
+									//}
+									//archive->Serialize((void*)(*lineEnd), lineEnd.Len() * wordSize);
+									//
+									//// DistanceCovered
+									//rowName = FString(TEXT("DistanceCovered,"));
+									//archive->Serialize((void*)(*rowName), rowName.Len() * wordSize);
+									//for (int32 i = startIndex; i < recordNumber; ++i)
+									//{
+									//	FString tmpString = FString::Printf(TEXT("%f,"), (*tmpWasabiStatesPtr)[i].DistanceCovered);
+									//	archive->Serialize((void*)(*tmpString), tmpString.Len() * wordSize);
+									//}
+									//archive->Serialize((void*)(*lineEnd), lineEnd.Len() * wordSize);
+									//
+									//// Speed
+									//rowName = FString(TEXT("Speed,"));
+									//archive->Serialize((void*)(*rowName), rowName.Len() * wordSize);
+									//for (int32 i = startIndex; i < recordNumber; ++i)
+									//{
+									//	FString tmpString = FString::Printf(TEXT("%f,"), (*tmpWasabiStatesPtr)[i].Speed);
+									//	archive->Serialize((void*)(*tmpString), tmpString.Len() * wordSize);
+									//}
+									//archive->Serialize((void*)(*lineEnd), lineEnd.Len() * wordSize);
 
 									// Index
 									rowName = FString(TEXT("Index,"));
