@@ -2,7 +2,7 @@
 
 #include "Components/ActorComponent.h"
 #include "SandboxAIStructures.h"
-#include "SimplexStructures.h"
+#include "Emotion/Simplex/AISimplexStructures.h"
 #include "SimplexEmotionComponent.generated.h"
 
 /**

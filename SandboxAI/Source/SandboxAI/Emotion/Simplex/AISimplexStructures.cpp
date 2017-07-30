@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SandboxAI.h"
-#include "SimplexStructures.h"
+#include "AISimplexStructures.h"
 
 FSimplexPADPoint FSimplexPADPoint::Joy = FSimplexPADPoint(0.4f, 0.2f, 0.1f);
 FSimplexPADPoint FSimplexPADPoint::Distress = FSimplexPADPoint(-0.4f, -0.2f, -0.5f);

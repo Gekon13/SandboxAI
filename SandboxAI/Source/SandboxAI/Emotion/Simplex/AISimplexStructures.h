@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "SimplexStructures.generated.h"
+#include "AISimplexStructures.generated.h"
 
 //Representation of a point in PAD space
 //All values are in range from -1 to 1
