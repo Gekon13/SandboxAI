@@ -40,17 +40,20 @@ void APsiAIController::ProcessPsiTheory()
 	{
 	case EPsiDrive::ECuriosity:
 		if (PsiEmotionsComponent->Emotions[0].Value > 0.0f)
-			MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
+			//MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
+			MoveFaster(0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f));
 		else
-			MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
+			//MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
+			MoveFaster(0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f));
 		break;
 	case EPsiDrive::ESafety:
 		if (PsiEmotionsComponent->Emotions[0].Value > 0.0f)
-			MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
+			MoveFaster(0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
 		else
-			MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
+			MoveFaster(0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
 		break;
 	}
+	GEngine->AddOnScreenDebugMessage(-1, GetWorld()->GetDeltaSeconds(), FColor::Yellow, FString::Printf(TEXT("SpeedValue:%.4f"), 0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f)));
 }
 
 void APsiAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement EmotionStimulusElement)
