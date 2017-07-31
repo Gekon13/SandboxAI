@@ -5,21 +5,22 @@ using System.Collections.Generic;
 
 public class SandboxAIEditorTarget : TargetRules
 {
-	public SandboxAIEditorTarget(TargetInfo Target)
+	public SandboxAIEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
+        ExtraModuleNames.Add("SandboxAI");
 	}
 
 	//
 	// TargetRules interface.
 	//
 
-	public override void SetupBinaries(
-		TargetInfo Target,
-		ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
-		ref List<string> OutExtraModuleNames
-		)
-	{
-		OutExtraModuleNames.AddRange( new string[] { "SandboxAI" } );
-	}
+	//public override void SetupBinaries(
+	//	TargetInfo Target,
+	//	ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
+	//	ref List<string> OutExtraModuleNames
+	//	)
+	//{
+	//	OutExtraModuleNames.AddRange( new string[] { "SandboxAI" } );
+	//}
 }

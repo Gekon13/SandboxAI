@@ -14,6 +14,27 @@
 
 DECLARE_DELEGATE_OneParam(FPassDecision, const FEmotionDecisionInfo&);
 
+/*
+
+This iteration we adapt old models to new interface.
+
+
+for input from sensing (sight, hearing, etc.)
+ASandboxAIBaseAIController::HandleEmotionStimulusElement -> UAIBaseEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
+!this is for this sprint only!
+
+// for input from sensing in later sprints
+UAIBaseEmotionEngine::OnTargetPerceptionUpdated
+!this is for later!
+
+
+for speed we use
+ASandboxAISplineAIController::SetFollowSpeedCoefficient(0.5f) -> MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], 0.5f));
+!this one will be expanded upon later!
+
+*/
+
+
 UCLASS(BlueprintType)
 class PROJECT_API UAIBaseEmotionEngine : public UObject
 {
@@ -43,6 +64,7 @@ public: //methods
 	 */	
 	void DirectValencedImpulse(float value, bool bContinuous = false);				// DON't TOuch
 
+	// from AIPerceptionComponent.h
 	//DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FActorPerceptionUpdatedDelegate, AActor*, Actor, FAIStimulus, Stimulus);
 
 	//callback used by Teyon from AIPerceptionComponent, there will be call in here some day, so think about implementation

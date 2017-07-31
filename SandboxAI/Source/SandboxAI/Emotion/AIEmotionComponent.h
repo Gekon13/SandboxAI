@@ -16,6 +16,8 @@
 #include "AIEmotionComponent.generated.h"
 
 class UAIEmotionComponent;
+class AAIController;
+class AAIEmotionDummyPawn;
 
 DECLARE_EVENT_OneParam(UAIEmotionComponent, FDecisionMade, const FEmotionDecisionInfo&)
 
@@ -44,6 +46,8 @@ protected:
 		UAIWasabiEmotionEngine* WasabiEmotionEngine;
 
 	UAIBaseEmotionEngine* EmotionEnginePtr;
+	AAIController* AIController;
+	TArray<AAIEmotionDummyPawn*> KnownDummyPawns;
 
 public:	
 	UAIEmotionComponent();
@@ -55,4 +59,7 @@ public:
 protected:
 
 	void ReceivePassedDecision(const FEmotionDecisionInfo& decisionInfo);
+
+	UFUNCTION()
+	void OnPerceptionUpdatedActor(AActor* Actor, FAIStimulus Stimulus);
 };
