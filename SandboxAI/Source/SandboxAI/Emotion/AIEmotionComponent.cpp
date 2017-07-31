@@ -52,7 +52,7 @@ void UAIEmotionComponent::BeginPlay()
 		if (GetEmotionEngine() != nullptr)
 		{
 			GetEmotionEngine()->InitializeEmotionEngine(&EmotionKnowledge);
-			GetEmotionEngine()->OnPassDecision.BindSP(TSharedRef<UAIEmotionComponent>(this), &UAIEmotionComponent::ReceivePassedDecision);
+			GetEmotionEngine()->OnPassDecision.BindUObject(this, &UAIEmotionComponent::ReceivePassedDecision);
 		}
 	}
 
@@ -111,7 +111,7 @@ void UAIEmotionComponent::ReceivePassedDecision(const FEmotionDecisionInfo& deci
 
 void UAIEmotionComponent::OnPerceptionUpdatedActor(AActor* Actor, FAIStimulus Stimulus)
 {
-	if (Actor != nullptr)
+	if (GetEmotionEngine() != nullptr && Actor != nullptr)
 	{
 		AAIEmotionDummyPawn* dummyPawn = Cast<AAIEmotionDummyPawn>(Actor);
 		if (dummyPawn != nullptr)

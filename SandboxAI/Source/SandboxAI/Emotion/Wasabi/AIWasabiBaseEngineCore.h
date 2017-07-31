@@ -29,5 +29,5 @@ public:
 		virtual void Tick(float DeltaSeconds);
 
 	UFUNCTION(BlueprintPure)
-		FORCEINLINE FWasabiSpacePointPAD GetWasabiSpacePointPAD() { return WasabiSpacePointPAD; }
+		FORCEINLINE FWasabiSpacePointPAD GetWasabiSpacePointPAD() const { return WasabiSpacePointPAD; }
 };
