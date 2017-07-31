@@ -2,11 +2,3 @@
 
 #include "SandboxAI.h"
 #include "PsiStructures.h"
-//
-//PsiStructures::PsiStructures()
-//{
-//}
-//
-//PsiStructures::~PsiStructures()
-//{
-//}

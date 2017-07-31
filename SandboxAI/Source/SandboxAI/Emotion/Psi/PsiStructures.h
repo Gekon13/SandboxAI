@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+#include "../AIEmotionConstants.h"
 #include "PsiStructures.generated.h"
 
 
@@ -9,7 +10,6 @@ UENUM(BlueprintType)
 enum class EPsiDrive : uint8
 {
 	ESafety = 0 UMETA(DisplayName = "Safety"),
-	ECuriosity = 1 UMETA(DisplayName = "Curiosity"),
 };
 
 UENUM(BlueprintType)
@@ -20,19 +20,21 @@ enum class EDriveCategory : uint8
 	EPhysiological = 2 UMETA(DisplayName = "Physiological"),
 };
 
-DECLARE_DELEGATE_OneParam(FActionDelegate, float);
-
 USTRUCT(BlueprintType)
-struct SANDBOXAI_API FKnowledgeStruct
+struct SANDBOXAI_API FPsiPersonalityTrait
 {
 	GENERATED_BODY()
 public:
-	FActionDelegate ActionDelegate;
-	EPsiDrive DriveType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi", meta = (ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+		FString Name;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi", meta = (ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+		float Value;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
+		EEmotionPrimary AffectedEmotion;
 
-
-	FKnowledgeStruct(FActionDelegate delegatee, EPsiDrive drive) : ActionDelegate(delegatee), DriveType(drive) {}
-	FKnowledgeStruct() {}
+public:
+	FPsiPersonalityTrait() : Name(""), Value(0.0f), AffectedEmotion(EEmotionPrimary::None) {}
+	FPsiPersonalityTrait(FString name, float value, EEmotionPrimary emotion ) : Name(name), Value(value), AffectedEmotion(emotion) {}
 };
 
 USTRUCT(BlueprintType)

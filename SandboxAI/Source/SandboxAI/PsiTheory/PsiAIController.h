@@ -2,7 +2,7 @@
 
 #pragma once
 #include "PsiEmotions.h"
-#include "PsiStructures.h"
+#include "../Emotion/Psi/PsiStructures.h"
 #include "FixedPath/SandboxAISplineAIController.h"
 #include "PsiAIController.generated.h"
 
@@ -23,8 +23,8 @@ protected:
 	TArray<FPsiMotivation> Motivations;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 	FPsiGoal Goal;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
-	TArray<FKnowledgeStruct> Knowledge;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
+	//TArray<FKnowledgeStruct> Knowledge;
 
 public:
 

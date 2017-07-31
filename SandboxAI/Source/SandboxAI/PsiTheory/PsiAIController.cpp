@@ -9,11 +9,11 @@ APsiAIController::APsiAIController() : Super()
 	PsiEmotionsComponent = nullptr;
 	Drives.Add(FPsiDrive(0.0f, 0.0f, EPsiDrive::ESafety));
 	//Drives.Add(FPsiDrive(0.0f, 0.0f, EPsiDrive::ECuriosity));
-	FActionDelegate first,sec;
-	first.BindUObject(this, &APsiAIController::MoveSlower);
-	sec.BindUObject(this, &APsiAIController::MoveFaster);
-	Knowledge.Add(FKnowledgeStruct(first, EPsiDrive::ESafety));
-	Knowledge.Add(FKnowledgeStruct(sec, EPsiDrive::ESafety));
+//	FActionDelegate first,sec;
+//	first.BindUObject(this, &APsiAIController::MoveSlower);
+//	sec.BindUObject(this, &APsiAIController::MoveFaster);
+//	Knowledge.Add(FKnowledgeStruct(first, EPsiDrive::ESafety));
+//	Knowledge.Add(FKnowledgeStruct(sec, EPsiDrive::ESafety));
 }
 
 void APsiAIController::Possess(APawn * InPawn)
@@ -46,22 +46,22 @@ void APsiAIController::ProcessPsiTheory()
 	
 	GEngine->AddOnScreenDebugMessage(-2, GetWorld()->GetDeltaSeconds(), FColor::Blue, FString::Printf(TEXT("Safety:%.4f"), Drives[0].Value));
 	GEngine->AddOnScreenDebugMessage(-3, GetWorld()->GetDeltaSeconds(), FColor::Yellow, FString::Printf(TEXT("SpeedModifier:%.4f"), (0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f))));
-	TArray<FKnowledgeStruct> actions;
-	for (int i = 0; i < Knowledge.Num(); ++i)
-	{
-		if (Knowledge[i].DriveType == Goal.Type)
-			actions.Add(Knowledge[i]);
-	}
+	//TArray<FKnowledgeStruct> actions;
+	//for (int i = 0; i < Knowledge.Num(); ++i)
+	//{
+	//	if (Knowledge[i].DriveType == Goal.Type)
+	//		actions.Add(Knowledge[i]);
+	//}
 
-	if (PsiEmotionsComponent->Emotions[0].Value > 0)
-	{
-		Knowledge[0].ActionDelegate.Execute(0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f));
+	//if (PsiEmotionsComponent->Emotions[0].Value > 0)
+	//{
+	//	Knowledge[0].ActionDelegate.Execute(0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f));
 
-	}
-	else if (PsiEmotionsComponent->Emotions[0].Value < 0)
-	{
-		Knowledge[1].ActionDelegate.Execute(0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f));
-	}
+	//}
+	//else if (PsiEmotionsComponent->Emotions[0].Value < 0)
+	//{
+	//	Knowledge[1].ActionDelegate.Execute(0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f));
+	//}
 }
 
 void APsiAIController::ProcessDrives()

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "PsiStructures.h"
+#include "../Emotion/Psi/PsiStructures.h"
 #include "SandboxAIStructures.h"
 #include "Components/ActorComponent.h"
 #include "PsiEmotions.generated.h"
