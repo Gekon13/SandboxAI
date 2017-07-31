@@ -29,14 +29,8 @@ void UAISimplexEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 	float DistanceFromDistress = FSimplexPADPoint::Dist(CurrentEmotionalState, FSimplexPADPoint::Distress);
 	float JoyDistress = FMath::Clamp(DistanceFromDistress - DistanceFromJoy, -1.0f, 1.0f);
 
-	if(JoyDistress < 0.0f)
-	{
-		MakeDecision(FEmotionDecisionInfo("Faster", FMath::Abs(JoyDistress), EEmotionPrimary::Distress));
-	}
-	else if(JoyDistress > 0.0f)
-	{
-		MakeDecision(FEmotionDecisionInfo("Slower", JoyDistress, EEmotionPrimary::Joy));
-	}
+	//Temporary, will be removed later
+	UpdateRunAction(JoyDistress);
 }
 
 float UAISimplexEmotionEngine::GetEngineScale() const
@@ -46,12 +40,21 @@ float UAISimplexEmotionEngine::GetEngineScale() const
 
 void UAISimplexEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
 {
-	if(value < 0.0f)
-	{
-		CurrentEmotionalState += FSimplexPADPoint::Distress * Personality.GetInfluenceOnEmotion(false) * FMath::Abs(value);
-	}
-	else if(value > 0.0f)
+	bool bIsImpulsePositive = value > 0.0f;
+	if(bIsImpulsePositive)
 	{
 		CurrentEmotionalState += FSimplexPADPoint::Joy * Personality.GetInfluenceOnEmotion(true) * FMath::Abs(value);
 	}
+	else
+	{
+		CurrentEmotionalState += FSimplexPADPoint::Distress * Personality.GetInfluenceOnEmotion(false) * FMath::Abs(value);
+	}
+}
+
+//Temporary, just for the backward compability with "old" SandboxAI emotion engines implementation
+void UAISimplexEmotionEngine::UpdateRunAction(float JoyDistress)
+{
+	float Value = 0.5f * (-JoyDistress + 1.0f);
+
+	MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], Value));
 }
