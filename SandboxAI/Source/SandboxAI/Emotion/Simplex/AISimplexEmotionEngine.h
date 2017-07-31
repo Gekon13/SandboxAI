@@ -38,4 +38,7 @@ protected:
 	virtual float GetEngineScale() const override;
 
 	virtual void DirectValencedImpulseInternal(float value, bool bContinuous);
+
+	//Temporary, just for the backward compability with "old" SandboxAI emotion engines implementation
+	void UpdateRunAction(float JoyDistress);
 };
