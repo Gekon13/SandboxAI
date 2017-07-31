@@ -11,7 +11,7 @@ class UCapsuleComponent;
 class UStaticMeshComponent;
 
 UCLASS()
-class SANDBOXAI_API AAIEmotionDummyPawn : public APawn
+class PROJECT_API AAIEmotionDummyPawn : public APawn
 {
 	GENERATED_BODY()
 

@@ -10,7 +10,7 @@
  * 
  */
 UCLASS(BlueprintType)
-class SANDBOXAI_API UAIWasabiBaseEngineCore : public UObject
+class PROJECT_API UAIWasabiBaseEngineCore : public UObject
 {
 	GENERATED_BODY()
 
