@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "SimplexStructures.generated.h"
+#include "AISimplexStructures.generated.h"
 
 //Representation of a point in PAD space
 //All values are in range from -1 to 1
 USTRUCT(BlueprintType)
-struct SANDBOXAI_API FSimplexPADPoint
+struct PROJECT_API FSimplexPADPoint
 {
 	GENERATED_BODY()
 
@@ -117,7 +117,7 @@ FORCEINLINE FSimplexPADPoint operator*(float scalar, const FSimplexPADPoint& PAD
 //Representation of Big Five personality traits (Five Factor Model, OCEAN)
 //All values are in range from -1 to 1
 USTRUCT(BlueprintType)
-struct SANDBOXAI_API FSimplexPersonality
+struct PROJECT_API FSimplexPersonality
 {
 	GENERATED_BODY()
 

@@ -5,6 +5,5 @@
 
 FAIEmotionKnowledge::FAIEmotionKnowledge()
 {
-	AvailableActionNames.Add(FString(TEXT("Faster")));
-	AvailableActionNames.Add(FString(TEXT("Slower")));
+	AvailableActionNames.Add(FString(TEXT("Run")));
 }

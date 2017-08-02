@@ -16,11 +16,13 @@
 #include "AIEmotionComponent.generated.h"
 
 class UAIEmotionComponent;
+class AAIController;
+class AAIEmotionDummyPawn;
 
-DECLARE_EVENT_OneParam(UAIEmotionComponent, FDecisionMade, const FEmotionDecisionInfo&)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDecisionMade, const FEmotionDecisionInfo&, decisionInfo);
 
 /// Component responsible for simulating agents emotional state and taking actions respecting emotional state
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(BlueprintType, Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PROJECT_API UAIEmotionComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -31,7 +33,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
 		EEmotionEngineModel EmotionEngineModel;
 
-	FDecisionMade OnDecisionMade;
+	UPROPERTY(BlueprintAssignable, Category = "Emotion")
+		FDecisionMade OnDecisionMade;
 
 protected:
 	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Emotion | Fatima")
@@ -44,6 +47,8 @@ protected:
 		UAIWasabiEmotionEngine* WasabiEmotionEngine;
 
 	UAIBaseEmotionEngine* EmotionEnginePtr;
+	AAIController* AIController;
+	TArray<AAIEmotionDummyPawn*> KnownDummyPawns;
 
 public:	
 	UAIEmotionComponent();
@@ -55,4 +60,7 @@ public:
 protected:
 
 	void ReceivePassedDecision(const FEmotionDecisionInfo& decisionInfo);
+
+	UFUNCTION()
+	void OnPerceptionUpdatedActor(AActor* Actor, FAIStimulus Stimulus);
 };
