@@ -94,3 +94,21 @@ private:
 	static void UpdateEmotions(float* Variable, float DeltaTime);
 	TArray<FFatimaEmotion> GeneratedEmotions;
 };
+
+USTRUCT()
+struct FFatimaGoal
+{
+	GENERATED_BODY()
+
+public:
+	FFatimaGoal() : FFatimaGoal(nullptr, 2.f, "Test") {}
+	FFatimaGoal(float* Variable, float SuccessValue, FString Description);
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		FString Description;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float SuccessValue;
+
+	float* Variable;
+	float StartValue;
+};

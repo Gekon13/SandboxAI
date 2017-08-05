@@ -146,12 +146,12 @@ void UEmotionalComponent::CalculateMood(float DeltaTime) {
 	}
 }
 
-void UEmotionalComponent::CalculateEmotion(FEmotion* Emotion, FEmotion* Personality) const {
-	if (Emotion->Amount != Personality->Amount && !Emotion->bContinuous) {
+void UEmotionalComponent::CalculateEmotion(FEmotion* Emotion, FEmotion* PersonalityEmotion) const {
+	if (Emotion->Amount != PersonalityEmotion->Amount && !Emotion->bContinuous) {
 		auto CurrentTime = GetWorld()->GetTimeSeconds() - Emotion->TimeOfEvent;
-		Emotion->Amount = FMath::Clamp(Emotion->AmountAfterEvent * (FMath::Exp(-Emotion->DecayFactor * CurrentTime - Personality->Amount) + Personality->Amount), MinEmotion, MaxEmotion);
-		if (FMath::Abs(Emotion->Amount - Personality->Amount) <= EmotionThreshold) {
-			Emotion->Amount = Personality->Amount;
+		Emotion->Amount = FMath::Clamp(Emotion->AmountAfterEvent * (FMath::Exp(-Emotion->DecayFactor * CurrentTime - PersonalityEmotion->Amount) + PersonalityEmotion->Amount), MinEmotion, MaxEmotion);
+		if (FMath::Abs(Emotion->Amount - PersonalityEmotion->Amount) <= EmotionThreshold) {
+			Emotion->Amount = PersonalityEmotion->Amount;
 		}
 	}
 }

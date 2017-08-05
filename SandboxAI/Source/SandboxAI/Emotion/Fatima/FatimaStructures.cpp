@@ -132,3 +132,9 @@ TArray<FFatimaEmotion> FFatimaAppraisal::GenerateEmotions() {
 
 	return GeneratedEmotions;
 }
+
+FFatimaGoal::FFatimaGoal(float* Variable, float SuccessValue, FString Description) :Description(Description), SuccessValue(SuccessValue), Variable(Variable) {
+	if (Variable) {
+		StartValue = *Variable;
+	}
+}
