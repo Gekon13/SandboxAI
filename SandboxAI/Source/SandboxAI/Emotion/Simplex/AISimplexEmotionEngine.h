@@ -31,7 +31,7 @@ public:
 public:
 	UAISimplexEmotionEngine();
 	
-	virtual void InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge) override;
+	virtual void InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge) override;
 	virtual void TickEmotionEngine(float DeltaSeconds) override;
 
 protected:

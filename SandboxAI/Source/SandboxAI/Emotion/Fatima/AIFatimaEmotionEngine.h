@@ -14,7 +14,7 @@ class PROJECT_API UAIFatimaEmotionEngine : public UAIBaseEmotionEngine
 public:
 	UAIFatimaEmotionEngine();
 
-	void InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge) override;
+	void InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge) override;
 	void TickEmotionEngine(float DeltaSeconds) override;
 	void AddGoal(FFatimaGoal Goal) { Goals.Add(Goal); }
 

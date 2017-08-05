@@ -44,19 +44,19 @@ public:
 	FPassDecision OnPassDecision;
 
 protected: //members
-	FAIEmotionKnowledge* EmotionKnowledge;
+	UAIEmotionKnowledge* EmotionKnowledge;
 
 public: //methods
 	UAIBaseEmotionEngine();
 
 	/** Used to initialized emotion (knowledge and general) */
-	virtual void InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge);	// <<< OVERRIDE <<<
+	virtual void InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge);	// <<< OVERRIDE <<<
 	/** Used to update emotion engine, emotion dynamic and emotion decay go here */
 	virtual void TickEmotionEngine(float deltaSeconds);								// <<< OVERRIDE <<<
 	/** Used to retrieve emotional state at any time, should be cheap to execute */
 	virtual FAIEmotionState GetEmotiomState() const;								// <<< OVERRIDE <<<
 	
-	FORCEINLINE FAIEmotionKnowledge* GetEmotionKnowledge() const { return EmotionKnowledge; } // <<< USE TO ACCESS KNOWLEDGE <<<
+	FORCEINLINE UAIEmotionKnowledge* GetEmotionKnowledge() const { return EmotionKnowledge; } // <<< USE TO ACCESS KNOWLEDGE <<<
 
 	/**
 	 * This is function used to directly influence emotion engine in particular way without interaction with cognition module

@@ -9,7 +9,7 @@ UAIPsiEmotionEngine::UAIPsiEmotionEngine()
 	SomeOtherName = TEXT("Psi");
 }
 
-void UAIPsiEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
+void UAIPsiEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
 {
 	Super::InitializeEmotionEngine(emotionKnowledge);
 }

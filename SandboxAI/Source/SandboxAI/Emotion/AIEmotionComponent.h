@@ -29,10 +29,10 @@ class PROJECT_API UAIEmotionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Knowledge")
-		FAIEmotionKnowledge EmotionKnowledge;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
 		EEmotionEngineModel EmotionEngineModel;
+	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
+		UAIEmotionKnowledge* EmotionKnowledge;
 
 	UPROPERTY(BlueprintAssignable, Category = "Emotion")
 		FDecisionMade OnDecisionMade;

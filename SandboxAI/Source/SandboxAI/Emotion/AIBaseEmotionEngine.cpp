@@ -10,7 +10,7 @@ UAIBaseEmotionEngine::UAIBaseEmotionEngine()
 {
 }
 
-void UAIBaseEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
+void UAIBaseEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
 {
 	EmotionKnowledge = emotionKnowledge;
 }

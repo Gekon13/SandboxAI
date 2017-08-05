@@ -65,7 +65,7 @@ void UAIWasabiOriginalEngineCore::Tick(float DeltaSeconds)
 
 	// calculate forces
 	float valenceForce = -ValenceTension * WasabiSpacePointVMB.GetValence();
-	float moodForce = -MoodTension * (Prevalence - WasabiSpacePointVMB.GetMood() );
+	float moodForce = MoodTension * (Prevalence - WasabiSpacePointVMB.GetMood() );
 
 	// Process Valence
 	// calculate valence acceleration based on it's position

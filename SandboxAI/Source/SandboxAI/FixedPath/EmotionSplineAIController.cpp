@@ -11,7 +11,7 @@ AEmotionSplineAIController::AEmotionSplineAIController() : Super()
 	ActionWithSpeedCoeficient = TEXT("Run");
 
 	MinColor = FLinearColor::Green;
-	MinColor = FLinearColor::Red;
+	MaxColor = FLinearColor::Red;
 
 	SetCoeficient(0.5f);
 }
@@ -46,5 +46,7 @@ void AEmotionSplineAIController::SetCoeficient(float coeficient)
 {
 	Coeficient = coeficient;
 	SetFollowSpeedCoefficient(Coeficient);
-	SetEmotionVisualColor(FMath::Lerp<FLinearColor>(MinColor, MaxColor, Coeficient));
+	
+	SetEmotionVisualColor(FLinearColor::LerpUsingHSV(MinColor, MaxColor, Coeficient));
+	//SetEmotionVisualColor(FMath::Lerp<FLinearColor>(MinColor, MaxColor, Coeficient));
 }

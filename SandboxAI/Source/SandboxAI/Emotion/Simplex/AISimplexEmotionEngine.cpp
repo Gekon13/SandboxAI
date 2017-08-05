@@ -9,7 +9,7 @@ UAISimplexEmotionEngine::UAISimplexEmotionEngine()
 	SomeOtherName = TEXT("Simplex");
 }
 
-void UAISimplexEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
+void UAISimplexEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
 {
 	Super::InitializeEmotionEngine(emotionKnowledge);
 

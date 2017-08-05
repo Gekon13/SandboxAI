@@ -19,7 +19,7 @@ UAIFatimaEmotionEngine::UAIFatimaEmotionEngine() {
 	SpeedFactor = 1.5f;
 }
 
-void UAIFatimaEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge) {
+void UAIFatimaEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge) {
 	Super::InitializeEmotionEngine(emotionKnowledge);
 
 	GetWorld()->GetTimerManager().SetTimer(GoalsTimerHandle, this, &UAIFatimaEmotionEngine::UpdateGoals, GoalsInterval, true);

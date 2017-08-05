@@ -13,7 +13,7 @@ UAIWasabiEmotionEngine::UAIWasabiEmotionEngine()
 	SomeOtherName = TEXT("Wasabi");
 }
 
-void UAIWasabiEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
+void UAIWasabiEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
 {
 	Super::InitializeEmotionEngine(emotionKnowledge);
 

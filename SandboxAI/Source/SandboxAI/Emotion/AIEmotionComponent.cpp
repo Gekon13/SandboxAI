@@ -10,6 +10,8 @@ UAIEmotionComponent::UAIEmotionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 
+	EmotionKnowledge = CreateDefaultSubobject<UAIEmotionKnowledge>(TEXT("Knowledge"));
+
 	FatimaEmotionEngine = CreateDefaultSubobject<UAIFatimaEmotionEngine>(TEXT("FATIMA"));
 	PsiEmotionEngine = CreateDefaultSubobject<UAIPsiEmotionEngine>(TEXT("PSI"));
 	SimplexEmotionEngine = CreateDefaultSubobject<UAISimplexEmotionEngine>(TEXT("SIMPLEX"));
@@ -50,7 +52,7 @@ void UAIEmotionComponent::BeginPlay()
 
 		if (GetEmotionEngine() != nullptr)
 		{
-			GetEmotionEngine()->InitializeEmotionEngine(&EmotionKnowledge);
+			GetEmotionEngine()->InitializeEmotionEngine(EmotionKnowledge);
 			GetEmotionEngine()->OnPassDecision.BindUObject(this, &UAIEmotionComponent::ReceivePassedDecision);
 		}
 	}
