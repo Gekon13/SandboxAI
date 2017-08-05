@@ -2,8 +2,7 @@
 
 #include "SandboxAI.h"
 #include "AIEmotionComponent.h"
-#include "AIEmotionDummyPawn.h"
-
+#include "AIEmotionDummyInterface.h"
 #include "AIController.h"
 #include "Perception/AIPerceptionComponent.h"
 
@@ -81,19 +80,20 @@ void UAIEmotionComponent::TickComponent(float DeltaSeconds, ELevelTick TickType,
 	{
 		if (GetEmotionEngine() != nullptr)
 		{
-			int32 knownDummyPawnNumber = KnownDummyPawns.Num();
-			for (int32 knownDummyPawnIndex = 0; knownDummyPawnIndex < knownDummyPawnNumber; ++knownDummyPawnIndex)
+			int32 knownDummyNumber = KnownEmotionDummies.Num();
+			for (int32 knownDummyIndex = 0; knownDummyIndex < knownDummyNumber; ++knownDummyIndex)
 			{
-				if (KnownDummyPawns[knownDummyPawnIndex]->bContinuous)
+				IAIEmotionDummyInterface* emotionDummy = KnownEmotionDummies[knownDummyIndex];
+				if (emotionDummy->Execute_IsContinuous(Cast<UObject>(emotionDummy)))
 				{
 					float continuousEmotionImpulseValue;
-					switch (KnownDummyPawns[knownDummyPawnIndex]->Valency)
+					switch (emotionDummy->Execute_GetValency(Cast<UObject>(emotionDummy)))
 					{
 					case EEmotionSimpleValency::Positive:
-						continuousEmotionImpulseValue = 1.0f * KnownDummyPawns[knownDummyPawnIndex]->Value * DeltaSeconds;
+						continuousEmotionImpulseValue = 1.0f * emotionDummy->Execute_GetValue(Cast<UObject>(emotionDummy)) * DeltaSeconds;
 						break;
 					case EEmotionSimpleValency::Negative:
-						continuousEmotionImpulseValue = -1.0f * KnownDummyPawns[knownDummyPawnIndex]->Value * DeltaSeconds;
+						continuousEmotionImpulseValue = -1.0f * emotionDummy->Execute_GetValue(Cast<UObject>(emotionDummy)) * DeltaSeconds;
 						break;
 					}
 					GetEmotionEngine()->DirectValencedImpulse(continuousEmotionImpulseValue, true);
@@ -113,33 +113,33 @@ void UAIEmotionComponent::OnPerceptionUpdatedActor(AActor* Actor, FAIStimulus St
 {
 	if (GetEmotionEngine() != nullptr && Actor != nullptr)
 	{
-		AAIEmotionDummyPawn* dummyPawn = Cast<AAIEmotionDummyPawn>(Actor);
-		if (dummyPawn != nullptr)
+		IAIEmotionDummyInterface* emotionDummy = Cast<IAIEmotionDummyInterface>(Actor);
+		if (emotionDummy != nullptr)
 		{
-			if (dummyPawn->bContinuous)
+			if (emotionDummy->Execute_IsContinuous(Cast<UObject>(emotionDummy)))
 			{
 				if (Stimulus.WasSuccessfullySensed())
 				{
-					KnownDummyPawns.Add(dummyPawn);
+					KnownEmotionDummies.Add(emotionDummy);
 				}
 				else
 				{
-					if (KnownDummyPawns.Contains(dummyPawn))
+					if (KnownEmotionDummies.Contains(emotionDummy))
 					{
-						KnownDummyPawns.Remove(dummyPawn);
+						KnownEmotionDummies.Remove(emotionDummy);
 					}
 				}
 			}
 			else
 			{
 				float emotionImpulseValue;
-				switch (dummyPawn->Valency)
+				switch (emotionDummy->Execute_GetValency(Cast<UObject>(emotionDummy)))
 				{
 				case EEmotionSimpleValency::Positive:
-					emotionImpulseValue = 1.0f * dummyPawn->Value;
+					emotionImpulseValue = 1.0f * emotionDummy->Execute_GetValue(Cast<UObject>(emotionDummy));
 					break;
 				case EEmotionSimpleValency::Negative:
-					emotionImpulseValue = -1.0f * dummyPawn->Value;
+					emotionImpulseValue = -1.0f * emotionDummy->Execute_GetValue(Cast<UObject>(emotionDummy));
 					break;
 				}
 				GetEmotionEngine()->DirectValencedImpulse(emotionImpulseValue, false);

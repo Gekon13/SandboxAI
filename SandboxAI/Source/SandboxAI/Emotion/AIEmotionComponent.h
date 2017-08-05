@@ -18,6 +18,7 @@
 class UAIEmotionComponent;
 class AAIController;
 class AAIEmotionDummyPawn;
+class IAIEmotionDummyInterface;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDecisionMade, const FEmotionDecisionInfo&, decisionInfo);
 
@@ -48,7 +49,7 @@ protected:
 
 	UAIBaseEmotionEngine* EmotionEnginePtr;
 	AAIController* AIController;
-	TArray<AAIEmotionDummyPawn*> KnownDummyPawns;
+	TArray<IAIEmotionDummyInterface*> KnownEmotionDummies;
 
 public:	
 	UAIEmotionComponent();

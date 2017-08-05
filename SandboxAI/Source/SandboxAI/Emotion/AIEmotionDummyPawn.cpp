@@ -8,14 +8,20 @@
 // Sets default values
 AAIEmotionDummyPawn::AAIEmotionDummyPawn()
 {
-	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Component"));
-	CapsuleComponent->SetupAttachment(RootComponent);
-	CapsuleComponent->InitCapsuleSize(32.0f, 45.0f);
-
-	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh Component"));
-	StaticMeshComponent->SetupAttachment(RootComponent);
-
 	Valency = EEmotionSimpleValency::Positive;
 	bContinuous = false;
-	Value = 0.3f;
+	Value = 0.5f;
+}
+
+EEmotionSimpleValency AAIEmotionDummyPawn::GetValency_Implementation()
+{
+	return Valency;
+}
+bool AAIEmotionDummyPawn::IsContinuous_Implementation()
+{
+	return bContinuous;
+}
+float AAIEmotionDummyPawn::GetValue_Implementation()
+{
+	return Value;
 }
