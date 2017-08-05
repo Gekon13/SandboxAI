@@ -21,6 +21,8 @@ UAIFatimaEmotionEngine::UAIFatimaEmotionEngine() {
 
 void UAIFatimaEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge) {
 	Super::InitializeEmotionEngine(emotionKnowledge);
+
+	GetWorld()->GetTimerManager().SetTimer(GoalsTimerHandle, this, &UAIFatimaEmotionEngine::UpdateGoals, GoalsInterval, true);
 }
 
 void UAIFatimaEmotionEngine::TickEmotionEngine(float DeltaSeconds) {
@@ -46,7 +48,8 @@ float UAIFatimaEmotionEngine::GetEngineScale() const {
 }
 
 void UAIFatimaEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous) {
-	// this method handles stuff like bonfires
+	auto Appraisal = FFatimaAppraisal(value, 0, 0, 0, 0, 0, 0);
+	OnEventUpdated(Appraisal);
 }
 
 void UAIFatimaEmotionEngine::UpdateEmotions(FFatimaAppraisal* Appraisal, float MoodFactor) {
@@ -73,20 +76,31 @@ void UAIFatimaEmotionEngine::CalculateMood(float DeltaTime) {
 	}
 }
 
-void UAIFatimaEmotionEngine::CalculateEmotion(FFatimaEmotion* Emotion, FFatimaEmotion* Personality) const {
-	if (Emotion->Amount != Personality->Amount && !Emotion->bContinuous) {
+void UAIFatimaEmotionEngine::CalculateEmotion(FFatimaEmotion* Emotion, FFatimaEmotion* PersonalityEmotion) const {
+	if (Emotion->Amount != PersonalityEmotion->Amount && !Emotion->bContinuous) {
 		auto CurrentTime = GetWorld()->GetTimeSeconds() - Emotion->TimeOfEvent;
-		Emotion->Amount = FMath::Clamp(Emotion->AmountAfterEvent * (FMath::Exp(-Emotion->DecayFactor * CurrentTime - Personality->Amount) + Personality->Amount), MinEmotion, MaxEmotion);
-		if (FMath::Abs(Emotion->Amount - Personality->Amount) <= EmotionThreshold) {
-			Emotion->Amount = Personality->Amount;
+		Emotion->Amount = FMath::Clamp(Emotion->AmountAfterEvent * (FMath::Exp(-Emotion->DecayFactor * CurrentTime - PersonalityEmotion->Amount) + PersonalityEmotion->Amount), MinEmotion, MaxEmotion);
+		if (FMath::Abs(Emotion->Amount - PersonalityEmotion->Amount) <= EmotionThreshold) {
+			Emotion->Amount = PersonalityEmotion->Amount;
 		}
 	}
 }
 
-void UAIFatimaEmotionEngine::UpdateActions() const {
+void UAIFatimaEmotionEngine::UpdateActions() {
 	auto EmotionCoefficient = (Emotions.JoyDistress.Amount - MinEmotion) / (MaxEmotion - MinEmotion);
-	if (MovementComponent) {
-		auto CurrentSpeed = FMath::Lerp<float>(MinMovementSpeed, MaxMovementSpeed, 1 - EmotionCoefficient);
-		MovementComponent->MaxWalkSpeed = CurrentSpeed;
+	auto CurrentSpeed = 1 - EmotionCoefficient;
+	MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], CurrentSpeed));
+}
+
+void UAIFatimaEmotionEngine::OnEventUpdated(FFatimaAppraisal Appraisal) {
+	auto MoodFactor = Mood * MoodRelevance / MaxMood;
+	UpdateEmotions(&Appraisal, MoodFactor);
+}
+
+void UAIFatimaEmotionEngine::UpdateGoals() {
+	for (auto Goal : Goals) {
+		auto GoalStatus = (*Goal.Variable - Goal.StartValue) / (Goal.SuccessValue - Goal.StartValue);
+		auto Appraisal = FFatimaAppraisal::UpdateAppraisal(FFatimaAppraisal(0, 0, 0, 0, GoalStatus, 0, 0), GoalsInterval);
+		OnEventUpdated(Appraisal);
 	}
 }

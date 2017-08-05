@@ -34,7 +34,7 @@ protected:
 	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void UpdateEmotions(FAppraisal* Appraisal, float MoodFactor);
 	void CalculateMood(float DeltaTime);
-	void CalculateEmotion(FEmotion* Emotion, FEmotion* Personality) const;
+	void CalculateEmotion(FEmotion* Emotion, FEmotion* PersonalityEmotion) const;
 	void UpdateActions() const;
 
 	UFUNCTION()
