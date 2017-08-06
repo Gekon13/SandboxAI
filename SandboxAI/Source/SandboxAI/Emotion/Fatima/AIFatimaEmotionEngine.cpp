@@ -22,7 +22,7 @@ UAIFatimaEmotionEngine::UAIFatimaEmotionEngine() {
 void UAIFatimaEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge) {
 	Super::InitializeEmotionEngine(emotionKnowledge);
 
-	GetWorld()->GetTimerManager().SetTimer(GoalsTimerHandle, this, &UAIFatimaEmotionEngine::UpdateGoals, GoalsInterval, true);
+	GetOuter()->GetWorld()->GetTimerManager().SetTimer(GoalsTimerHandle, this, &UAIFatimaEmotionEngine::UpdateGoals, GoalsInterval, true);
 }
 
 void UAIFatimaEmotionEngine::TickEmotionEngine(float DeltaSeconds) {
@@ -60,7 +60,7 @@ void UAIFatimaEmotionEngine::UpdateEmotions(FFatimaAppraisal* Appraisal, float M
 			auto OldValue = Emotion->Amount;
 			Emotion->Amount = FMath::Clamp(Emotion->Amount + AppraisalEmotion.Amount + MoodFactor, MinEmotion, MaxEmotion);
 			Emotion->AmountAfterEvent = Emotion->Amount;
-			Emotion->TimeOfEvent = GetWorld()->GetTimeSeconds();
+			Emotion->TimeOfEvent = GetOuter()->GetWorld()->GetTimeSeconds();
 			Mood = FMath::Clamp(Mood + Emotion->Amount - OldValue, MinMood, MaxMood);
 		}
 	}
@@ -78,7 +78,7 @@ void UAIFatimaEmotionEngine::CalculateMood(float DeltaTime) {
 
 void UAIFatimaEmotionEngine::CalculateEmotion(FFatimaEmotion* Emotion, FFatimaEmotion* PersonalityEmotion) const {
 	if (Emotion->Amount != PersonalityEmotion->Amount && !Emotion->bContinuous) {
-		auto CurrentTime = GetWorld()->GetTimeSeconds() - Emotion->TimeOfEvent;
+		auto CurrentTime = GetOuter()->GetWorld()->GetTimeSeconds() - Emotion->TimeOfEvent;
 		Emotion->Amount = FMath::Clamp(Emotion->AmountAfterEvent * (FMath::Exp(-Emotion->DecayFactor * CurrentTime - PersonalityEmotion->Amount) + PersonalityEmotion->Amount), MinEmotion, MaxEmotion);
 		if (FMath::Abs(Emotion->Amount - PersonalityEmotion->Amount) <= EmotionThreshold) {
 			Emotion->Amount = PersonalityEmotion->Amount;
