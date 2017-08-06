@@ -21,12 +21,18 @@ public:
 		bool bActive;
 
 public:
-	FAISingleEmotionState();
-	FAISingleEmotionState(EEmotionPrimary emotion);
-	FAISingleEmotionState(EEmotionPrimary emotion, float strength);
-	FAISingleEmotionState(EEmotionPrimary emotion, bool active);
-	FAISingleEmotionState(EEmotionPrimary emotion, float strength, bool active);
+	FORCEINLINE FAISingleEmotionState();
+	FORCEINLINE FAISingleEmotionState(EEmotionPrimary emotion);
+	FORCEINLINE FAISingleEmotionState(EEmotionPrimary emotion, float strength);
+	FORCEINLINE FAISingleEmotionState(EEmotionPrimary emotion, bool active);
+	FORCEINLINE FAISingleEmotionState(EEmotionPrimary emotion, float strength, bool active);
 };
+
+FAISingleEmotionState::FAISingleEmotionState() : Emotion(EEmotionPrimary::None), Strength(0.0f), bActive(false) {}
+FAISingleEmotionState::FAISingleEmotionState(EEmotionPrimary emotion) : Emotion(emotion), Strength(0.0f), bActive(false) {}
+FAISingleEmotionState::FAISingleEmotionState(EEmotionPrimary emotion, float strength) : Emotion(emotion), Strength(strength), bActive(false) {}
+FAISingleEmotionState::FAISingleEmotionState(EEmotionPrimary emotion, bool active) : Emotion(emotion), Strength(0.0f), bActive(active) {}
+FAISingleEmotionState::FAISingleEmotionState(EEmotionPrimary emotion, float strength, bool active) : Emotion(emotion), Strength(strength), bActive(active) {}
 
 USTRUCT(BlueprintType)
 struct PROJECT_API FAIEmotionState
@@ -38,9 +44,9 @@ public:
 		TArray<FAISingleEmotionState> Emotions;
 
 public:
-	FAIEmotionState();
-	FAIEmotionState(const FAISingleEmotionState& emotion);
-	FAIEmotionState(const TArray<FAISingleEmotionState>& emotions);
+	FORCEINLINE FAIEmotionState();
+	FORCEINLINE FAIEmotionState(const FAISingleEmotionState& emotion);
+	FORCEINLINE FAIEmotionState(const TArray<FAISingleEmotionState>& emotions);
 
 	FORCEINLINE const FAISingleEmotionState& operator[] (int32 index) const { return Emotions[index]; }
 	FORCEINLINE FAISingleEmotionState& operator[]  (int32 index) { return Emotions[index]; }
@@ -49,3 +55,6 @@ public:
 	FORCEINLINE void Add(const TArray<FAISingleEmotionState>& emotions) { Emotions.Append(emotions); }
 };
 
+FAIEmotionState::FAIEmotionState() {}
+FAIEmotionState::FAIEmotionState(const FAISingleEmotionState& emotion) { Emotions.Add(emotion); }
+FAIEmotionState::FAIEmotionState(const TArray<FAISingleEmotionState>& emotions) {	Emotions.Append(emotions); }

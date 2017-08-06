@@ -18,7 +18,7 @@ void UAIBaseEmotionEngine::TickEmotionEngine(float deltaSeconds)
 {
 }
 
-FAIEmotionState UAIBaseEmotionEngine::GetEmotiomState() const
+FAIEmotionState UAIBaseEmotionEngine::GetEmotionState() const
 {
 	return FAIEmotionState();
 }
