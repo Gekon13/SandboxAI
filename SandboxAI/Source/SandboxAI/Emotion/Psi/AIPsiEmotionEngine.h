@@ -42,4 +42,7 @@ protected:
 	virtual void ProcessPsiTheory();
 	virtual void ProcessDrives();
 	virtual void ProcessMotivations();
+	//virtaul void ProcessGoal();
+	//virtual void AffectEmotions(knowledge data);
+
 };

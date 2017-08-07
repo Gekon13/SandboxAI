@@ -70,6 +70,9 @@ void UAIPsiEmotionEngine::ProcessDrives()
 		if (Drives[i].CheckDriveState())
 			Motivations.Add(Drives[i].GenerateMotivation());
 	}
+
+	//if motivations.num() / 2.f > drives.num() / 2.f 
+	// impact on emotions
 }
 
 void UAIPsiEmotionEngine::ProcessMotivations()
@@ -82,4 +85,29 @@ void UAIPsiEmotionEngine::ProcessMotivations()
 	}
 	this->Goal = FPsiGoal(Motivations[index].Value, Motivations[index].Type);
 }
+
+/*
+void UAIPsiEmotionEngine::ProcessGoal()
+{
+	TAray<KnowStruct> possibilities;
+	foreach(data in knowledge) 
+		where data.type == goal.type
+		possibilities.Add(data)
+	KnowStruct best
+	foreach(data in possibilities) 
+		where data > best
+			data = best
+	decision = best
+}
+
+void UAIPsiEmotionEngine::Perception()
+
+void UAIPsiEmotionEngine::AffectEmotions(knowledge data)
+{
+	data = personality * data;
+	Emotions += data;
+
+}
+*/
+
 
