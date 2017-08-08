@@ -12,9 +12,11 @@ UAIPsiEmotionEngine::UAIPsiEmotionEngine()
 
 	Emotions.Add(FAISingleEmotionState(EEmotionPrimary::Joy, 0.0f));
 	Emotions.Add(FAISingleEmotionState(EEmotionPrimary::Distress, 0.0f));
+
+	knowledge = CreateDefaultSubobject<UAIPsiEmotionKnowledge>(TEXT("PsiKnowledge"));
 }
 
-void UAIPsiEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
+void UAIPsiEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
 {
 	Super::InitializeEmotionEngine(emotionKnowledge);
 }
@@ -48,6 +50,7 @@ void UAIPsiEmotionEngine::DirectValencedImpulseInternal(float value, bool bConti
 		Emotions[0].Strength += value;
 		Emotions[1].Strength -= value;
 	}
+	Drives[0].Value += value;
 
 }
 
@@ -55,10 +58,11 @@ void UAIPsiEmotionEngine::ProcessPsiTheory()
 {
 	ProcessDrives();
 	ProcessMotivations();
+	ProcessDrives();
 
-	//GEngine->AddOnScreenDebugMessage(-2, GetWorld()->GetDeltaSeconds(), FColor::Blue, FString::Printf(TEXT("Safety:%.4f"), Drives[0].Value));
-	//GEngine->AddOnScreenDebugMessage(-3, GetWorld()->GetDeltaSeconds(), FColor::Yellow, FString::Printf(TEXT("SpeedModifier:%.4f"), (0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f))));
-
+	//Emotions[0].Strength -= 0.001f;
+	//Emotions[1].Strength -= 0.001f;
+	//Drives[0].Value -= 0.001f;
 
 }
 
@@ -78,17 +82,43 @@ void UAIPsiEmotionEngine::ProcessDrives()
 void UAIPsiEmotionEngine::ProcessMotivations()
 {
 	int index = 0;
-	for (int i = 1; i < Motivations.Num(); ++i)
+	if (Motivations.Num() > 1)
 	{
-		if (Motivations[i].Value > Motivations[index].Value)
-			index = i;
+		for (int i = 1; i < Motivations.Num(); ++i)
+		{
+			if (Motivations[i].Value > Motivations[index].Value)
+				index = i;
+		}
 	}
 	this->Goal = FPsiGoal(Motivations[index].Value, Motivations[index].Type);
 }
 
-/*
+
 void UAIPsiEmotionEngine::ProcessGoal()
 {
+	TArray<FPsiKnowledge> possibleActions;
+	UAIPsiEmotionKnowledge* psiK = knowledge;//(UAIPsiEmotionKnowledge*)EmotionKnowledge;
+	int size = psiK->Actions.Num();
+	for (int i = 0; i < size; ++i)
+	{
+		if (psiK->Actions[i].Type == Goal.Type)
+			possibleActions.Add(psiK->Actions[i]);
+	}
+	FPsiKnowledge bestAction;
+	size = possibleActions.Num();
+	for (int i = 0; i < size; ++i)
+	{
+		bestAction = possibleActions[0];
+	}
+
+	MakeDecision(FEmotionDecisionInfo(bestAction.Action, 0.0f));
+	size = Drives.Num();
+	for (int i = 0; i < size; ++i)
+	{
+		if (Drives[i].Type == bestAction.Type)
+			Drives[i].Value -= 0.01f;
+	}
+	/*
 	TAray<KnowStruct> possibilities;
 	foreach(data in knowledge) 
 		where data.type == goal.type
@@ -98,10 +128,10 @@ void UAIPsiEmotionEngine::ProcessGoal()
 		where data > best
 			data = best
 	decision = best
+	*/
 }
 
-void UAIPsiEmotionEngine::Perception()
-
+/*
 void UAIPsiEmotionEngine::AffectEmotions(knowledge data)
 {
 	data = personality * data;

@@ -9,7 +9,8 @@
 UENUM(BlueprintType)
 enum class EPsiDrive : uint8
 {
-	ESafety = 0 UMETA(DisplayName = "Safety"),
+	ENone = 0 UMETA(DisplayName = "Safety"),
+	ESafety = 1 UMETA(DisplayName = "Safety"),
 };
 
 UENUM(BlueprintType)
