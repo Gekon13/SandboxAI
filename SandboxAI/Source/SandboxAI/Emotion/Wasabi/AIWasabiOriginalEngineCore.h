@@ -59,13 +59,13 @@ protected:
 		bool bValenceAffectMood;
 
 	/** Whether there is a valenced impulse pending */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|params")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|Params")
 		bool bPendingImpulse;
 	/** Whether there is a valenced impulse pending */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|params")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|Params")
 		float PendingImpulseValue;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|params")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|Params")
 		FWasabiEngineStepState LastEngineStepState;
 
 	int32 _stepCounter;
@@ -83,7 +83,9 @@ public:
 		virtual void Tick(float DeltaSeconds) override;
 
 	UFUNCTION(BlueprintCallable)
-		FWasabiEngineStepState GetEngineStateState();
+		FORCEINLINE FWasabiEngineStepState GetEngineStepState() { return LastEngineStepState;	}
+
+
 
 protected:
 	/** Call this to apply impulse directly to VMB space */

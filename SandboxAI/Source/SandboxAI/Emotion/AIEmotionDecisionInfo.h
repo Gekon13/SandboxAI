@@ -27,11 +27,11 @@ public:
 
 	/* Emotion that was cause of the action, for potential visual perposes */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		EEmotionPrimary Emotion;
+		EEmotionName Emotion;
 public:
 
 	FEmotionDecisionInfo();
-	FEmotionDecisionInfo(FString actionName, EEmotionPrimary emotion = EEmotionPrimary::None);
-	FEmotionDecisionInfo(FString actionName, float value, EEmotionPrimary emotion = EEmotionPrimary::None);
-	FEmotionDecisionInfo(FString actionName, int32 value, EEmotionPrimary emotion = EEmotionPrimary::None);
+	FEmotionDecisionInfo(FString actionName, EEmotionName emotion = EEmotionName::None);
+	FEmotionDecisionInfo(FString actionName, float value, EEmotionName emotion = EEmotionName::None);
+	FEmotionDecisionInfo(FString actionName, int32 value, EEmotionName emotion = EEmotionName::None);
 };

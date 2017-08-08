@@ -14,7 +14,7 @@ struct PROJECT_API FAISingleEmotionState
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		EEmotionPrimary Emotion;
+		EEmotionName Emotion;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Strength;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -22,17 +22,21 @@ public:
 
 public:
 	FORCEINLINE FAISingleEmotionState();
-	FORCEINLINE FAISingleEmotionState(EEmotionPrimary emotion);
-	FORCEINLINE FAISingleEmotionState(EEmotionPrimary emotion, float strength);
-	FORCEINLINE FAISingleEmotionState(EEmotionPrimary emotion, bool active);
-	FORCEINLINE FAISingleEmotionState(EEmotionPrimary emotion, float strength, bool active);
+	FORCEINLINE FAISingleEmotionState(EEmotionName emotion);
+	FORCEINLINE FAISingleEmotionState(EEmotionName emotion, float strength);
+	FORCEINLINE FAISingleEmotionState(EEmotionName emotion, bool active);
+	FORCEINLINE FAISingleEmotionState(EEmotionName emotion, float strength, bool active); // prefered constructor
+
+	FORCEINLINE FString ToString() const;
 };
 
-FAISingleEmotionState::FAISingleEmotionState() : Emotion(EEmotionPrimary::None), Strength(0.0f), bActive(false) {}
-FAISingleEmotionState::FAISingleEmotionState(EEmotionPrimary emotion) : Emotion(emotion), Strength(0.0f), bActive(false) {}
-FAISingleEmotionState::FAISingleEmotionState(EEmotionPrimary emotion, float strength) : Emotion(emotion), Strength(strength), bActive(false) {}
-FAISingleEmotionState::FAISingleEmotionState(EEmotionPrimary emotion, bool active) : Emotion(emotion), Strength(0.0f), bActive(active) {}
-FAISingleEmotionState::FAISingleEmotionState(EEmotionPrimary emotion, float strength, bool active) : Emotion(emotion), Strength(strength), bActive(active) {}
+FAISingleEmotionState::FAISingleEmotionState() : Emotion(EEmotionName::None), Strength(0.0f), bActive(false) {}
+FAISingleEmotionState::FAISingleEmotionState(EEmotionName emotion) : Emotion(emotion), Strength(0.0f), bActive(false) {}
+FAISingleEmotionState::FAISingleEmotionState(EEmotionName emotion, float strength) : Emotion(emotion), Strength(strength), bActive(strength > 0.0f) {}
+FAISingleEmotionState::FAISingleEmotionState(EEmotionName emotion, bool active) : Emotion(emotion), Strength(0.0f), bActive(active) {}
+FAISingleEmotionState::FAISingleEmotionState(EEmotionName emotion, float strength, bool active) : Emotion(emotion), Strength(strength), bActive(active) {}
+
+FString FAISingleEmotionState::ToString() const { return FString::Printf(TEXT("Name %s, IsActive: %s, Strength: %.4f"), *FAIEmotionConstants::EmotionNames[Emotion], bActive ? TEXT("true") : TEXT("false"), Strength); }
 
 USTRUCT(BlueprintType)
 struct PROJECT_API FAIEmotionState
@@ -53,6 +57,8 @@ public:
 	FORCEINLINE int32 Num() const { return Emotions.Num(); }
 	FORCEINLINE void Add(const FAISingleEmotionState& emotion) { Emotions.Add(emotion); }
 	FORCEINLINE void Add(const TArray<FAISingleEmotionState>& emotions) { Emotions.Append(emotions); }
+
+	FString ToString();
 };
 
 FAIEmotionState::FAIEmotionState() {}

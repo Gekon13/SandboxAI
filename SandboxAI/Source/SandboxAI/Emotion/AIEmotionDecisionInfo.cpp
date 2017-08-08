@@ -4,19 +4,19 @@
 #include "AIEmotionDecisionInfo.h"
 
 FEmotionDecisionInfo::FEmotionDecisionInfo()
-	: ActionName(TEXT("")), ActionFValue(0.0f), ActionIValue(0), Emotion(EEmotionPrimary::None)
+	: ActionName(TEXT("")), ActionFValue(0.0f), ActionIValue(0), Emotion(EEmotionName::None)
 {
 }
 
-FEmotionDecisionInfo::FEmotionDecisionInfo(FString actionName, EEmotionPrimary emotion)
+FEmotionDecisionInfo::FEmotionDecisionInfo(FString actionName, EEmotionName emotion)
 	: ActionName(actionName), ActionFValue(0.0f), ActionIValue(0), Emotion(emotion)
 {
 }
-FEmotionDecisionInfo::FEmotionDecisionInfo(FString actionName, float value, EEmotionPrimary emotion)
+FEmotionDecisionInfo::FEmotionDecisionInfo(FString actionName, float value, EEmotionName emotion)
 	: ActionName(actionName), ActionFValue(value), ActionIValue(0), Emotion(emotion)
 {
 }
-FEmotionDecisionInfo::FEmotionDecisionInfo(FString actionName, int32 value, EEmotionPrimary emotion)
+FEmotionDecisionInfo::FEmotionDecisionInfo(FString actionName, int32 value, EEmotionName emotion)
 	: ActionName(actionName), ActionFValue(0.0f), ActionIValue(value), Emotion(emotion)
 {
 }

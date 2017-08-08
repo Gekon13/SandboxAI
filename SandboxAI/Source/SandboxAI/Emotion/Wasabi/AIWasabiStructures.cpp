@@ -16,8 +16,8 @@ const FWasabiSpacePointPAD FWasabiSpacePointPAD::WasabiSpacePointPADMax = FWasab
 const FWasabiSpacePointVMB FWasabiSpacePointVMB::WasabiSpacePointVMBMin = FWasabiSpacePointVMB(-FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius);
 const FWasabiSpacePointVMB FWasabiSpacePointVMB::WasabiSpacePointVMBMax = FWasabiSpacePointVMB(FWasabiConstants::WasabiSpaceRadius, FWasabiConstants::WasabiSpaceRadius, 0.0f);
 
-const FWasabiSpacePointPADEmotion FWasabiSpacePointPADEmotion::Joy = FWasabiSpacePointPADEmotion(50.0f, 0.0f, -FWasabiConstants::WasabiSpaceRadius);
-const FWasabiSpacePointPADEmotion FWasabiSpacePointPADEmotion::Distress = FWasabiSpacePointPADEmotion(-50.0f, 0.0f, -FWasabiConstants::WasabiSpaceRadius);
+const FWasabiSpacePointPADEmotion FWasabiSpacePointPADEmotion::Joy = FWasabiSpacePointPADEmotion(FWasabiConstants::WasabiSpaceRadius * 0.5f, 0.0f, -FWasabiConstants::WasabiSpaceRadius);
+const FWasabiSpacePointPADEmotion FWasabiSpacePointPADEmotion::Distress = FWasabiSpacePointPADEmotion(-FWasabiConstants::WasabiSpaceRadius * 0.5f, 0.0f, -FWasabiConstants::WasabiSpaceRadius);
 
 void FWasabiSpacePointPAD::ClampPleasureBySpace()
 {
@@ -47,14 +47,60 @@ void FWasabiSpacePointVMB::ClampBoredoomBySpace()
 
 void FWasabiEmotion::UpdateEmotion(const FWasabiSpacePointPAD& wasabiSpacePointPAD)
 {
-	float maxStrength = 0.0f;
-	float anyActive = false;
+	float smallestDistance = HUGE_VALF;
+	int32 emotionSpacePointIndexWithSmallestDistance = -1;
 
 	int32 emotionSpacePointNumber = EmotionSpacePoints.Num();
 	for (int32 emotionSpacePointIndex = 0; emotionSpacePointIndex < emotionSpacePointNumber; ++emotionSpacePointIndex)
 	{
 		float distance = FWasabiSpacePointPAD::Distance(wasabiSpacePointPAD, EmotionSpacePoints[emotionSpacePointIndex]);
+		if (distance < smallestDistance)
+		{
+			smallestDistance = distance;
+			emotionSpacePointIndexWithSmallestDistance = emotionSpacePointIndex;
+		}
+	}
 
+	if (emotionSpacePointIndexWithSmallestDistance != -1)
+	{
+		if (bActive)
+		{
+			if (smallestDistance > EmotionSpacePoints[emotionSpacePointIndexWithSmallestDistance].GetOuterRadius())
+			{
+				bActive = false;
+			}
+		}
+		else
+		{
+			if (smallestDistance <= EmotionSpacePoints[emotionSpacePointIndexWithSmallestDistance].GetInnerRadius())
+			{
+				bActive = true;
+			}
+		}
+	}
+	else
+	{
+		bActive = false;
+	}
+
+	if (bActive)
+	{
+		const float innerRadius = EmotionSpacePoints[emotionSpacePointIndexWithSmallestDistance].GetInnerRadius();
+
+		if (smallestDistance <= innerRadius)
+		{
+			Strength = FWasabiConstants::WasabiSpaceRadius;
+		}
+		else
+		{
+			const float outerRadius = EmotionSpacePoints[emotionSpacePointIndexWithSmallestDistance].GetOuterRadius();
+			
+			Strength = ((smallestDistance - innerRadius) / (outerRadius - innerRadius)) * FWasabiConstants::WasabiSpaceRadius;
+		}
+	}
+	else
+	{
+		Strength = 0.0f;
 	}
 }
 

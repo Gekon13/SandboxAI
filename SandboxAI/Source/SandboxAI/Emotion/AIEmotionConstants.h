@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Containers/Map.h"
+#include "AIEmotionConstants.generated.h"
 
 /*
 List of emotion pairs:
@@ -23,7 +25,7 @@ concentration	bore
 #define PROJECT_API SANDBOXAI_API
 
 UENUM(BlueprintType)
-enum class EEmotionPrimary : uint8
+enum class EEmotionName : uint8
 {
 	None = 0 UMETA(DisplayName = "None"),
 
@@ -77,4 +79,18 @@ enum class EEmotionSimpleValency : uint8
 {
 	Positive = 0 UMETA(DisplayName = "Positive"),
 	Negative = 1 UMETA(DisplayName = "Negative"),
+};
+
+USTRUCT(BlueprintType)
+struct PROJECT_API FAIEmotionConstants
+{
+	GENERATED_BODY()
+
+public:
+	
+	static TMap<EEmotionName, FString> EmotionNames;
+
+private:
+
+	static TMap<EEmotionName, FString> BuildEmotionNamesMap();
 };

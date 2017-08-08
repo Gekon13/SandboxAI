@@ -37,6 +37,7 @@ public:
 	
 	virtual void InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge) override;
 	virtual void TickEmotionEngine(float DeltaSeconds) override;
+	virtual FAIEmotionState GetEmotionState() const override;
 
 	FORCEINLINE UAIWasabiBaseEngineCore* GetEngineCore() const { return EngineCore; }
 

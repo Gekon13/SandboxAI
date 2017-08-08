@@ -4,6 +4,8 @@
 
 #include "SandboxAI.h"
 #include <initializer_list>
+#include "../AIEmotionConstants.h"
+#include "../AIEmotionState.h"
 #include "AIWasabiStructures.generated.h"
 
 USTRUCT(BlueprintType)
@@ -129,7 +131,7 @@ struct PROJECT_API FWasabiEmotion
 
 public: // members
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString EmotionName;
+		EEmotionName EmotionName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Strength;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -139,25 +141,27 @@ public: // members
 
 public: // methods
 	FORCEINLINE FWasabiEmotion();
-	FORCEINLINE FWasabiEmotion(const FString& emotionName);
-	FORCEINLINE FWasabiEmotion(const FString& emotionName, const FWasabiSpacePointPADEmotion& wasabiSpacePointPADEmotion);
-	FORCEINLINE FWasabiEmotion(const FString& emotionName, const std::initializer_list<FWasabiSpacePointPADEmotion>& wasabiSpacePointPADEmotion);
+	FORCEINLINE FWasabiEmotion(const EEmotionName& emotionName);
+	FORCEINLINE FWasabiEmotion(const EEmotionName& emotionName, const FWasabiSpacePointPADEmotion& wasabiSpacePointPADEmotion);
+	FORCEINLINE FWasabiEmotion(const EEmotionName& emotionName, const std::initializer_list<FWasabiSpacePointPADEmotion>& wasabiSpacePointPADEmotion);
 
 	void UpdateEmotion(const FWasabiSpacePointPAD& wasabiSpacePointPAD);
-
+	FORCEINLINE FAISingleEmotionState ToSingleEmotionState() const;
 };
 
 FWasabiEmotion::FWasabiEmotion() 
-	: EmotionName(FString()), Strength(0.0f), bActive(false)  {}
+	: EmotionName(EEmotionName::None), Strength(0.0f), bActive(false)  {}
 
-FWasabiEmotion::FWasabiEmotion(const FString& emotionName) 
-	: EmotionName(FString(emotionName)), Strength(0.0f), bActive(false) {}
+FWasabiEmotion::FWasabiEmotion(const EEmotionName& emotionName)
+	: EmotionName(emotionName), Strength(0.0f), bActive(false) {}
 
-FWasabiEmotion::FWasabiEmotion(const FString& emotionName, const FWasabiSpacePointPADEmotion& wasabiSpacePointPADEmotion)
-	: EmotionName(FString(emotionName)), Strength(0.0f), bActive(false), EmotionSpacePoints(std::initializer_list<FWasabiSpacePointPADEmotion>({ wasabiSpacePointPADEmotion })) {}
+FWasabiEmotion::FWasabiEmotion(const EEmotionName& emotionName, const FWasabiSpacePointPADEmotion& wasabiSpacePointPADEmotion)
+	: EmotionName(emotionName), Strength(0.0f), bActive(false), EmotionSpacePoints(std::initializer_list<FWasabiSpacePointPADEmotion>({ wasabiSpacePointPADEmotion })) {}
 
-FWasabiEmotion::FWasabiEmotion(const FString& emotionName, const std::initializer_list<FWasabiSpacePointPADEmotion>& wasabiSpacePointPADEmotion)
-	: EmotionName(FString(emotionName)), Strength(0.0f), bActive(false), EmotionSpacePoints(wasabiSpacePointPADEmotion) {}
+FWasabiEmotion::FWasabiEmotion(const EEmotionName& emotionName, const std::initializer_list<FWasabiSpacePointPADEmotion>& wasabiSpacePointPADEmotion)
+	: EmotionName(emotionName), Strength(0.0f), bActive(false), EmotionSpacePoints(wasabiSpacePointPADEmotion) {}
+
+FAISingleEmotionState FWasabiEmotion::ToSingleEmotionState() const { return FAISingleEmotionState(EmotionName, Strength, bActive); }
 
 USTRUCT(BlueprintType)
 struct PROJECT_API FWasabiEngineStepState

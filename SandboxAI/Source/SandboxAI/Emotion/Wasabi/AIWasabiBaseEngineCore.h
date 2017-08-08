@@ -4,6 +4,7 @@
 
 #include "UObject/NoExportTypes.h"
 #include "AIWasabiStructures.h"
+#include "../AIEmotionState.h"
 #include "AIWasabiBaseEngineCore.generated.h"
 
 /**
@@ -18,6 +19,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|State")
 		FWasabiSpacePointPAD WasabiSpacePointPAD;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi | Params")
+		TArray<FWasabiEmotion> KnownEmotions;
+
 public:
 	UAIWasabiBaseEngineCore();
 
@@ -30,4 +34,10 @@ public:
 
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE FWasabiSpacePointPAD GetWasabiSpacePointPAD() const { return WasabiSpacePointPAD; }
+
+	UFUNCTION(BlueprintCallable)
+		void AddEmotionToEngine(const FWasabiEmotion& wasabiEmotion);
+
+	UFUNCTION(BlueprintCallable)
+		virtual FAIEmotionState GetEmotionState(bool onlyActiveEmotions = true) const;
 };

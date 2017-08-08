@@ -54,6 +54,7 @@ public: //methods
 	/** Used to update emotion engine, emotion dynamic and emotion decay go here */
 	virtual void TickEmotionEngine(float deltaSeconds);								// <<< OVERRIDE <<<
 	/** Used to retrieve emotional state at any time, should be cheap to execute */
+	UFUNCTION(BlueprintCallable)
 	virtual FAIEmotionState GetEmotionState() const;								// <<< OVERRIDE <<<
 	
 	FORCEINLINE UAIEmotionKnowledge* GetEmotionKnowledge() const { return EmotionKnowledge; } // <<< USE TO ACCESS KNOWLEDGE <<<

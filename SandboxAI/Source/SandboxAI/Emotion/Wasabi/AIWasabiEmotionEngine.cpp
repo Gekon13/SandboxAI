@@ -2,6 +2,7 @@
 
 #include "SandboxAI.h"
 #include "AIWasabiEmotionEngine.h"
+#include "AIWasabiStructures.h"
 #include "AIWasabiBaseEngineCore.h"
 #include "AIWasabiOriginalEngineCore.h"
 
@@ -43,12 +44,30 @@ void UAIWasabiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 				MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], JoyDistressCoeficient));
 			}
 		}
+		else
+		{
+			// just in case of division by 0 or number close to it...
+			JoyDistressCoeficient = 0.5f;
+			MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], JoyDistressCoeficient));
+		}
+	}
+}
+
+FAIEmotionState UAIWasabiEmotionEngine::GetEmotionState() const
+{
+	if (GetEngineCore() != nullptr)
+	{
+		return GetEngineCore()->GetEmotionState();
+	}
+	else
+	{
+		return FAIEmotionState();
 	}
 }
 
 float UAIWasabiEmotionEngine::GetEngineScale() const
 {
-	return 100.0f;
+	return FWasabiConstants::WasabiSpaceRadius;
 }
 
 void UAIWasabiEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)

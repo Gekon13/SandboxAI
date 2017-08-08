@@ -147,5 +147,7 @@ void UAIEmotionComponent::OnPerceptionUpdatedActor(AActor* Actor, FAIStimulus St
 				GetEmotionEngine()->DirectValencedImpulse(emotionImpulseValue, false);
 			}
 		}
+
+		GetEmotionEngine()->OnTargetPerceptionUpdated(Actor, Stimulus);
 	}
 }
