@@ -45,19 +45,6 @@ void FWasabiSpacePointVMB::ClampBoredoomBySpace()
 	Z = FMath::Clamp<float>(Z, WasabiSpacePointVMBMin.Z, WasabiSpacePointVMBMax.Z);
 }
 
-void FWasabiEmotion::UpdateEmotion(const FWasabiSpacePointPAD& wasabiSpacePointPAD)
-{
-	float maxStrength = 0.0f;
-	float anyActive = false;
-
-	int32 emotionSpacePointNumber = EmotionSpacePoints.Num();
-	for (int32 emotionSpacePointIndex = 0; emotionSpacePointIndex < emotionSpacePointNumber; ++emotionSpacePointIndex)
-	{
-		float distance = FWasabiSpacePointPAD::Distance(wasabiSpacePointPAD, EmotionSpacePoints[emotionSpacePointIndex]);
-
-	}
-}
-
 FString FWasabiEngineStepState::ToStringColumnNames()
 {
 	FString result = FString();

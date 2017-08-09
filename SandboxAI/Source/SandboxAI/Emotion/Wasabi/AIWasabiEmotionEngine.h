@@ -14,20 +14,13 @@ class PROJECT_API UAIWasabiEmotionEngine : public UAIBaseEmotionEngine
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString SomeName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString SomeOtherName;
 
-	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Core")
+	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite)
 		UAIWasabiOriginalEngineCore* OriginalEngineCore;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Testing")
-		float JoyDistance;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Testing")
-		float DistressDistance;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Testing")
-		float JoyDistressCoeficient;
 
 	UAIWasabiBaseEngineCore* EngineCore;
 
@@ -35,7 +28,7 @@ public:
 	
 	UAIWasabiEmotionEngine();
 	
-	virtual void InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge) override;
+	virtual void InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge) override;
 	virtual void TickEmotionEngine(float DeltaSeconds) override;
 
 	FORCEINLINE UAIWasabiBaseEngineCore* GetEngineCore() const { return EngineCore; }

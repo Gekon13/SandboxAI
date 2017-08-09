@@ -3,11 +3,10 @@
 #pragma once
 
 #include "SandboxAI.h"
-#include <initializer_list>
 #include "AIWasabiStructures.generated.h"
 
 USTRUCT(BlueprintType)
-struct PROJECT_API FWasabiConstants
+struct SANDBOXAI_API FWasabiConstants
 {
 	GENERATED_BODY()
 
@@ -19,7 +18,7 @@ public:
 };
 
 USTRUCT(BlueprintType)
-struct PROJECT_API FWasabiSpacePointPAD : public FVector
+struct SANDBOXAI_API FWasabiSpacePointPAD : public FVector
 {
 	GENERATED_BODY()
 
@@ -55,7 +54,7 @@ FWasabiSpacePointPAD::FWasabiSpacePointPAD(const FWasabiSpacePointPAD& source) :
 FWasabiSpacePointPAD::FWasabiSpacePointPAD(float Pleasure, float Arousal, float Dominance) : Super(Pleasure, Arousal, Dominance) { }
 
 USTRUCT(BlueprintType)
-struct PROJECT_API FWasabiSpacePointVMB : public FVector
+struct SANDBOXAI_API FWasabiSpacePointVMB : public FVector
 {
 	GENERATED_BODY()
 
@@ -91,7 +90,7 @@ FWasabiSpacePointVMB::FWasabiSpacePointVMB(const FWasabiSpacePointVMB& source) :
 FWasabiSpacePointVMB::FWasabiSpacePointVMB(float Valence, float Mood, float BoreDoom) : Super(Valence, Mood, BoreDoom) { }
 
 USTRUCT(BlueprintType)
-struct PROJECT_API FWasabiSpacePointPADEmotion : public FWasabiSpacePointPAD
+struct SANDBOXAI_API FWasabiSpacePointPADEmotion : public FWasabiSpacePointPAD
 {
 	GENERATED_BODY()
 public:
@@ -123,44 +122,7 @@ FWasabiSpacePointPADEmotion::FWasabiSpacePointPADEmotion(float Pleasure, float A
 FWasabiSpacePointPADEmotion::FWasabiSpacePointPADEmotion(float Pleasure, float Arousal, float Dominance, float InnerRadius, float OuterRadius) : Super(Pleasure, Arousal, Dominance), InnerRadius(InnerRadius), OuterRadius(OuterRadius) {}
 
 USTRUCT(BlueprintType)
-struct PROJECT_API FWasabiEmotion
-{
-	GENERATED_BODY()
-
-public: // members
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString EmotionName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float Strength;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool bActive;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TArray<FWasabiSpacePointPADEmotion> EmotionSpacePoints;
-
-public: // methods
-	FORCEINLINE FWasabiEmotion();
-	FORCEINLINE FWasabiEmotion(const FString& emotionName);
-	FORCEINLINE FWasabiEmotion(const FString& emotionName, const FWasabiSpacePointPADEmotion& wasabiSpacePointPADEmotion);
-	FORCEINLINE FWasabiEmotion(const FString& emotionName, const std::initializer_list<FWasabiSpacePointPADEmotion>& wasabiSpacePointPADEmotion);
-
-	void UpdateEmotion(const FWasabiSpacePointPAD& wasabiSpacePointPAD);
-
-};
-
-FWasabiEmotion::FWasabiEmotion() 
-	: EmotionName(FString()), Strength(0.0f), bActive(false)  {}
-
-FWasabiEmotion::FWasabiEmotion(const FString& emotionName) 
-	: EmotionName(FString(emotionName)), Strength(0.0f), bActive(false) {}
-
-FWasabiEmotion::FWasabiEmotion(const FString& emotionName, const FWasabiSpacePointPADEmotion& wasabiSpacePointPADEmotion)
-	: EmotionName(FString(emotionName)), Strength(0.0f), bActive(false), EmotionSpacePoints(std::initializer_list<FWasabiSpacePointPADEmotion>({ wasabiSpacePointPADEmotion })) {}
-
-FWasabiEmotion::FWasabiEmotion(const FString& emotionName, const std::initializer_list<FWasabiSpacePointPADEmotion>& wasabiSpacePointPADEmotion)
-	: EmotionName(FString(emotionName)), Strength(0.0f), bActive(false), EmotionSpacePoints(wasabiSpacePointPADEmotion) {}
-
-USTRUCT(BlueprintType)
-struct PROJECT_API FWasabiEngineStepState
+struct SANDBOXAI_API FWasabiEngineStepState
 {
 	GENERATED_BODY()
 
@@ -189,7 +151,7 @@ FWasabiEngineStepState::FWasabiEngineStepState() : PAD(FWasabiSpacePointPAD::Zer
 FWasabiEngineStepState::FWasabiEngineStepState(const FWasabiSpacePointPAD& iPAD, const FWasabiSpacePointVMB& iVMB, int32 iIndex, float iInputValency) : PAD(iPAD), VMB(iVMB), Index(iIndex), InputValency(iInputValency) {}
 
 USTRUCT(BlueprintType)
-struct PROJECT_API FWasabiEngineStepStateCGI : public FWasabiEngineStepState
+struct SANDBOXAI_API FWasabiEngineStepStateCGI : public FWasabiEngineStepState
 {
 	GENERATED_BODY()
 

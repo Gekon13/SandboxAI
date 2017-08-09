@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "UObject/NoExportTypes.h"
+#include "CoreMinimal.h"
 #include "AIEmotionConstants.h"
 #include "AIEmotionKnowledge.generated.h"
 
-UCLASS(BlueprintType)
-class PROJECT_API UAIEmotionKnowledge : public UObject
+USTRUCT(BlueprintType)
+struct PROJECT_API FAIEmotionKnowledge
 {
 	GENERATED_BODY()
 
@@ -16,6 +16,6 @@ public: //members // TODO: expand on this
 		TArray<FString> AvailableActionNames;
 
 public: //methods
-	UAIEmotionKnowledge();
+	FAIEmotionKnowledge();
 
 };

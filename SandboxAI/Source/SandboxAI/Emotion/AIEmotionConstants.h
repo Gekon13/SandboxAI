@@ -71,10 +71,3 @@ enum class EEmotionEngineModel : uint8
 	Simplex = 3 UMETA(DisplayName = "SIMPLEX"),
 	Wasabi = 4 UMETA(DisplayName = "WASABI"),
 };
-
-UENUM(BlueprintType)
-enum class EEmotionSimpleValency : uint8
-{
-	Positive = 0 UMETA(DisplayName = "Positive"),
-	Negative = 1 UMETA(DisplayName = "Negative"),
-};

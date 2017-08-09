@@ -10,7 +10,7 @@
  * 
  */
 UCLASS(BlueprintType)
-class PROJECT_API UAIWasabiBaseEngineCore : public UObject
+class SANDBOXAI_API UAIWasabiBaseEngineCore : public UObject
 {
 	GENERATED_BODY()
 
@@ -29,5 +29,5 @@ public:
 		virtual void Tick(float DeltaSeconds);
 
 	UFUNCTION(BlueprintPure)
-		FORCEINLINE FWasabiSpacePointPAD GetWasabiSpacePointPAD() const { return WasabiSpacePointPAD; }
+		FORCEINLINE FWasabiSpacePointPAD GetWasabiSpacePointPAD() { return WasabiSpacePointPAD; }
 };
