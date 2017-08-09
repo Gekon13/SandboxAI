@@ -10,7 +10,7 @@ UAIBaseEmotionEngine::UAIBaseEmotionEngine()
 {
 }
 
-void UAIBaseEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
+void UAIBaseEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
 {
 	EmotionKnowledge = emotionKnowledge;
 }
@@ -18,7 +18,7 @@ void UAIBaseEmotionEngine::TickEmotionEngine(float deltaSeconds)
 {
 }
 
-FAIEmotionState UAIBaseEmotionEngine::GetEmotiomState() const
+FAIEmotionState UAIBaseEmotionEngine::GetEmotionState() const
 {
 	return FAIEmotionState();
 }

@@ -13,7 +13,7 @@ UAIWasabiEmotionEngine::UAIWasabiEmotionEngine()
 	SomeOtherName = TEXT("Wasabi");
 }
 
-void UAIWasabiEmotionEngine::InitializeEmotionEngine(FAIEmotionKnowledge* emotionKnowledge)
+void UAIWasabiEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
 {
 	Super::InitializeEmotionEngine(emotionKnowledge);
 
@@ -27,6 +27,22 @@ void UAIWasabiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 	if (GetEngineCore() != nullptr)
 	{
 		GetEngineCore()->Tick(DeltaSeconds);
+
+		const FWasabiSpacePointPAD currentSpacePointPAD = GetEngineCore()->GetWasabiSpacePointPAD();
+
+		JoyDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::Joy);
+		DistressDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::Distress);
+
+		if (JoyDistance > SMALL_NUMBER || DistressDistance > SMALL_NUMBER)
+		{
+			float coeficient = FMath::Clamp( JoyDistance / (JoyDistance + DistressDistance), 0.0f, 1.0f);
+
+			if (coeficient != JoyDistressCoeficient)
+			{
+				JoyDistressCoeficient = coeficient;
+				MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], JoyDistressCoeficient));
+			}
+		}
 	}
 }
 

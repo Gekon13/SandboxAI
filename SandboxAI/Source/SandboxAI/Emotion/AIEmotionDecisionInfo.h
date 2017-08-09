@@ -7,7 +7,7 @@
 #include "AIEmotionDecisionInfo.generated.h"
 
 /// Info about action that emotion component decided to take
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType, Blueprintable)
 struct PROJECT_API FEmotionDecisionInfo
 {
 	GENERATED_BODY()

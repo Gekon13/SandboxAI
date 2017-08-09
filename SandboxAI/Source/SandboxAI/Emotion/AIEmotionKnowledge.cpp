@@ -3,8 +3,7 @@
 #include "SandboxAI.h"
 #include "AIEmotionKnowledge.h"
 
-FAIEmotionKnowledge::FAIEmotionKnowledge()
+UAIEmotionKnowledge::UAIEmotionKnowledge()
 {
-	AvailableActionNames.Add(FString(TEXT("Faster")));
-	AvailableActionNames.Add(FString(TEXT("Slower")));
+	AvailableActionNames.Add(FString(TEXT("Run")));
 }
