@@ -3,9 +3,17 @@
 #include "SandboxAI.h"
 #include "PsiAIController.h"
 
-APsiAIController::APsiAIController() : Super(), PsiEmotionsComponent(nullptr), PsiDrives(FPsiDrives()), PsiMotivations(FPsiMotivations()), PsiGoal(FPsiGoal())
+APsiAIController::APsiAIController() : Super()
 {
-
+	//Agent drives init
+	PsiEmotionsComponent = nullptr;
+	Drives.Add(FPsiDrive(0.0f, 0.0f, EPsiDrive::ESafety));
+	//Drives.Add(FPsiDrive(0.0f, 0.0f, EPsiDrive::ECuriosity));
+//	FActionDelegate first,sec;
+//	first.BindUObject(this, &APsiAIController::MoveSlower);
+//	sec.BindUObject(this, &APsiAIController::MoveFaster);
+//	Knowledge.Add(FKnowledgeStruct(first, EPsiDrive::ESafety));
+//	Knowledge.Add(FKnowledgeStruct(sec, EPsiDrive::ESafety));
 }
 
 void APsiAIController::Possess(APawn * InPawn)
@@ -28,30 +36,56 @@ void APsiAIController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	ProcessPsiTheory();
-	SetEmotionVisualColor(FMath::Lerp<FLinearColor>(FLinearColor::Green, FLinearColor::Red, (PsiEmotionsComponent->Emotions[0].Value + 1 ) / 2));
+	SetEmotionVisualColor(FMath::Lerp<FLinearColor>(FLinearColor::Green, FLinearColor::Red, (0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f))));
 }
 
 void APsiAIController::ProcessPsiTheory()
 {
-	PsiMotivations.Motivations = PsiDrives.GenerateMotivations();
-	PsiGoal = PsiMotivations.GenerateGoal();
+	ProcessDrives();
+	ProcessMotivations();
+	
+	GEngine->AddOnScreenDebugMessage(-2, GetWorld()->GetDeltaSeconds(), FColor::Blue, FString::Printf(TEXT("Safety:%.4f"), Drives[0].Value));
+	GEngine->AddOnScreenDebugMessage(-3, GetWorld()->GetDeltaSeconds(), FColor::Yellow, FString::Printf(TEXT("SpeedModifier:%.4f"), (0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f))));
+	//TArray<FKnowledgeStruct> actions;
+	//for (int i = 0; i < Knowledge.Num(); ++i)
+	//{
+	//	if (Knowledge[i].DriveType == Goal.Type)
+	//		actions.Add(Knowledge[i]);
+	//}
 
-	switch (PsiGoal.Type)
+	//if (PsiEmotionsComponent->Emotions[0].Value > 0)
+	//{
+	//	Knowledge[0].ActionDelegate.Execute(0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f));
+
+	//}
+	//else if (PsiEmotionsComponent->Emotions[0].Value < 0)
+	//{
+	//	Knowledge[1].ActionDelegate.Execute(0.5f * (PsiEmotionsComponent->Emotions[0].Value + 1.f));
+	//}
+}
+
+void APsiAIController::ProcessDrives()
+{
+	Motivations.Empty();
+	for (int i = 0; i < Drives.Num(); ++i)
 	{
-	case EPsiDrive::ECuriosity:
-		if (PsiEmotionsComponent->Emotions[0].Value > 0.0f)
-			MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
-		else
-			MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
-		break;
-	case EPsiDrive::ESafety:
-		if (PsiEmotionsComponent->Emotions[0].Value > 0.0f)
-			MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
-		else
-			MoveFaster(0.5f * (PsiGoal.Value + 1.f)/* * PsiEmotionsComponent->Emotions[0].Value*/);
-		break;
+		if (Drives[i].CheckDriveState())
+			Motivations.Add(Drives[i].GenerateMotivation());
 	}
 }
+
+void APsiAIController::ProcessMotivations()
+{
+	int index = 0;
+	for (int i = 1; i < Motivations.Num(); ++i)
+	{
+		if (Motivations[i].Value > Motivations[index].Value)
+			index = i;
+	}
+	this->Goal = FPsiGoal(Motivations[index].Value, Motivations[index].Type);
+}
+
+
 
 void APsiAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement EmotionStimulusElement)
 {
@@ -60,25 +94,27 @@ void APsiAIController::HandleEmotionStimulusElement_Implementation(FEmotionStimu
 		PsiEmotionsComponent->ProcessEmotionStimulusElement(EmotionStimulusElement);
 	}
 
-	switch (EmotionStimulusElement.EmotionStimulusElementType)
-	{
-	case EEmotionStimulusElementType::EPositive:
-		PsiDrives.Drives[0].Value = FMath::Clamp((PsiDrives.Drives[0].Value - (EmotionStimulusElement.Power / 100.f) * 0.5f), 0.0f, 1.0f);
-		PsiDrives.Drives[1].Value = FMath::Clamp((PsiDrives.Drives[1].Value + (EmotionStimulusElement.Power / 100.f) * 0.3f), 0.0f, 1.0f);
-		break;
-	case EEmotionStimulusElementType::ENegative:
-		PsiDrives.Drives[0].Value = FMath::Clamp((PsiDrives.Drives[0].Value + (EmotionStimulusElement.Power / 100.f) * 0.5f), 0.0f, 1.0f);
-		PsiDrives.Drives[1].Value = FMath::Clamp((PsiDrives.Drives[0].Value - (EmotionStimulusElement.Power / 100.f) * 0.3f), 0.0f, 1.0f);
-		break;
-	}
+	Drives[0].Value = FMath::Clamp((Drives[0].Value + (EmotionStimulusElement.Power / 100.f) * 0.5f), 0.0f, 1.0f);
+	//switch (EmotionStimulusElement.EmotionStimulusElementType)
+	//{
+	//case EEmotionStimulusElementType::EPositive:
+	//	//Drives[1].Value = FMath::Clamp((Drives[1].Value + (EmotionStimulusElement.Power / 100.f) * 0.3f), 0.0f, 1.0f);
+	//	break;
+	//case EEmotionStimulusElementType::ENegative:
+	//	Drives[0].Value = FMath::Clamp((Drives[0].Value + (EmotionStimulusElement.Power / 100.f) * 0.5f), 0.0f, 1.0f);
+	//	//Drives[1].Value = FMath::Clamp((Drives[0].Value - (EmotionStimulusElement.Power / 100.f) * 0.3f), 0.0f, 1.0f);
+	//	break;
+	//}
 }
 
 void APsiAIController::MoveSlower(float value)
 {
 	SetFollowSpeedCoefficient(value);
+	Drives[0].Value = FMath::Clamp((Drives[0].Value - 0.005f), 0.0f, 1.0f);
 }
 
 void APsiAIController::MoveFaster(float value)
 {
 	SetFollowSpeedCoefficient(value);
+	Drives[0].Value = FMath::Clamp((Drives[0].Value - 0.005f), 0.0f, 1.0f);
 }

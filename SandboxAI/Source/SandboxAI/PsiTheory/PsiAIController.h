@@ -2,7 +2,7 @@
 
 #pragma once
 #include "PsiEmotions.h"
-#include "PsiStructures.h"
+#include "../Emotion/Psi/PsiStructures.h"
 #include "FixedPath/SandboxAISplineAIController.h"
 #include "PsiAIController.generated.h"
 
@@ -18,13 +18,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 	class UPsiEmotions* PsiEmotionsComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
-	FPsiDrives PsiDrives;
+	TArray<FPsiDrive> Drives;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
-	FPsiMotivations PsiMotivations;
+	TArray<FPsiMotivation> Motivations;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
-	FPsiGoal PsiGoal;
+	FPsiGoal Goal;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
+	//TArray<FKnowledgeStruct> Knowledge;
 
 public:
+
+	typedef void (APsiAIController::*FunctionPtrType)(float);
+
 	APsiAIController();
 
 	virtual void Possess(APawn* InPawn) override;
@@ -34,6 +39,8 @@ public:
 
 protected:
 	virtual void ProcessPsiTheory();
+	virtual void ProcessDrives();
+	virtual void ProcessMotivations();
 	virtual void HandleEmotionStimulusElement_Implementation(FEmotionStimulusElement EmotionStimulusElement) override;
 	virtual void MoveSlower(float value);
 	virtual void MoveFaster(float value);

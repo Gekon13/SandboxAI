@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "PsiStructures.h"
+#include "../Emotion/Psi/PsiStructures.h"
 #include "SandboxAIStructures.h"
 #include "Components/ActorComponent.h"
 #include "PsiEmotions.generated.h"
@@ -37,6 +37,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 	TArray<FPsiEmotion> Emotions;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
+		bool Flag;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
+		float Timer;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
+		float TresholdValue;
 	// Sets default values for this component's properties
 
 protected:
