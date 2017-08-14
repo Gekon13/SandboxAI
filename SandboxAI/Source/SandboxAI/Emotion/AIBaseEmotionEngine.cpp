@@ -8,6 +8,8 @@
 
 UAIBaseEmotionEngine::UAIBaseEmotionEngine()
 {
+	EmotionKnowledge = nullptr;
+	bDoesImplementCustomCongition = false;
 }
 
 void UAIBaseEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
@@ -34,6 +36,11 @@ void UAIBaseEmotionEngine::DirectValencedImpulse(float value, bool bContinuous)
 }
 
 void UAIBaseEmotionEngine::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
+{
+
+}
+
+void UAIBaseEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor)
 {
 
 }

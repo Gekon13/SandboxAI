@@ -117,8 +117,15 @@ enum class EEmotionActionName : uint8
 	WalkAway				UMETA(DisplayName = "Walk away"),
 	RunAway					UMETA(DisplayName = "Run away"),
 	See						UMETA(DisplayName = "See"),
-	JoyfulGesture			UMETA(DisplayName = "Joyful Gesture"),
-	DistressfulGesture		UMETA(DisplayName = "Distressful Gesture"),
+
+	JoyfulGesture			UMETA(DisplayName = "Joyful Gesture"), // for Joy
+	DistressfulGesture		UMETA(DisplayName = "Distressful Gesture"), // for Distress
+
+	LovableGesture			UMETA(DisplayName = "Lovable Gesture"), // for Love
+	HatefulGesture			UMETA(DisplayName = "Hateful Gesture"), // for Hate
+
+	HopePromisingGesture	UMETA(DisplayName = "Hope promising Gesture"), // for Hope
+	ScaryGesture			UMETA(DisplayName = "Scary Gesture"), // for fear
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FEmotionActionPerformed, EEmotionActionName, EmotionActionName, AActor*, sourceActor, AActor*, targetActor);

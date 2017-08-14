@@ -14,14 +14,7 @@ AAIEmotionDummyActor::AAIEmotionDummyActor()
 	bContinuous = false;
 	Value = 0.5f;
 
-	//UAISenseConfig* config;
-	//UAISenseConfig_Sight::
-	StimuliSourceComponent = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("AIPerception Stimuli source"));
-	
-	//StimuliSourceComponent->bAutoRegisterAsSource = true;
-	//UAISense_Sight sightSense;
-	//sightSense.
-	StimuliSourceComponent->RegisterForSense(UAISense_Sight::StaticClass());
+	SightStimuliComponent = CreateDefaultSubobject<UAIEmotionSightStimuliComponent>(TEXT("AIEmotion Sight Stimuli Component"));
 }
 
 EEmotionSimpleValency AAIEmotionDummyActor::GetValency_Implementation()

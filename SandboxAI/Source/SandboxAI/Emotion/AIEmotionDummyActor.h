@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Perception/AISense_Sight.h"
 
+#include "Utility/AIEmotionSightStimuliComponent.h"
 #include "Emotion/AIEmotionConstants.h"
 #include "AIEmotionDummyInterface.h"
 
@@ -13,6 +14,7 @@
 
 class UAIPerceptionStimuliSourceComponent;
 
+/** Make sure to setup AIPerceptionStimuliSourceComponent since it  has field with acces from blueprints only */
 UCLASS()
 class SANDBOXAI_API AAIEmotionDummyActor : public AActor, public IAIEmotionDummyInterface
 {
@@ -22,7 +24,7 @@ public: // members
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dummy | Actor")
-		UAIPerceptionStimuliSourceComponent* StimuliSourceComponent;
+		UAIEmotionSightStimuliComponent* SightStimuliComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dummy | Emotion")
 		EEmotionSimpleValency Valency;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dummy | Emotion")

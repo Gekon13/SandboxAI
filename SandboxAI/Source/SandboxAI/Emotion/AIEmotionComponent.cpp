@@ -3,8 +3,11 @@
 #include "SandboxAI.h"
 #include "AIEmotionComponent.h"
 #include "AIEmotionDummyInterface.h"
+#include "AIEmotionVisibleInterface.h"
+
 #include "AIController.h"
 #include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISense_Sight.h"
 
 UAIEmotionComponent::UAIEmotionComponent()
 {
@@ -88,7 +91,7 @@ void UAIEmotionComponent::TickComponent(float DeltaSeconds, ELevelTick TickType,
 				IAIEmotionDummyInterface* emotionDummy = KnownEmotionDummies[knownDummyIndex];
 				if (emotionDummy->Execute_IsContinuous(Cast<UObject>(emotionDummy)))
 				{
-					float continuousEmotionImpulseValue;
+					float continuousEmotionImpulseValue = 0.0f;
 					switch (emotionDummy->Execute_GetValency(Cast<UObject>(emotionDummy)))
 					{
 					case EEmotionSimpleValency::Positive:
@@ -134,7 +137,7 @@ void UAIEmotionComponent::OnPerceptionUpdatedActor(AActor* Actor, FAIStimulus St
 			}
 			else
 			{
-				float emotionImpulseValue;
+				float emotionImpulseValue = 0.0f;
 				switch (emotionDummy->Execute_GetValency(Cast<UObject>(emotionDummy)))
 				{
 				case EEmotionSimpleValency::Positive:
@@ -148,6 +151,25 @@ void UAIEmotionComponent::OnPerceptionUpdatedActor(AActor* Actor, FAIStimulus St
 			}
 		}
 
-		GetEmotionEngine()->OnTargetPerceptionUpdated(Actor, Stimulus);
+		if (Stimulus.Type == UAISense_Sight::GetSenseID(UAISense_Sight::StaticClass()))
+		{
+			IAIEmotionVisibleInterface* emotionVisible = Cast<IAIEmotionVisibleInterface>(Actor);
+			if (emotionVisible != nullptr)
+			{
+				if (Stimulus.WasSuccessfullySensed())
+				{
+					emotionVisible->OnEmotionActionPerformed.AddDynamic(GetEmotionEngine(), &UAIBaseEmotionEngine::HandleEmotionActionPerformed);
+				}
+				else
+				{
+					emotionVisible->OnEmotionActionPerformed.RemoveDynamic(GetEmotionEngine(), &UAIBaseEmotionEngine::HandleEmotionActionPerformed);
+				}
+			}
+		}
+
+		if (GetEmotionEngine()->DoesImplementCustomCognition())
+		{
+			GetEmotionEngine()->OnTargetPerceptionUpdated(Actor, Stimulus);
+		}
 	}
 }

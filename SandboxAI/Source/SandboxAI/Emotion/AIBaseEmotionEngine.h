@@ -46,6 +46,10 @@ public:
 protected: //members
 	UAIEmotionKnowledge* EmotionKnowledge;
 
+	/** Whether OnTargetPerceptionUpdated should be called on particular engine */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool bDoesImplementCustomCongition;
+
 public: //methods
 	UAIBaseEmotionEngine();
 
@@ -70,6 +74,13 @@ public: //methods
 
 	//callback used by Teyon from AIPerceptionComponent, there will be call in here some day, so think about implementation
 	virtual void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);	// <<< OVERRIDE <<< real input
+
+	FORCEINLINE bool DoesImplementCustomCognition() const { return bDoesImplementCustomCongition; }
+
+	// from AIEmotionConstants.h
+	//DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FEmotionActionPerformed, EEmotionActionName, EmotionActionName, AActor*, sourceActor, AActor*, targetActor);
+
+	virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor);  // <<<  OVERRIDE  <<<
 
 protected:
 	/** 
