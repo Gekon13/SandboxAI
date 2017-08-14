@@ -63,6 +63,33 @@ enum class EEmotionName : uint8
 	Bore = 23 UMETA(DisplayName = "Bore"),
 };
 
+UENUM(BlueprintType)
+enum class EEmotionPairName : uint8
+{
+	None = 0 UMETA(DisplayName = "None"),
+
+	Joy_Distress				UMETA(DisplayName = "Joy-Distress"),
+
+	Happyfor_Pitty				UMETA(DisplayName = "Happyfor-Pitty"),
+
+	Pride_Shame					UMETA(DisplayName = "Pride-Shame"),
+
+	Admiration_Gloating			UMETA(DisplayName = "Admiration-Gloating"),
+
+	Gratitude_Resentment		UMETA(DisplayName = "Gratitude-Resentment"),
+
+	Anger_Remorse				UMETA(DisplayName = "Anger-Remorse"),
+
+	Love_Hate					UMETA(DisplayName = "Love-Hate"),
+
+	Hope_Fear					UMETA(DisplayName = "Hope-Fear"),
+
+	Relief_FearsConfirmed		UMETA(DisplayName = "Relief-FearsConfirmed"),
+
+	Satisfaction_Disapointment	UMETA(DisplayName = "Satisfaction-Disapointment"),
+
+	Concentration_Bore			UMETA(DisplayName = "Concentration-Bore"),
+};
 
 UENUM(BlueprintType)
 enum class EEmotionEngineModel : uint8
@@ -81,6 +108,21 @@ enum class EEmotionSimpleValency : uint8
 	Negative = 1 UMETA(DisplayName = "Negative"),
 };
 
+UENUM(BlueprintType)
+enum class EEmotionActionName : uint8
+{
+	None = 0,
+	WalkTowards				UMETA(DisplayName = "Walk towards"),
+	RunTowards				UMETA(DisplayName = "Run towards"),
+	WalkAway				UMETA(DisplayName = "Walk away"),
+	RunAway					UMETA(DisplayName = "Run away"),
+	See						UMETA(DisplayName = "See"),
+	JoyfulGesture			UMETA(DisplayName = "Joyful Gesture"),
+	DistressfulGesture		UMETA(DisplayName = "Distressful Gesture"),
+};
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FEmotionActionPerformed, EEmotionActionName, EmotionActionName, AActor*, sourceActor, AActor*, targetActor);
+
 USTRUCT(BlueprintType)
 struct PROJECT_API FAIEmotionConstants
 {
@@ -88,6 +130,7 @@ struct PROJECT_API FAIEmotionConstants
 
 public:
 	
+	/** For use with logging and general utility */
 	static TMap<EEmotionName, FString> EmotionNames;
 
 private:
