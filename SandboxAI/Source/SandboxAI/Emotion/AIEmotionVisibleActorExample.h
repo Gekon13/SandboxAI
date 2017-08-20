@@ -11,6 +11,7 @@
 class USceneComponent;
 class UStaticMeshComponent;
 class UTextRenderComponent;
+class UAIEmotionSightStimuliComponent;
 
 UCLASS()
 class SANDBOXAI_API AAIEmotionVisibleActorExample : public AActor, public IAIEmotionVisibleInterface

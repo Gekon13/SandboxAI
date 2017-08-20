@@ -2,7 +2,7 @@
 
 #include "SandboxAI.h"
 #include "AIEmotionComponent.h"
-#include "AIEmotionDummyInterface.h"
+#include "Dummies/AIEmotionDummyInterface.h"
 #include "AIEmotionVisibleInterface.h"
 
 #include "GameFramework/Pawn.h"

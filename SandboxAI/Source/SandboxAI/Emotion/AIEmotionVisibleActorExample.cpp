@@ -5,6 +5,7 @@
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "Emotion/Utility/AIEmotionSightStimuliComponent.h"
 
 #include "AIEmotionVisibleActorExample.h"
 
