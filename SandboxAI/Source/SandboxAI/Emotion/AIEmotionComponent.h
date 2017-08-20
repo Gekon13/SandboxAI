@@ -16,6 +16,7 @@
 #include "AIEmotionComponent.generated.h"
 
 class UAIEmotionComponent;
+class APawn;
 class AAIController;
 class AAIEmotionDummyPawn;
 class IAIEmotionDummyInterface;
@@ -48,6 +49,7 @@ protected:
 		UAIWasabiEmotionEngine* WasabiEmotionEngine;
 
 	UAIBaseEmotionEngine* EmotionEnginePtr;
+	APawn* ControlledPawn;
 	AAIController* AIController;
 	TArray<IAIEmotionDummyInterface*> KnownEmotionDummies;
 

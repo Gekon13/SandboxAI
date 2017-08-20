@@ -42,7 +42,7 @@ void UAIBaseEmotionEngine::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus 
 
 void UAIBaseEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor)
 {
-
+	// handle emotion perception
 }
 
 void UAIBaseEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
