@@ -2,11 +2,11 @@
 
 #include "SandboxAI.h"
 #include "AISimplexEmotionEngine.h"
+#include "AISimplexAppraisalModule.h"
+#include "Emotion/AIEmotionKnowledge.h"
 
 UAISimplexEmotionEngine::UAISimplexEmotionEngine()
 {
-	SomeName = TEXT("Simplex");
-	SomeOtherName = TEXT("Simplex");
 }
 
 void UAISimplexEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
@@ -17,6 +17,12 @@ void UAISimplexEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emoti
 	CurrentEmotionalState = NeutralEmotionalState;
 
 	DecayFactor = Personality.GetDecayFactor();
+
+	Memory = NewObject<UAIEmotionKnowledge>();
+
+	AppraisalModule = NewObject<UAISimplexAppraisalModule>();
+	//nullptr should be replaced by something like GetOwningActor();
+	AppraisalModule->InitializeAppraisalModule(EmotionKnowledge, Memory, &Personality, nullptr);
 }
 
 void UAISimplexEmotionEngine::TickEmotionEngine(float DeltaSeconds)
@@ -29,8 +35,21 @@ void UAISimplexEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 	float DistanceFromDistress = FSimplexPADPoint::Dist(CurrentEmotionalState, FSimplexPADPoint::Distress);
 	float JoyDistress = FMath::Clamp(DistanceFromDistress - DistanceFromJoy, -1.0f, 1.0f);
 
-	//Temporary, will be removed later
+	//Temporary, will be removed later (when real knowledge about actions->consequences will come)
 	UpdateRunAction(JoyDistress);
+}
+
+void UAISimplexEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor)
+{
+	if(AppraisalModule)
+	{
+		TArray<FSimplexPADPoint> EmotionalStateChanges = AppraisalModule->DoAppraisal(EmotionActionName, SourceActor, TargetActor);
+
+		for(auto Iterator = EmotionalStateChanges.CreateIterator(); Iterator; ++Iterator)
+		{
+			CurrentEmotionalState += (*Iterator);
+		}
+	}
 }
 
 float UAISimplexEmotionEngine::GetEngineScale() const
