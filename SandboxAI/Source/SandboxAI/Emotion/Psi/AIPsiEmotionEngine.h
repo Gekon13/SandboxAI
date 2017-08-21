@@ -43,6 +43,8 @@ protected:
 
 	virtual void DirectValencedImpulseInternal(float value, bool bContinuous);
 
+	virtual void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus) override;
+
 	virtual void ProcessPsiTheory();
 	virtual void ProcessDrives();
 	virtual void ProcessMotivations();
