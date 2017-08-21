@@ -6,6 +6,9 @@
 #include "AISimplexStructures.h"
 #include "AISimplexEmotionEngine.generated.h"
 
+class UAISimplexAppraisalModule;
+class UAIEmotionKnowledge;
+
 UCLASS(BlueprintType)
 class PROJECT_API UAISimplexEmotionEngine : public UAIBaseEmotionEngine
 {
@@ -22,17 +25,17 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotions")
 		float DecayFactor;
 
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString SomeName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString SomeOtherName;
+	UAISimplexAppraisalModule* AppraisalModule;
+	UAIEmotionKnowledge* Memory;
 
 public:
 	UAISimplexEmotionEngine();
 	
 	virtual void InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge) override;
 	virtual void TickEmotionEngine(float DeltaSeconds) override;
+
+	UFUNCTION()
+	virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor) override;
 
 protected:
 	virtual float GetEngineScale() const override;
