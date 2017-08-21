@@ -40,6 +40,7 @@ float UAIPsiEmotionEngine::GetEngineScale() const
 
 void UAIPsiEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
 {
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "psi");
 	if (value < 0.0f)
 	{
 		Emotions[1].Strength += FMath::Abs(value);
@@ -54,7 +55,33 @@ void UAIPsiEmotionEngine::DirectValencedImpulseInternal(float value, bool bConti
 
 void UAIPsiEmotionEngine::OnTargetPerceptionUpdated(AActor * Actor, FAIStimulus Stimulus)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Perception");
+
+}
+
+void UAIPsiEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor * sourceActor, AActor * targetActor)
+{
+	for (int i = 0; i < knowledge->Informations.Num(); ++i)
+	{
+		FAIEmotionInformation info = knowledge->Informations[i];
+		if (EmotionActionName == info.EmotionActionName && targetActor->GetName() == info.ActionSource.TargetName.ToString())
+		{
+			for (int j = 0; j < info.EmotionDeltas.Num(); ++j)
+			{
+				switch (info.EmotionDeltas[j].EmotionPairName)
+				{
+				case EEmotionPairName::Joy_Distress:
+					float value = info.EmotionDeltas[j].EmotionPairDelta;
+					if (value > 0)
+						Emotions[0].Strength += FMath::Abs(value);
+					else
+						Emotions[1].Strength += FMath::Abs(value);
+
+					Drives[0].Value = FMath::Clamp(Drives[0].Value + FMath::Abs(value), 0.0f, 1.0f);
+					break;
+				}
+			}
+		}
+	}
 }
 
 void UAIPsiEmotionEngine::ProcessPsiTheory()

@@ -45,6 +45,8 @@ protected:
 
 	virtual void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus) override;
 
+	virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor) override;
+
 	virtual void ProcessPsiTheory();
 	virtual void ProcessDrives();
 	virtual void ProcessMotivations();
