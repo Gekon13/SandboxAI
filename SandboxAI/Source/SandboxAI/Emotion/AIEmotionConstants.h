@@ -117,6 +117,7 @@ enum class EEmotionActionName : uint8
 	WalkAway				UMETA(DisplayName = "Walk away"),
 	RunAway					UMETA(DisplayName = "Run away"),
 	See						UMETA(DisplayName = "See"),
+	UnSee					UMETA(DisplayName = "Lost from sight"),
 
 	JoyfulGesture			UMETA(DisplayName = "Joyful Gesture"), // for Joy
 	DistressfulGesture		UMETA(DisplayName = "Distressful Gesture"), // for Distress
@@ -139,8 +140,10 @@ public:
 	
 	/** For use with logging and general utility */
 	static TMap<EEmotionName, FString> EmotionNames;
+	static TMap<EEmotionActionName, FString> ActionNames;
 
 private:
 
 	static TMap<EEmotionName, FString> BuildEmotionNamesMap();
+	static TMap<EEmotionActionName, FString> BuildActionNamesMap();
 };

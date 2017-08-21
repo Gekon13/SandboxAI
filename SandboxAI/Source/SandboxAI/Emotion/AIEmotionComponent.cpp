@@ -2,9 +2,10 @@
 
 #include "SandboxAI.h"
 #include "AIEmotionComponent.h"
-#include "AIEmotionDummyInterface.h"
+#include "Dummies/AIEmotionDummyInterface.h"
 #include "AIEmotionVisibleInterface.h"
 
+#include "GameFramework/Pawn.h"
 #include "AIController.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISense_Sight.h"
@@ -60,7 +61,6 @@ void UAIEmotionComponent::BeginPlay()
 		}
 	}
 
-
 	// Get owning actor
 	AActor* owningActor = GetOwner();
 	if (owningActor != nullptr)
@@ -72,6 +72,8 @@ void UAIEmotionComponent::BeginPlay()
 			{
 				AIController->GetPerceptionComponent()->OnTargetPerceptionUpdated.AddDynamic(this, &UAIEmotionComponent::OnPerceptionUpdatedActor);
 			}
+
+			ControlledPawn = AIController->GetPawn();
 		}
 	}
 }
@@ -116,6 +118,7 @@ void UAIEmotionComponent::ReceivePassedDecision(const FEmotionDecisionInfo& deci
 
 void UAIEmotionComponent::OnPerceptionUpdatedActor(AActor* Actor, FAIStimulus Stimulus)
 {
+	//UE_LOG(LogTemp, Log, TEXT("[%s] See: %s"), *GetName(), *Actor->GetName());
 	if (GetEmotionEngine() != nullptr && Actor != nullptr)
 	{
 		IAIEmotionDummyInterface* emotionDummy = Cast<IAIEmotionDummyInterface>(Actor);
@@ -159,9 +162,11 @@ void UAIEmotionComponent::OnPerceptionUpdatedActor(AActor* Actor, FAIStimulus St
 				if (Stimulus.WasSuccessfullySensed())
 				{
 					emotionVisible->OnEmotionActionPerformed.AddDynamic(GetEmotionEngine(), &UAIBaseEmotionEngine::HandleEmotionActionPerformed);
+					emotionVisible->RequestSeeAction(ControlledPawn);
 				}
 				else
 				{
+					emotionVisible->RequestUnSeeAction(ControlledPawn);
 					emotionVisible->OnEmotionActionPerformed.RemoveDynamic(GetEmotionEngine(), &UAIBaseEmotionEngine::HandleEmotionActionPerformed);
 				}
 			}

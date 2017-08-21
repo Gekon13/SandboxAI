@@ -80,6 +80,7 @@ public: //methods
 	// from AIEmotionConstants.h
 	//DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FEmotionActionPerformed, EEmotionActionName, EmotionActionName, AActor*, sourceActor, AActor*, targetActor);
 
+	UFUNCTION()
 	virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor);  // <<<  OVERRIDE  <<<
 
 protected:

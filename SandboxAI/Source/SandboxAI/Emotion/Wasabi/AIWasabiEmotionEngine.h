@@ -41,6 +41,9 @@ public:
 
 	FORCEINLINE UAIWasabiBaseEngineCore* GetEngineCore() const { return EngineCore; }
 
+	UFUNCTION()
+		virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor) override; 
+
 protected:
 	virtual float GetEngineScale() const override;
 

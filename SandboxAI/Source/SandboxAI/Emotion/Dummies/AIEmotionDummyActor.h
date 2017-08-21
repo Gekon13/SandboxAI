@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Perception/AISense_Sight.h"
 
-#include "Utility/AIEmotionSightStimuliComponent.h"
+#include "Emotion/Utility/AIEmotionSightStimuliComponent.h"
 #include "Emotion/AIEmotionConstants.h"
 #include "AIEmotionDummyInterface.h"
 

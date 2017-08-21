@@ -4,6 +4,7 @@
 #include "AIEmotionConstants.h"
 
 TMap<EEmotionName, FString> FAIEmotionConstants::EmotionNames = FAIEmotionConstants::BuildEmotionNamesMap();
+TMap<EEmotionActionName, FString> FAIEmotionConstants::ActionNames = FAIEmotionConstants::BuildActionNamesMap();
 
 TMap<EEmotionName, FString> FAIEmotionConstants::BuildEmotionNamesMap()
 {
@@ -45,4 +46,29 @@ TMap<EEmotionName, FString> FAIEmotionConstants::BuildEmotionNamesMap()
 	emotionNames.Add(EEmotionName::Bore, TEXT("Bore"));
 
 	return emotionNames;
+}
+
+TMap<EEmotionActionName, FString> FAIEmotionConstants::BuildActionNamesMap()
+{
+	TMap<EEmotionActionName, FString> actionNames;
+
+	actionNames.Add(EEmotionActionName::None, TEXT("None"));
+
+	actionNames.Add(EEmotionActionName::WalkTowards, TEXT("Walk towards"));
+	actionNames.Add(EEmotionActionName::RunTowards, TEXT("Run towards"));
+	actionNames.Add(EEmotionActionName::WalkAway, TEXT("Walk away"));
+	actionNames.Add(EEmotionActionName::RunAway, TEXT("Run away"));
+	actionNames.Add(EEmotionActionName::See, TEXT("See"));
+	actionNames.Add(EEmotionActionName::UnSee, TEXT("Lost from sight"));
+
+	actionNames.Add(EEmotionActionName::JoyfulGesture, TEXT("Joyful Gesture"));
+	actionNames.Add(EEmotionActionName::DistressfulGesture, TEXT("Distressful Gesture"));
+
+	actionNames.Add(EEmotionActionName::LovableGesture, TEXT("Lovable Gesture"));
+	actionNames.Add(EEmotionActionName::HatefulGesture, TEXT("Hateful Gesture"));
+
+	actionNames.Add(EEmotionActionName::HopePromisingGesture, TEXT("Hope promising Gesture"));
+	actionNames.Add(EEmotionActionName::ScaryGesture, TEXT("Scary Gesture"));
+
+	return actionNames;
 }
