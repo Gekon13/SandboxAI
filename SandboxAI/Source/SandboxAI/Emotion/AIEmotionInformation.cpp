@@ -20,7 +20,7 @@ bool FAIEmotionTarget::DoesActorMatchTarget(AActor* actor)
 		break;
 	case EEmotionTargetType::Unit:
 		{
-			return actor->IsA(TargetClass) && actor->GetFName() == TargetName;
+			return actor->IsA(TargetClass) && actor->GetFName().IsEqual(TargetName, ENameCase::IgnoreCase);
 		}
 		break;
 	default:
