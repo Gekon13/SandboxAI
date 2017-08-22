@@ -13,13 +13,19 @@ class PROJECT_API UAIEmotionKnowledge : public UObject
 	GENERATED_BODY()
 
 public: //members // TODO: expand on this
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actions")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<FString> AvailableActionNames;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actions")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<FAIEmotionInformation> Informations;
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float Scale;
 
 public: //methods
 	UAIEmotionKnowledge();
 
+	FORCEINLINE float GetScale() const { return Scale; }
+	void SetScale(float newScale);
 };

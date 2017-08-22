@@ -15,6 +15,10 @@ UAIBaseEmotionEngine::UAIBaseEmotionEngine()
 void UAIBaseEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
 {
 	EmotionKnowledge = emotionKnowledge;
+	if (EmotionKnowledge != nullptr)
+	{
+		EmotionKnowledge->SetScale(GetEngineScale());
+	}
 }
 void UAIBaseEmotionEngine::TickEmotionEngine(float deltaSeconds)
 {

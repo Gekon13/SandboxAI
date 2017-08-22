@@ -19,9 +19,12 @@ public:
 	UAIEmotionKnowledge* Knowledge;
 	UAIEmotionKnowledge* Memory;
 
+protected:
+
+
 public:
 	FAIWasabiAppraisal();
-	FAIWasabiAppraisal(UAIWasabiBaseEngineCore* wasabiEngineCore, UAIEmotionKnowledge* knowledge, UAIEmotionKnowledge* memory = nullptr);
+	void Initialize(UAIWasabiBaseEngineCore* wasabiEngineCore, UAIEmotionKnowledge* knowledge, UAIEmotionKnowledge* memory = nullptr);
 	
 	void AppraiseAction(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor);
 

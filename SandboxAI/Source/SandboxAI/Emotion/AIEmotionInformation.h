@@ -37,7 +37,7 @@ public:
 	FORCEINLINE FAIEmotionTarget(TSubclassOf<AActor> targetClass);
 	FORCEINLINE FAIEmotionTarget(TSubclassOf<AActor> targetClass, FName targetName);
 
-	bool DoesActorMatchTarget(AActor* actor);
+	bool DoesActorMatchTarget(AActor* actor) const;
 	static FAIEmotionTarget AsClassTarget(AActor* actor);
 	static FAIEmotionTarget AsUnitTarget(AActor* actor);
 };

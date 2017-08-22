@@ -4,23 +4,23 @@
 #include "AIEmotionInformation.h"
 #include "GameFramework/Actor.h"
 
-bool FAIEmotionTarget::DoesActorMatchTarget(AActor* actor)
+bool FAIEmotionTarget::DoesActorMatchTarget(AActor* actor) const
 {
 	switch (EmotionTargetType)
 	{
 	case EEmotionTargetType::None:
 		{
-			return false;
+			return true; // if no target for emotion is specified action should match as one not requiring target
 		}
 		break;
 	case EEmotionTargetType::Class:
 		{
-			return actor->IsA(TargetClass);
+			return actor != nullptr && actor->IsA(TargetClass);
 		}
 		break;
 	case EEmotionTargetType::Unit:
 		{
-			return actor->IsA(TargetClass) && actor->GetFName().IsEqual(TargetName, ENameCase::IgnoreCase);
+			return actor != nullptr && actor->IsA(TargetClass) && actor->GetFName().IsEqual(TargetName, ENameCase::IgnoreCase);
 		}
 		break;
 	default:

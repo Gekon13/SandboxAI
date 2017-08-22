@@ -6,6 +6,8 @@
 
 UAIEmotionKnowledge::UAIEmotionKnowledge()
 {
+	Scale = 1.0f;
+
 	AvailableActionNames.Add(FString(TEXT("Run")));
 
 	Informations.Add(FAIEmotionInformation(EEmotionActionName::JoyfulGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) })));
@@ -17,6 +19,31 @@ UAIEmotionKnowledge::UAIEmotionKnowledge()
 	Informations.Add(FAIEmotionInformation(EEmotionActionName::HopePromisingGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Hope_Fear, 0.5f) })));
 	Informations.Add(FAIEmotionInformation(EEmotionActionName::ScaryGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Hope_Fear, -0.5f) })));
 
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, FAIEmotionTarget(AActor::StaticClass(), FName("Friend")), std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) })));
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, FAIEmotionTarget(AActor::StaticClass(), FName("Enemy")), std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f) })));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) }), FAIEmotionTarget(AActor::StaticClass(), FName("Friend")) ));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f) }), FAIEmotionTarget(AActor::StaticClass(), FName("Enemy")) ));
+}
+
+void UAIEmotionKnowledge::SetScale(float newScale)
+{
+	float multiplier = 1.0f;
+	if (Scale > KINDA_SMALL_NUMBER) // ensure for divisionBy0
+	{
+		multiplier = newScale / Scale;
+	}
+	else 
+	{
+		multiplier = 1.0f;
+	}
+	Scale = newScale;
+
+	int32 informationNumber = Informations.Num();
+	for (int32 informationIndex = 0; informationIndex < informationNumber; ++informationIndex)
+	{
+		int32 emotionDeltaNumber = Informations[informationIndex].EmotionDeltas.Num();
+
+		for (int32 emotionDeltaIndex = 0; emotionDeltaIndex < emotionDeltaNumber; ++emotionDeltaIndex)
+		{
+			Informations[informationIndex].EmotionDeltas[emotionDeltaIndex].EmotionPairDelta *= multiplier;
+		}
+	}
 }

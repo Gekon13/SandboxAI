@@ -54,7 +54,7 @@ void UAIEmotionComponent::BeginPlay()
 			break;
 		}
 
-		if (GetEmotionEngine() != nullptr)
+		if (GetEmotionEngine() != nullptr && EmotionKnowledge != nullptr)
 		{
 			GetEmotionEngine()->InitializeEmotionEngine(EmotionKnowledge);
 			GetEmotionEngine()->OnPassDecision.BindUObject(this, &UAIEmotionComponent::ReceivePassedDecision);

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "../AIBaseEmotionEngine.h"
+#include "Emotion/Wasabi/AIWasabiAppraisal.h"
 #include "AIWasabiEmotionEngine.generated.h"
 
 class UAIWasabiBaseEngineCore;
@@ -22,12 +23,17 @@ protected:
 	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Core")
 		UAIWasabiOriginalEngineCore* OriginalEngineCore;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Appraisal")
+		FAIWasabiAppraisal WasabiAppraisal;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Testing")
 		float JoyDistance;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Testing")
 		float DistressDistance;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Testing")
 		float JoyDistressCoeficient;
+
+	
 
 	UAIWasabiBaseEngineCore* EngineCore;
 
