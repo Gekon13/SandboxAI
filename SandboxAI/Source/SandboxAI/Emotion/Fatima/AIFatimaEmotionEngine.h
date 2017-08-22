@@ -16,6 +16,7 @@ public:
 
 	void InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge) override;
 	void TickEmotionEngine(float DeltaSeconds) override;
+	void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor) override;
 	void AddGoal(FFatimaGoal Goal) { Goals.Add(Goal); }
 
 protected:

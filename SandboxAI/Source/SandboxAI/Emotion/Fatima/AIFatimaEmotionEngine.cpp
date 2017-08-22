@@ -43,6 +43,15 @@ void UAIFatimaEmotionEngine::TickEmotionEngine(float DeltaSeconds) {
 	UpdateActions();
 }
 
+void UAIFatimaEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor) {
+	TArray<FStringFormatArg> Arguments;
+	Arguments.Add(FAIEmotionConstants::ActionNames[EmotionActionName]);
+	Arguments.Add(SourceActor->GetName());
+	Arguments.Add(TargetActor->GetName());
+	auto Text = FString::Format(TEXT("Perceived action: {0}, source: {1}, target {2}"), Arguments);
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, Text);
+}
+
 float UAIFatimaEmotionEngine::GetEngineScale() const {
 	return 1.0f;
 }

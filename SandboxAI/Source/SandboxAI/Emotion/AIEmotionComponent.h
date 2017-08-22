@@ -24,7 +24,7 @@ class IAIEmotionDummyInterface;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDecisionMade, const FEmotionDecisionInfo&, decisionInfo);
 
 /// Component responsible for simulating agents emotional state and taking actions respecting emotional state
-UCLASS(BlueprintType, Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+UCLASS(BlueprintType, Blueprintable, ClassGroup = (Custom), HideCategories = (Activation, Variable, Collision, Cooking), meta = (BlueprintSpawnableComponent))
 class PROJECT_API UAIEmotionComponent : public UActorComponent
 {
 	GENERATED_BODY()

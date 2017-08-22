@@ -22,7 +22,7 @@ UAIEmotionComponent::UAIEmotionComponent()
 	WasabiEmotionEngine = CreateDefaultSubobject<UAIWasabiEmotionEngine>(TEXT("WASABI"));
 
 	EmotionEnginePtr = nullptr;
-	EEmotionEngineModel::None;
+	EmotionEngineModel = EEmotionEngineModel::None;
 }
 
 void UAIEmotionComponent::BeginPlay()

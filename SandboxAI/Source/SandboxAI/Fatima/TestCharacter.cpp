@@ -92,18 +92,15 @@ void ATestCharacter::UpdateEmotionVisual_Implementation(FLinearColor Color) {
 
 void ATestCharacter::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus) {
 	auto EmotionSourceComponent = Cast<UEmotionSourceComponent>(Actor->GetComponentByClass(UEmotionSourceComponent::StaticClass()));
-	if (EmotionSourceComponent) {
-		auto EmotionalComponent = Cast<UEmotionalComponent>(GetComponentByClass(UEmotionalComponent::StaticClass()));
-		if (EmotionalComponent) {
-			if (EmotionSourceComponent->bContinuous) {
-				if (Stimulus.WasSuccessfullySensed()) {
-					EmotionalComponent->AddContinuousStimulus(FEmotionStimulusFatima(&EmotionSourceComponent->Appraisal, Actor, &Stimulus));
-				} else {
-					EmotionalComponent->RemoveContinuousStimulus(Actor);
-				}
-			} else if (Stimulus.WasSuccessfullySensed()) {
-				EmotionalComponent->OnSensorUpdated.Broadcast(EmotionSourceComponent->Appraisal);
+	if (EmotionSourceComponent && EmotionalComponent) {
+		if (EmotionSourceComponent->bContinuous) {
+			if (Stimulus.WasSuccessfullySensed()) {
+				EmotionalComponent->AddContinuousStimulus(FEmotionStimulusFatima(&EmotionSourceComponent->Appraisal, Actor, &Stimulus));
+			} else {
+				EmotionalComponent->RemoveContinuousStimulus(Actor);
 			}
+		} else if (Stimulus.WasSuccessfullySensed()) {
+			EmotionalComponent->OnSensorUpdated.Broadcast(EmotionSourceComponent->Appraisal);
 		}
 	}
 }
