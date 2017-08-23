@@ -13,7 +13,7 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForConsequences(
 		return FSimplexPADPoint();
 	}
 
-	if(TargetPawn == Owner)
+	if(TargetPawn == Knowledge->ControlledActor)
 	{
 		//Consequences for self
 	}
@@ -34,7 +34,7 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForActions(EEmot
 		return FSimplexPADPoint();
 	}
 
-	if(SourcePawn == Owner)
+	if(SourcePawn == Knowledge->ControlledActor)
 	{
 		//Actions performed by self
 	}

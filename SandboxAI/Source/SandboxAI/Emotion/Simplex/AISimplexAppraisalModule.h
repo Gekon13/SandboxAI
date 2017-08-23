@@ -22,7 +22,6 @@ protected:
 	FSimplexPersonality* Personality;
 	UAIEmotionKnowledge* Knowledge;
 	UAIEmotionKnowledge* Memory;
-	AActor* Owner;
 
 protected:
 	FSimplexPADPoint Internal_DoAppraisalForConsequences(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor);
@@ -32,11 +31,10 @@ protected:
 public:
 	TArray<FSimplexPADPoint> DoAppraisal(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor);
 
-	FORCEINLINE void InitializeAppraisalModule(UAIEmotionKnowledge* InEmotionKnowlege, UAIEmotionKnowledge* InMemory, FSimplexPersonality* InPersonality, AActor* InOwner)
+	FORCEINLINE void InitializeAppraisalModule(UAIEmotionKnowledge* InEmotionKnowlege, UAIEmotionKnowledge* InMemory, FSimplexPersonality* InPersonality)
 	{
 		Knowledge = InEmotionKnowlege;
 		Memory = InMemory;
 		Personality = InPersonality;
-		Owner = InOwner;
 	}
 };

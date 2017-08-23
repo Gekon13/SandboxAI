@@ -21,8 +21,7 @@ void UAISimplexEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emoti
 	Memory = NewObject<UAIEmotionKnowledge>();
 
 	AppraisalModule = NewObject<UAISimplexAppraisalModule>();
-	//nullptr should be replaced by something like GetOwningActor();
-	AppraisalModule->InitializeAppraisalModule(EmotionKnowledge, Memory, &Personality, nullptr);
+	AppraisalModule->InitializeAppraisalModule(EmotionKnowledge, Memory, &Personality);
 }
 
 void UAISimplexEmotionEngine::TickEmotionEngine(float DeltaSeconds)
