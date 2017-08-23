@@ -19,6 +19,9 @@ public: //members // TODO: expand on this
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<FAIEmotionInformation> Informations;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		AActor* ControlledActor;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float Scale;

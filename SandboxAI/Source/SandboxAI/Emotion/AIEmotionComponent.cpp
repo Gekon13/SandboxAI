@@ -74,6 +74,11 @@ void UAIEmotionComponent::BeginPlay()
 			}
 
 			ControlledPawn = AIController->GetPawn();
+
+			if (EmotionKnowledge != nullptr)
+			{
+				EmotionKnowledge->ControlledActor = ControlledPawn;
+			}
 		}
 	}
 }
@@ -87,6 +92,11 @@ void UAIEmotionComponent::TickComponent(float DeltaSeconds, ELevelTick TickType,
 	{
 		if (GetEmotionEngine() != nullptr)
 		{
+			if (EmotionKnowledge != nullptr && EmotionKnowledge->ControlledActor == nullptr)
+			{
+				EmotionKnowledge->ControlledActor = ControlledPawn;
+			}
+
 			int32 knownDummyNumber = KnownEmotionDummies.Num();
 			for (int32 knownDummyIndex = 0; knownDummyIndex < knownDummyNumber; ++knownDummyIndex)
 			{

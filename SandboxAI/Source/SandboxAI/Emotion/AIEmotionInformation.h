@@ -123,13 +123,13 @@ FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionNam
 	: EmotionActionName(emotionActionName), ActionSource(actionSource), ActionTarget(FAIEmotionTarget()), EmotionDeltas(emotionDeltas) {}
 
 FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, const TArray<FAIEmotionDelta>& emotionDeltas, FAIEmotionTarget actionTarget)
-	: EmotionActionName(emotionActionName), ActionSource(FAIEmotionTarget()), ActionTarget(ActionTarget), EmotionDeltas(emotionDeltas) {}
+	: EmotionActionName(emotionActionName), ActionSource(FAIEmotionTarget()), ActionTarget(actionTarget), EmotionDeltas(emotionDeltas) {}
 
 FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, const std::initializer_list<FAIEmotionDelta>& emotionDeltas, FAIEmotionTarget actionTarget)
-	: EmotionActionName(emotionActionName), ActionSource(FAIEmotionTarget()), ActionTarget(ActionTarget), EmotionDeltas(emotionDeltas) {}
+	: EmotionActionName(emotionActionName), ActionSource(FAIEmotionTarget()), ActionTarget(actionTarget), EmotionDeltas(emotionDeltas) {}
 
 FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const TArray<FAIEmotionDelta>& emotionDeltas, FAIEmotionTarget actionTarget)
-	: EmotionActionName(emotionActionName), ActionSource(actionSource), ActionTarget(ActionTarget), EmotionDeltas(emotionDeltas) {}
+	: EmotionActionName(emotionActionName), ActionSource(actionSource), ActionTarget(actionTarget), EmotionDeltas(emotionDeltas) {}
 
 FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const std::initializer_list<FAIEmotionDelta>& emotionDeltas, FAIEmotionTarget actionTarget)
-	: EmotionActionName(emotionActionName), ActionSource(actionSource), ActionTarget(ActionTarget), EmotionDeltas(emotionDeltas) {}
+	: EmotionActionName(emotionActionName), ActionSource(actionSource), ActionTarget(actionTarget), EmotionDeltas(emotionDeltas) {}

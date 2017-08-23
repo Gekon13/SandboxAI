@@ -70,7 +70,7 @@ FAIEmotionState UAIWasabiEmotionEngine::GetEmotionState() const
 void UAIWasabiEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor)
 {
 	// handle action perception
-	UE_LOG(LogTemp, Log, TEXT("Perceived action: %s, source: %s, target %s"), *FAIEmotionConstants::ActionNames[EmotionActionName], sourceActor != nullptr ? *sourceActor->GetName() : TEXT("None"), targetActor != nullptr ? *targetActor->GetName() : TEXT("None"));
+	//UE_LOG(LogTemp, Log, TEXT("Perceived action: %s, source: %s, target %s"), *FAIEmotionConstants::ActionNames[EmotionActionName], sourceActor != nullptr ? *sourceActor->GetName() : TEXT("None"), targetActor != nullptr ? *targetActor->GetName() : TEXT("None"));
 
 	WasabiAppraisal.AppraiseAction(EmotionActionName, sourceActor, targetActor);
 }
