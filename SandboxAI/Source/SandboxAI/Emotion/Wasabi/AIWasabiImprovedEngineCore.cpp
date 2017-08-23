@@ -15,7 +15,10 @@ UAIWasabiImprovedEngineCore::UAIWasabiImprovedEngineCore() :
 	MoodBoredoomRegion = 5.0f; // default from wasabi is 5
 	BoredoomPerSecond = 10.0f; // default from wasabi is 50
 	Prevalence = 30.0f; // default from wasabi is 30
-	Disequilibrium = 0.5f; // my happy new param for 
+
+	Disequilibrium = 0.5f; // my happy new param for wasabi
+	DisequilibriumImpactFactor = 0.25f;
+	DisequilibriumTension = 200.0f; // this should occur and fade fast
 	
 	OverrideDominance = -FWasabiConstants::WasabiSpaceRadius;
 
@@ -23,6 +26,7 @@ UAIWasabiImprovedEngineCore::UAIWasabiImprovedEngineCore() :
 
 	ValenceVelocity = 0.0f;
 	MoodVelocity = 0.0f;
+	DisequilibriumVelocity = 0.0f;
 	WasabiSpacePointVMB = FWasabiSpacePointVMB( 0.0f, Prevalence, 0.0f);
 }
 
@@ -33,6 +37,7 @@ void UAIWasabiImprovedEngineCore::Initialize()
 	WasabiSpacePointVMB = FWasabiSpacePointVMB(0.0f, Prevalence, 0.0f);
 	ValenceVelocity = 0.0f;
 	MoodVelocity = 0.0f;
+	DisequilibriumVelocity = 0.0f;
 
 	bPendingImpulse = false;
 	PendingImpulseValue = 0.0f;
@@ -48,6 +53,13 @@ void UAIWasabiImprovedEngineCore::Impulse(float value)
 }
 void UAIWasabiImprovedEngineCore::InternalImpulse(float value)
 {
+	float deltaDisequalibrium = FMath::Min(FMath::Sign(WasabiSpacePointVMB.GetValence() * value), 0.0f) * FMath::Abs(value) * Disequilibrium;
+	if (deltaDisequalibrium > 0.0f)
+	{
+		DisequilibriumVelocity = 0.0f;
+		WasabiSpacePointVMB.SetBoredoom(WasabiSpacePointVMB.GetBoredoom() + deltaDisequalibrium);
+	}
+
 	WasabiSpacePointVMB.SetValence(WasabiSpacePointVMB.GetValence() + value);
 	WasabiSpacePointVMB.ClampValenceBySpace();
 	ValenceVelocity = 0.0f;
@@ -170,15 +182,37 @@ void UAIWasabiImprovedEngineCore::Tick(float DeltaSeconds)
 
 	bool valenceAllowsForBoredoom = FMath::Abs(WasabiSpacePointVMB.GetValence()) < ValenceBoredoomRegion;
 	bool moodAllowsForBoredoom = FMath::Abs(Prevalence - WasabiSpacePointVMB.GetMood()) < MoodBoredoomRegion;
-
-	if ( valenceAllowsForBoredoom && moodAllowsForBoredoom )
+	if (WasabiSpacePointVMB.GetBoredoom() <= 0.0f)
 	{
-		float deltaBoredoom = -BoredoomPerSecond * DeltaSeconds;
-		WasabiSpacePointVMB.SetBoredoom(WasabiSpacePointVMB.GetBoredoom() + deltaBoredoom);
+		if ( valenceAllowsForBoredoom && moodAllowsForBoredoom )
+		{
+			float deltaBoredoom = -BoredoomPerSecond * DeltaSeconds;
+			WasabiSpacePointVMB.SetBoredoom(WasabiSpacePointVMB.GetBoredoom() + deltaBoredoom);
+		}
+		else
+		{
+			WasabiSpacePointVMB.SetBoredoom(0.0f);
+		}
 	}
 	else
 	{
-		WasabiSpacePointVMB.SetBoredoom(0.0f);
+		float disequilibriumForce = -DisequilibriumTension * WasabiSpacePointVMB.GetBoredoom();
+		float disequilibriumAcceleration = disequilibriumForce / Mass;
+
+		// calculate delta acceleration
+		float deltaDisequilibrium = DisequilibriumVelocity * DeltaSeconds + (disequilibriumAcceleration * DeltaSeconds * DeltaSeconds) * 0.5f;
+		// step velocity in time
+		DisequilibriumVelocity += disequilibriumAcceleration * DeltaSeconds;
+
+		if (WasabiSpacePointVMB.GetBoredoom() + deltaDisequilibrium > 0.0f)
+		{
+			WasabiSpacePointVMB.SetBoredoom(WasabiSpacePointVMB.GetBoredoom() + deltaDisequilibrium);
+		}
+		else
+		{
+			DisequilibriumVelocity = 0.0f;
+			WasabiSpacePointVMB.SetBoredoom(0.0f);
+		}
 	}
 
 	WasabiSpacePointVMB.ClampValenceBySpace();

@@ -21,6 +21,8 @@ protected:
 		float ValenceVelocity;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|State")
 		float MoodVelocity;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|State")
+		float DisequilibriumVelocity;
 
 	/** default from wasabi is 69 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
@@ -46,8 +48,17 @@ protected:
 	/** default from wasabi is 30 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float Prevalence; // default from wasabi is 30
+
+
+	/** rate defining how much Disequilibrium should grow from equasion */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float Disequilibrium;
+	/** how much disequilibrium has in mapping from VMB to PAD */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
+		float DisequilibriumImpactFactor;
+	/** how fast disequilibrium does decay */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
+		float DisequilibriumTension;
 		
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float OverrideDominance; // for now
