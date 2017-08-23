@@ -39,8 +39,8 @@ void UWasabiBaseEmotionComponent::TickComponent(float DeltaTime, ELevelTick Tick
 
 		FWasabiSpacePointPAD currentSpacePointPAD = WasabiEngineCore->GetWasabiSpacePointPAD();
 
-		JoyDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::Joy);
-		DistressDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::Distress);
+		JoyDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::MockJoy);
+		DistressDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::MockDistress);
 	}
 }
 

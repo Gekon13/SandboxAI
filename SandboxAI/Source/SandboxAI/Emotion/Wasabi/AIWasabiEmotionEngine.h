@@ -4,10 +4,12 @@
 
 #include "../AIBaseEmotionEngine.h"
 #include "Emotion/Wasabi/AIWasabiAppraisal.h"
+#include "Emotion/Wasabi/AIWasabiStructures.h"
 #include "AIWasabiEmotionEngine.generated.h"
 
 class UAIWasabiBaseEngineCore;
 class UAIWasabiOriginalEngineCore;
+class UAIWasabiImprovedEngineCore;
 
 UCLASS(BlueprintType)
 class PROJECT_API UAIWasabiEmotionEngine : public UAIBaseEmotionEngine
@@ -15,16 +17,18 @@ class PROJECT_API UAIWasabiEmotionEngine : public UAIBaseEmotionEngine
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "")
-		FString SomeName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "")
-		FString SomeOtherName;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "")
+		FAIWasabiAppraisal WasabiAppraisal;
 
-	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Core")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "")
+		EWasabiCoreType WasabiCoreType;
+
+	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "")
 		UAIWasabiOriginalEngineCore* OriginalEngineCore;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Appraisal")
-		FAIWasabiAppraisal WasabiAppraisal;
+	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "")
+		UAIWasabiImprovedEngineCore* ImprovedEngineCore;
+
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Testing")
 		float JoyDistance;
@@ -32,8 +36,6 @@ protected:
 		float DistressDistance;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Testing")
 		float JoyDistressCoeficient;
-
-	
 
 	UAIWasabiBaseEngineCore* EngineCore;
 

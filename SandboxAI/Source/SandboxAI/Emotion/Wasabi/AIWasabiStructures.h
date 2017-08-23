@@ -114,8 +114,8 @@ public:
 	FORCEINLINE const float GetOuterRadius() const { return OuterRadius; }
 	FORCEINLINE void SetOuterRadius(const float& newOuterRadius) { OuterRadius = newOuterRadius; }
 
-	static const FWasabiSpacePointPADEmotion Joy;
-	static const FWasabiSpacePointPADEmotion Distress;
+	static const FWasabiSpacePointPADEmotion MockJoy;
+	static const FWasabiSpacePointPADEmotion MockDistress;
 };
 
 FWasabiSpacePointPADEmotion::FWasabiSpacePointPADEmotion() : Super(), InnerRadius(FWasabiConstants::FWasabiEmotionDefaultInnerRadius), OuterRadius(FWasabiConstants::FWasabiEmotionDefaultOuterRadius) {}
@@ -225,3 +225,10 @@ FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI(const FWasabiEngineStepStat
 FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI(const FWasabiSpacePointPAD& iPAD, const FWasabiSpacePointVMB& iVMB, int32 iIndex, float iInputValency, float iJoy, float iDistress, float iDistanceCovered, float iSpeed)
 	: FWasabiEngineStepState(iPAD, iVMB, iIndex, iInputValency), Joy(iJoy), Distress(iDistress), DistanceCovered(iDistanceCovered), Speed(iSpeed) {}
 
+
+UENUM(BlueprintType)
+enum class EWasabiCoreType : uint8
+{
+	Original = 0,
+	Improved = 1,
+};

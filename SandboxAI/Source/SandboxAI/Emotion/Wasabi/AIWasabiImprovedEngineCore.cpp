@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SandboxAI.h"
-#include "AIWasabiOriginalEngineCore.h"
+#include "AIWasabiImprovedEngineCore.h"
 
-UAIWasabiOriginalEngineCore::UAIWasabiOriginalEngineCore() :
+UAIWasabiImprovedEngineCore::UAIWasabiImprovedEngineCore() :
 	Super()
 {
 	// in default wasabi does calculations in doubles and than clamps then converts them to ints
@@ -15,8 +15,9 @@ UAIWasabiOriginalEngineCore::UAIWasabiOriginalEngineCore() :
 	MoodBoredoomRegion = 5.0f; // default from wasabi is 5
 	BoredoomPerSecond = 10.0f; // default from wasabi is 50
 	Prevalence = 30.0f; // default from wasabi is 30
-
-	OverrideDominance = 0.0f; // FWasabiConstants::WasabiSpaceRadius;
+	Disequilibrium = 0.5f; // my happy new param for 
+	
+	OverrideDominance = -FWasabiConstants::WasabiSpaceRadius;
 
 	bUseTheoryMoodAffecting = false; // whether to use implementation or theory from papers
 
@@ -25,7 +26,7 @@ UAIWasabiOriginalEngineCore::UAIWasabiOriginalEngineCore() :
 	WasabiSpacePointVMB = FWasabiSpacePointVMB( 0.0f, Prevalence, 0.0f);
 }
 
-void UAIWasabiOriginalEngineCore::Initialize()
+void UAIWasabiImprovedEngineCore::Initialize()
 {
 	Super::Initialize();
 
@@ -40,12 +41,12 @@ void UAIWasabiOriginalEngineCore::Initialize()
 
 	LastEngineStepState = FWasabiEngineStepState(WasabiSpacePointPAD, WasabiSpacePointVMB, -1, 0.0f);
 }
-void UAIWasabiOriginalEngineCore::Impulse(float value)
+void UAIWasabiImprovedEngineCore::Impulse(float value)
 {
 	bPendingImpulse = true;
 	PendingImpulseValue += value;
 }
-void UAIWasabiOriginalEngineCore::InternalImpulse(float value)
+void UAIWasabiImprovedEngineCore::InternalImpulse(float value)
 {
 	WasabiSpacePointVMB.SetValence(WasabiSpacePointVMB.GetValence() + value);
 	WasabiSpacePointVMB.ClampValenceBySpace();
@@ -53,7 +54,7 @@ void UAIWasabiOriginalEngineCore::InternalImpulse(float value)
 	MoodVelocity = 0.0f;
 }
 
-void UAIWasabiOriginalEngineCore::Tick(float DeltaSeconds)
+void UAIWasabiImprovedEngineCore::Tick(float DeltaSeconds)
 {
 	const FWasabiSpacePointVMB lastFrameSpacePointVMB = WasabiSpacePointVMB;
 
@@ -191,7 +192,7 @@ void UAIWasabiOriginalEngineCore::Tick(float DeltaSeconds)
 	bPendingImpulse = false;
 }
 
-void UAIWasabiOriginalEngineCore::MapVMBToPAD()
+void UAIWasabiImprovedEngineCore::MapVMBToPAD()
 {
 	WasabiSpacePointPAD.SetDominance(OverrideDominance);
 

@@ -4,13 +4,13 @@
 
 #include "AIWasabiBaseEngineCore.h"
 #include "AIWasabiStructures.h"
-#include "AIWasabiOriginalEngineCore.generated.h"
+#include "AIWasabiImprovedEngineCore.generated.h"
 
 /**
  * 
  */
 UCLASS(BlueprintType, EditInlineNew)
-class PROJECT_API UAIWasabiOriginalEngineCore : public UAIWasabiBaseEngineCore
+class PROJECT_API UAIWasabiImprovedEngineCore : public UAIWasabiBaseEngineCore
 {
 	GENERATED_BODY()
 	
@@ -46,13 +46,19 @@ protected:
 	/** default from wasabi is 30 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float Prevalence; // default from wasabi is 30
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
+		float Disequilibrium;
+		
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float OverrideDominance; // for now
 
 	/** Whether to use implementation or theory from papers */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		bool bUseTheoryMoodAffecting; // default from wasabi is 30
+	
+	/** Whether to affect mood from Valence */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
+		bool bValenceAffectMood;
 
 	/** Whether there is a valenced impulse pending */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|Params")
@@ -69,7 +75,7 @@ protected:
 	
 
 public:
-	UAIWasabiOriginalEngineCore();
+	UAIWasabiImprovedEngineCore();
 	
 	UFUNCTION(BlueprintCallable)
 		virtual void Initialize() override;

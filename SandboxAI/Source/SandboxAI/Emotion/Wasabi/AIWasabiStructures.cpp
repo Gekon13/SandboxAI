@@ -16,8 +16,8 @@ const FWasabiSpacePointPAD FWasabiSpacePointPAD::WasabiSpacePointPADMax = FWasab
 const FWasabiSpacePointVMB FWasabiSpacePointVMB::WasabiSpacePointVMBMin = FWasabiSpacePointVMB(-FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius);
 const FWasabiSpacePointVMB FWasabiSpacePointVMB::WasabiSpacePointVMBMax = FWasabiSpacePointVMB(FWasabiConstants::WasabiSpaceRadius, FWasabiConstants::WasabiSpaceRadius, 0.0f);
 
-const FWasabiSpacePointPADEmotion FWasabiSpacePointPADEmotion::Joy = FWasabiSpacePointPADEmotion(FWasabiConstants::WasabiSpaceRadius * 0.5f, 0.0f, -FWasabiConstants::WasabiSpaceRadius);
-const FWasabiSpacePointPADEmotion FWasabiSpacePointPADEmotion::Distress = FWasabiSpacePointPADEmotion(-FWasabiConstants::WasabiSpaceRadius * 0.5f, 0.0f, -FWasabiConstants::WasabiSpaceRadius);
+const FWasabiSpacePointPADEmotion FWasabiSpacePointPADEmotion::MockJoy = FWasabiSpacePointPADEmotion(FWasabiConstants::WasabiSpaceRadius * 0.5f, 0.0f, -FWasabiConstants::WasabiSpaceRadius);
+const FWasabiSpacePointPADEmotion FWasabiSpacePointPADEmotion::MockDistress = FWasabiSpacePointPADEmotion(-FWasabiConstants::WasabiSpaceRadius * 0.5f, 0.0f, -FWasabiConstants::WasabiSpaceRadius);
 
 void FWasabiSpacePointPAD::ClampPleasureBySpace()
 {

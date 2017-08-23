@@ -5,20 +5,34 @@
 #include "AIWasabiStructures.h"
 #include "AIWasabiBaseEngineCore.h"
 #include "AIWasabiOriginalEngineCore.h"
+#include "AIWasabiImprovedEngineCore.h"
 
 UAIWasabiEmotionEngine::UAIWasabiEmotionEngine()
 {
 	OriginalEngineCore = CreateDefaultSubobject<UAIWasabiOriginalEngineCore>(TEXT("OriginalEngineCore"));
+	ImprovedEngineCore = CreateDefaultSubobject<UAIWasabiImprovedEngineCore>(TEXT("ImprovedEngineCore"));
 
-	SomeName = TEXT("Wasabi");
-	SomeOtherName = TEXT("Wasabi");
+	WasabiCoreType = EWasabiCoreType::Original;
 }
 
 void UAIWasabiEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
 {
 	Super::InitializeEmotionEngine(emotionKnowledge);
 
-	EngineCore = OriginalEngineCore;
+	switch (WasabiCoreType)
+	{
+	case EWasabiCoreType::Original:
+		EngineCore = OriginalEngineCore;
+		break;
+	case EWasabiCoreType::Improved:
+		EngineCore = ImprovedEngineCore;
+		break;
+	}
+
+	if (GetEngineCore() != nullptr)
+	{
+		GetEngineCore()->Initialize();
+	}
 
 	WasabiAppraisal.Initialize(EngineCore, emotionKnowledge, nullptr);
 }
@@ -33,8 +47,8 @@ void UAIWasabiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 
 		const FWasabiSpacePointPAD currentSpacePointPAD = GetEngineCore()->GetWasabiSpacePointPAD();
 
-		JoyDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::Joy);
-		DistressDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::Distress);
+		JoyDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::MockJoy);
+		DistressDistance = FWasabiSpacePointPAD::Distance(currentSpacePointPAD, FWasabiSpacePointPADEmotion::MockDistress);
 
 		if (JoyDistance > SMALL_NUMBER || DistressDistance > SMALL_NUMBER)
 		{
