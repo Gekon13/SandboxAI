@@ -16,7 +16,7 @@ class PROJECT_API UAIWasabiBaseEngineCore : public UObject
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi | State")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State")
 		FWasabiSpacePointPAD WasabiSpacePointPAD;
 
 public:
