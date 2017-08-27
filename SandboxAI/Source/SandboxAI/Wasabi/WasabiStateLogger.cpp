@@ -279,12 +279,12 @@ void AWasabiStateLogger::SaveFileHorizontal()
 									}
 									archive->Serialize((void*)(*lineEnd), lineEnd.Len() * wordSize);
 
-									// Boredoom
-									rowName = FString(TEXT("Boredoom,"));
+									// Boredom
+									rowName = FString(TEXT("Boredom,"));
 									archive->Serialize((void*)(*rowName), rowName.Len() * wordSize);
 									for (int32 i = startIndex; i < recordNumber; ++i)
 									{
-										FString tmpString = FString::Printf(TEXT("%f,"), (*tmpWasabiStatesPtr)[i].VMB.GetBoredoom());
+										FString tmpString = FString::Printf(TEXT("%f,"), (*tmpWasabiStatesPtr)[i].VMB.GetBoredom());
 										archive->Serialize((void*)(*tmpString), tmpString.Len() * wordSize);
 									}
 									archive->Serialize((void*)(*lineEnd), lineEnd.Len() * wordSize);

@@ -7,7 +7,8 @@
 #include "AIWasabiOriginalEngineCore.h"
 #include "AIWasabiImprovedEngineCore.h"
 
-UAIWasabiEmotionEngine::UAIWasabiEmotionEngine()
+UAIWasabiEmotionEngine::UAIWasabiEmotionEngine() :
+	CharacterTraits(FWasabiCharacterTraits())
 {
 	OriginalEngineCore = CreateDefaultSubobject<UAIWasabiOriginalEngineCore>(TEXT("OriginalEngineCore"));
 	ImprovedEngineCore = CreateDefaultSubobject<UAIWasabiImprovedEngineCore>(TEXT("ImprovedEngineCore"));
@@ -31,7 +32,7 @@ void UAIWasabiEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotio
 
 	if (GetEngineCore() != nullptr)
 	{
-		GetEngineCore()->Initialize();
+		GetEngineCore()->Initialize(CharacterTraits);
 	}
 
 	WasabiAppraisal.Initialize(EngineCore, emotionKnowledge, nullptr);
@@ -71,14 +72,15 @@ void UAIWasabiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 
 FAIEmotionState UAIWasabiEmotionEngine::GetEmotionState() const
 {
-	if (GetEngineCore() != nullptr)
+	FAIEmotionState resultEmotionState;
+
+	int32 knownEmotionNumber = KnownEmotions.Num();
+	for (int32 knownEmotionIndex = 0; knownEmotionIndex < knownEmotionNumber; ++knownEmotionIndex)
 	{
-		return GetEngineCore()->GetEmotionState();
+		resultEmotionState.Emotions.Add(KnownEmotions[knownEmotionIndex].ToSingleEmotionState());
 	}
-	else
-	{
-		return FAIEmotionState();
-	}
+
+	return resultEmotionState;
 }
 
 void UAIWasabiEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor)

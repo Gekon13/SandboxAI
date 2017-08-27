@@ -22,10 +22,10 @@ void UWasabiBaseEmotionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (WasabiEngineCore != nullptr)
-	{
-		WasabiEngineCore->Initialize();
-	}
+	//if (WasabiEngineCore != nullptr)
+	//{
+	//	WasabiEngineCore->Initialize(CharacterTraits);
+	//}
 }
 
 // Called every frame

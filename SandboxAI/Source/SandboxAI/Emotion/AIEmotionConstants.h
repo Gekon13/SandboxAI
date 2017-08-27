@@ -147,3 +147,4 @@ private:
 	static TMap<EEmotionName, FString> BuildEmotionNamesMap();
 	static TMap<EEmotionActionName, FString> BuildActionNamesMap();
 };
+

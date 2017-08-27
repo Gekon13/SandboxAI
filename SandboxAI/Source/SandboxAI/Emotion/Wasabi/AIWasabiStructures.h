@@ -21,6 +21,45 @@ public:
 };
 
 USTRUCT(BlueprintType)
+struct PROJECT_API FWasabiDefaults
+{
+	GENERATED_BODY()
+
+public:
+	static const float ValenceTension;
+	static const float MoodTension;
+	static const float BoredomTension;
+	static const float Slope;
+	static const float Mass;
+	static const float ValenceBoredomRegion;
+	static const float MoodBoredomRegion;
+	static const float BoredomPerSecond;
+	static const float Prevalence;
+	static const float Disequilibrium;
+};
+
+USTRUCT(BlueprintType)
+struct PROJECT_API FWasabiCustomDefaults
+{
+	GENERATED_BODY()
+
+public:
+	static const float ValenceTension;
+	static const float MoodTension;
+	static const float BoredomTension;
+	static const float Slope;
+	static const float Mass;
+	static const float ValenceBoredomRegion;
+	static const float MoodBoredomRegion;
+	static const float BoredomPerSecond;
+	static const float Prevalence;
+	static const float Disequilibrium;
+};
+
+//#define WasabiDefaults FWasabiDefaults
+#define WasabiDefaults FWasabiCustomDefaults
+
+USTRUCT(BlueprintType)
 struct PROJECT_API FWasabiSpacePointPAD : public FVector
 {
 	GENERATED_BODY()
@@ -78,19 +117,19 @@ public:
 	FORCEINLINE const float GetMood() const { return Y; }
 	FORCEINLINE void SetMood(const float& Mood) { Y = Mood; }
 
-	FORCEINLINE float GetBoredoom() { return Z; }
-	FORCEINLINE const float GetBoredoom() const { return Z; }
-	FORCEINLINE void SetBoredoom(const float& Boredoom) { Z = Boredoom; }
+	FORCEINLINE float GetBoredom() { return Z; }
+	FORCEINLINE const float GetBoredom() const { return Z; }
+	FORCEINLINE void SetBoredom(const float& Boredom) { Z = Boredom; }
 
 	void ClampValenceBySpace();
 	void ClampMoodBySpace();
-	void ClampBoredoomBySpace();
+	void ClampBoredomBySpace();
 };
 
 FWasabiSpacePointVMB::FWasabiSpacePointVMB() : Super() { }
 FWasabiSpacePointVMB::FWasabiSpacePointVMB(const FVector& source) : Super(source) { }
 FWasabiSpacePointVMB::FWasabiSpacePointVMB(const FWasabiSpacePointVMB& source) : Super(source) { }
-FWasabiSpacePointVMB::FWasabiSpacePointVMB(float Valence, float Mood, float BoreDoom) : Super(Valence, Mood, BoreDoom) { }
+FWasabiSpacePointVMB::FWasabiSpacePointVMB(float Valence, float Mood, float Boredom) : Super(Valence, Mood, Boredom) { }
 
 USTRUCT(BlueprintType)
 struct PROJECT_API FWasabiSpacePointPADEmotion : public FWasabiSpacePointPAD
@@ -232,3 +271,44 @@ enum class EWasabiCoreType : uint8
 	Original = 0,
 	Improved = 1,
 };
+
+USTRUCT(BlueprintType)
+struct PROJECT_API FWasabiCharacterTraits
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Extraversion;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Agreeableness;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Conscientiousness;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float EmotionalStability;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Sophistication;
+
+	static const float ExtraversionImpactFactor;
+	static const float AgreeablenessImpactFactor;
+	static const float ConscientiousnessImpactFactor;
+	static const float EmotionalStabilityImpactFactor;
+	static const float SophisticationImpactFactor;
+
+public:
+	FORCEINLINE FWasabiCharacterTraits();
+	FORCEINLINE FWasabiCharacterTraits(float extraversion, float agreeableness, float conscientiousness, float emotionalStability, float sophistication);
+
+	void Validate();
+};
+
+FWasabiCharacterTraits::FWasabiCharacterTraits() :
+	Extraversion(0.0f), Agreeableness(0.0f), Conscientiousness(0.0f), EmotionalStability(0.0f), Sophistication(0.0f)
+{
+}
+
+FWasabiCharacterTraits::FWasabiCharacterTraits(float extraversion, float agreeableness, float conscientiousness, float emotionalStability, float sophistication) :
+	Extraversion(extraversion), Agreeableness(agreeableness), Conscientiousness(conscientiousness), EmotionalStability(emotionalStability), Sophistication(sophistication)
+{
+	Validate();
+}

@@ -37,7 +37,7 @@ public:
 	/** Used to update emotion engine, emotion dynamic and emotion decay go here */
 	virtual void TickEmotionEngine(float DeltaSeconds) override;
 	/** Used to retrieve emotional state at any time, should be cheap to execute */
-	virtual FAIEmotionState GetEmotiomState() const;
+	virtual FAIEmotionState GetEmotionState() const;
 protected:
 	virtual float GetEngineScale() const override;
 

@@ -28,7 +28,7 @@ void UAIPsiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 	ProcessPsiTheory();
 }
 
-FAIEmotionState UAIPsiEmotionEngine::GetEmotiomState() const
+FAIEmotionState UAIPsiEmotionEngine::GetEmotionState() const
 {
 	return Emotions;
 }

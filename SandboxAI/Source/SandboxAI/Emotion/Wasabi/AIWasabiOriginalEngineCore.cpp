@@ -7,27 +7,27 @@ UAIWasabiOriginalEngineCore::UAIWasabiOriginalEngineCore() :
 	Super()
 {
 	// in default wasabi does calculations in doubles and than clamps then converts them to ints
-	ValenceTension = 140.0f; // default from wasabi is 69 // my later default was 70
-	MoodTension = 20.0f; // default from wasabi is 10
-	Mass = 5000.0f; // default from wasabi is 5000
-	Temperament = 500.0f; // default from wasabi is 500 // in wasabi engine it's called Slope
-	ValenceBoredoomRegion = 5.0f; // default from wasabi is 5
-	MoodBoredoomRegion = 5.0f; // default from wasabi is 5
-	BoredoomPerSecond = 10.0f; // default from wasabi is 50
-	Prevalence = 30.0f; // default from wasabi is 30
+	ValenceTension = WasabiDefaults::ValenceTension;
+	MoodTension = WasabiDefaults::MoodTension;
+	Mass = WasabiDefaults::Mass;
+	Slope = WasabiDefaults::Slope;
+	ValenceBoredomRegion = WasabiDefaults::ValenceBoredomRegion;
+	MoodBoredomRegion = WasabiDefaults::MoodBoredomRegion;
+	BoredomPerSecond = WasabiDefaults::BoredomPerSecond;
+	Prevalence = 0.19f * WasabiDefaults::Prevalence;
 
 	OverrideDominance = 0.0f; // FWasabiConstants::WasabiSpaceRadius;
 
-	bUseTheoryMoodAffecting = false; // whether to use implementation or theory from papers
+	bUseTheoryMoodAffecting = false; // whether to use implementation or theory from papers, false is preferable
 
 	ValenceVelocity = 0.0f;
 	MoodVelocity = 0.0f;
 	WasabiSpacePointVMB = FWasabiSpacePointVMB( 0.0f, Prevalence, 0.0f);
 }
 
-void UAIWasabiOriginalEngineCore::Initialize()
+void UAIWasabiOriginalEngineCore::Initialize(const FWasabiCharacterTraits& characterTraits)
 {
-	Super::Initialize();
+	Super::Initialize(characterTraits);
 
 	WasabiSpacePointVMB = FWasabiSpacePointVMB(0.0f, Prevalence, 0.0f);
 	ValenceVelocity = 0.0f;
@@ -125,12 +125,12 @@ void UAIWasabiOriginalEngineCore::Tick(float DeltaSeconds)
 	float deltaMoodFromValence = 0.0f;
 	if (bUseTheoryMoodAffecting)
 	{
-		deltaMoodFromValence = WasabiSpacePointVMB.GetValence() * deltaValence * Temperament; // theory wise
+		deltaMoodFromValence = WasabiSpacePointVMB.GetValence() * deltaValence * Slope; // theory wise
 	}
 	else
 	{
-		//deltaMoodFromValence = WasabiSpacePointVMB.GetValence() * (Temperament / 100.0f) / Mass; // implementation wise - this was wrong
-		deltaMoodFromValence = deltaValence * (Temperament / 100.0f) / Mass; // implementation wise
+		//deltaMoodFromValence = WasabiSpacePointVMB.GetValence() * (Slope / 100.0f) / Mass; // implementation wise - this was wrong
+		deltaMoodFromValence = deltaValence * (Slope / 100.0f) / Mass; // implementation wise
 	}
 	WasabiSpacePointVMB.SetMood(WasabiSpacePointVMB.GetMood() + deltaMoodFromValence);
 
@@ -165,24 +165,24 @@ void UAIWasabiOriginalEngineCore::Tick(float DeltaSeconds)
 
 	WasabiSpacePointVMB.SetMood(transformedMood + Prevalence);
 
-	// process Boredoom
+	// process Boredom
 
-	bool valenceAllowsForBoredoom = FMath::Abs(WasabiSpacePointVMB.GetValence()) < ValenceBoredoomRegion;
-	bool moodAllowsForBoredoom = FMath::Abs(Prevalence - WasabiSpacePointVMB.GetMood()) < MoodBoredoomRegion;
+	bool valenceAllowsForBoredom = FMath::Abs(WasabiSpacePointVMB.GetValence()) < ValenceBoredomRegion;
+	bool moodAllowsForBoredom = FMath::Abs(Prevalence - WasabiSpacePointVMB.GetMood()) < MoodBoredomRegion;
 
-	if ( valenceAllowsForBoredoom && moodAllowsForBoredoom )
+	if ( valenceAllowsForBoredom && moodAllowsForBoredom )
 	{
-		float deltaBoredoom = -BoredoomPerSecond * DeltaSeconds;
-		WasabiSpacePointVMB.SetBoredoom(WasabiSpacePointVMB.GetBoredoom() + deltaBoredoom);
+		float deltaBoredom = -BoredomPerSecond * DeltaSeconds;
+		WasabiSpacePointVMB.SetBoredom(WasabiSpacePointVMB.GetBoredom() + deltaBoredom);
 	}
 	else
 	{
-		WasabiSpacePointVMB.SetBoredoom(0.0f);
+		WasabiSpacePointVMB.SetBoredom(0.0f);
 	}
 
 	WasabiSpacePointVMB.ClampValenceBySpace();
 	WasabiSpacePointVMB.ClampMoodBySpace();
-	WasabiSpacePointVMB.ClampBoredoomBySpace();
+	WasabiSpacePointVMB.ClampBoredomBySpace();
 
 	MapVMBToPAD();
 
@@ -196,5 +196,17 @@ void UAIWasabiOriginalEngineCore::MapVMBToPAD()
 	WasabiSpacePointPAD.SetDominance(OverrideDominance);
 
 	WasabiSpacePointPAD.SetPleasure((WasabiSpacePointVMB.GetValence() + WasabiSpacePointVMB.GetMood()) * 0.5f);
-	WasabiSpacePointPAD.SetArousal(FMath::Abs(WasabiSpacePointVMB.GetValence()) + WasabiSpacePointVMB.GetBoredoom());
+	WasabiSpacePointPAD.SetArousal(FMath::Abs(WasabiSpacePointVMB.GetValence()) + WasabiSpacePointVMB.GetBoredom());
+}
+
+void UAIWasabiOriginalEngineCore::MapCharacterTraitsToParams(const FWasabiCharacterTraits& characterTraits)
+{
+	ValenceTension = WasabiDefaults::ValenceTension * (1.0f + FWasabiCharacterTraits::ConscientiousnessImpactFactor * characterTraits.Conscientiousness);
+	MoodTension = WasabiDefaults::MoodTension * (1.0f + FWasabiCharacterTraits::ConscientiousnessImpactFactor * characterTraits.Conscientiousness);
+	Slope = WasabiDefaults::Slope * (1.0f + FWasabiCharacterTraits::EmotionalStabilityImpactFactor * characterTraits.EmotionalStability);
+	Mass = WasabiDefaults::Mass * (1.0f + FWasabiCharacterTraits::ConscientiousnessImpactFactor * characterTraits.Conscientiousness);
+	ValenceBoredomRegion = WasabiDefaults::ValenceBoredomRegion * (1.0f + FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
+	MoodBoredomRegion = WasabiDefaults::MoodBoredomRegion * (1.0f + FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
+	BoredomPerSecond = WasabiDefaults::BoredomPerSecond * (1.0f + FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
+	Prevalence = WasabiDefaults::Prevalence * (0.19f + FWasabiCharacterTraits::ExtraversionImpactFactor * characterTraits.Extraversion);
 }

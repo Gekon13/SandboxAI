@@ -23,28 +23,28 @@ protected:
 		float MoodVelocity;
 
 	/** default from wasabi is 69 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float ValenceTension; // default from wasabi is 69
 	/** default from wasabi is 10 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float MoodTension; // default from wasabi is 10
 	/** default from wasabi is 5000 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float Mass; // default from wasabi is 5000
 	/** default from wasabi is 500 | in wasabi engine it's called Slope */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
-		float Temperament; // default from wasabi is 500 // in wasabi engine it's called Slope
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
+		float Slope; // default from wasabi is 500 // in wasabi engine it's called Slope
 	/** default from wasabi is 5 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
-		float ValenceBoredoomRegion; // default from wasabi is 5
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
+		float ValenceBoredomRegion; // default from wasabi is 5
 	/** default from wasabi is 5 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
-		float MoodBoredoomRegion; // default from wasabi is 5
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
+		float MoodBoredomRegion; // default from wasabi is 5
 	/** default from wasabi is 50 | My default is 10*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
-		float BoredoomPerSecond; // default from wasabi is 50
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
+		float BoredomPerSecond; // default from wasabi is 50
 	/** default from wasabi is 30 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
 		float Prevalence; // default from wasabi is 30
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
@@ -52,7 +52,7 @@ protected:
 
 	/** Whether to use implementation or theory from papers */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi|Params")
-		bool bUseTheoryMoodAffecting; // default from wasabi is 30
+		bool bUseTheoryMoodAffecting;
 
 	/** Whether there is a valenced impulse pending */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|Params")
@@ -66,13 +66,11 @@ protected:
 
 	int32 _stepCounter;
 
-	
-
 public:
 	UAIWasabiOriginalEngineCore();
 	
 	UFUNCTION(BlueprintCallable)
-		virtual void Initialize() override;
+		virtual void Initialize(const FWasabiCharacterTraits& characterTraits) override;
 	UFUNCTION(BlueprintCallable)
 		virtual void Impulse(float value) override;
 	UFUNCTION(BlueprintCallable)
@@ -87,4 +85,6 @@ protected:
 	/** Call this to apply impulse directly to VMB space */
 	void InternalImpulse(float value);
 	void MapVMBToPAD();
+
+	virtual void MapCharacterTraitsToParams(const FWasabiCharacterTraits& characterTraits) override;
 };

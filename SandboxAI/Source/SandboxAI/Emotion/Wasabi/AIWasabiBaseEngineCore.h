@@ -16,17 +16,14 @@ class PROJECT_API UAIWasabiBaseEngineCore : public UObject
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi|State")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wasabi | State")
 		FWasabiSpacePointPAD WasabiSpacePointPAD;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wasabi | Params")
-		TArray<FWasabiEmotion> KnownEmotions;
 
 public:
 	UAIWasabiBaseEngineCore();
 
 	UFUNCTION(BlueprintCallable)
-		virtual void Initialize();
+		virtual void Initialize(const FWasabiCharacterTraits& characterTraits);
 	UFUNCTION(BlueprintCallable)
 		virtual void Impulse(float value);
 	UFUNCTION(BlueprintCallable)
@@ -35,9 +32,6 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE FWasabiSpacePointPAD GetWasabiSpacePointPAD() const { return WasabiSpacePointPAD; }
 
-	UFUNCTION(BlueprintCallable)
-		void AddEmotionToEngine(const FWasabiEmotion& wasabiEmotion);
-
-	UFUNCTION(BlueprintCallable)
-		virtual FAIEmotionState GetEmotionState(bool onlyActiveEmotions = true) const;
+protected:
+	virtual void MapCharacterTraitsToParams(const FWasabiCharacterTraits& characterTraits);
 };

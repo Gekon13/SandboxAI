@@ -3,12 +3,40 @@
 #include "SandboxAI.h"
 #include "AIWasabiStructures.h"
 
+#define ColumnSeparator FString(TEXT(","))
+
 const float FWasabiConstants::WasabiSpaceRadius = 100.0f;
 const float FWasabiConstants::FWasabiEmotionDefaultInnerRadius = 10.0f;
 const float FWasabiConstants::FWasabiEmotionDefaultOuterRadius = 25.0f;
 //const FString FWasabiConstants::ColumnSeparator = FString(TEXT(","));
 
-#define ColumnSeparator FString(TEXT(","))
+const float FWasabiDefaults::ValenceTension  = 69.0f;
+const float FWasabiDefaults::MoodTension = 10.0f;
+const float FWasabiDefaults::BoredomTension = 100.0f;
+const float FWasabiDefaults::Slope = 500.0f;
+const float FWasabiDefaults::Mass = 5000.0f;
+const float FWasabiDefaults::ValenceBoredomRegion = 5.0f;
+const float FWasabiDefaults::MoodBoredomRegion = 5.0f;
+const float FWasabiDefaults::BoredomPerSecond = 50.0f;
+const float FWasabiDefaults::Prevalence = 30.0f;
+const float FWasabiDefaults::Disequilibrium = 0.3f;
+
+const float FWasabiCustomDefaults::ValenceTension = 140.0f;
+const float FWasabiCustomDefaults::MoodTension = 20.0f;
+const float FWasabiCustomDefaults::BoredomTension = 200.0f;
+const float FWasabiCustomDefaults::Slope = 500.0f;
+const float FWasabiCustomDefaults::Mass = 5000.0f;
+const float FWasabiCustomDefaults::ValenceBoredomRegion = 5.0f;
+const float FWasabiCustomDefaults::MoodBoredomRegion = 5.0f;
+const float FWasabiCustomDefaults::BoredomPerSecond = 30.0f;
+const float FWasabiCustomDefaults::Prevalence = 30.0f;
+const float FWasabiCustomDefaults::Disequilibrium = 0.3f;
+
+const float FWasabiCharacterTraits::ExtraversionImpactFactor = 0.81f;
+const float FWasabiCharacterTraits::AgreeablenessImpactFactor = 0.69f;
+const float FWasabiCharacterTraits::ConscientiousnessImpactFactor = 0.25f;
+const float FWasabiCharacterTraits::EmotionalStabilityImpactFactor = 0.72f;
+const float FWasabiCharacterTraits::SophisticationImpactFactor = 0.42f;
 
 const FWasabiSpacePointPAD FWasabiSpacePointPAD::WasabiSpacePointPADMin = FWasabiSpacePointPAD( -FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius);
 const FWasabiSpacePointPAD FWasabiSpacePointPAD::WasabiSpacePointPADMax = FWasabiSpacePointPAD(FWasabiConstants::WasabiSpaceRadius, FWasabiConstants::WasabiSpaceRadius, FWasabiConstants::WasabiSpaceRadius);
@@ -40,7 +68,7 @@ void FWasabiSpacePointVMB::ClampMoodBySpace()
 {
 	Y = FMath::Clamp<float>(Y, WasabiSpacePointVMBMin.Y, WasabiSpacePointVMBMax.Y);
 }
-void FWasabiSpacePointVMB::ClampBoredoomBySpace()
+void FWasabiSpacePointVMB::ClampBoredomBySpace()
 {
 	Z = FMath::Clamp<float>(Z, WasabiSpacePointVMBMin.Z, WasabiSpacePointVMBMax.Z);
 }
@@ -128,7 +156,7 @@ FString FWasabiEngineStepState::ToStringColumnNames()
 	result.Append(TEXT("Mood"));
 	result.Append(separator);
 
-	result.Append(TEXT("Boredoom"));
+	result.Append(TEXT("Boredom"));
 	result.Append(separator);
 
 	result.Append(TEXT("InputValency"));
@@ -264,7 +292,7 @@ FString FWasabiEngineStepStateCGI::ToStringColumnNamesCustom()
 	result.Append(TEXT("Mood"));
 	result.Append(separator);
 
-	result.Append(TEXT("Boredoom"));
+	result.Append(TEXT("Boredom"));
 	result.Append(separator);
 
 	result.Append(TEXT("InputValency"));
@@ -311,4 +339,13 @@ FString FWasabiEngineStepStateCGI::ToStringLineCustom(float inputValency)
 	result.Append(separator);
 
 	return result;
+}
+
+void FWasabiCharacterTraits::Validate()
+{
+	Extraversion = FMath::Clamp(Extraversion, -1.0f, 1.0f);
+	Agreeableness = FMath::Clamp(Agreeableness, -1.0f, 1.0f);
+	Conscientiousness = FMath::Clamp(Conscientiousness, -1.0f, 1.0f);
+	EmotionalStability = FMath::Clamp(EmotionalStability, -1.0f, 1.0f);
+	Sophistication = FMath::Clamp(Sophistication, -1.0f, 1.0f);
 }

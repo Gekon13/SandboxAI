@@ -23,6 +23,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "")
 		EWasabiCoreType WasabiCoreType;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "")
+		FWasabiCharacterTraits CharacterTraits;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "")
+		TArray<FWasabiEmotion> KnownEmotions;
+
 	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "")
 		UAIWasabiOriginalEngineCore* OriginalEngineCore;
 
@@ -45,7 +51,9 @@ public:
 	
 	virtual void InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge) override;
 	virtual void TickEmotionEngine(float DeltaSeconds) override;
-	virtual FAIEmotionState GetEmotionState() const override;
+
+	UFUNCTION(BlueprintCallable)
+		virtual FAIEmotionState GetEmotionState() const override;
 
 	FORCEINLINE UAIWasabiBaseEngineCore* GetEngineCore() const { return EngineCore; }
 

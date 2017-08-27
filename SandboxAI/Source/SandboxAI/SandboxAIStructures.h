@@ -60,7 +60,7 @@ enum class EEmotionStimulusElementType : uint8
 	EDominance = 103 UMETA(DisplayName = "Dominance"),
 	EValence = 104 UMETA(Display = "Valence"),
 	EMood = 105 UMETA(Display = "Mood"),
-	EBoredoom = 106 UMETA(Display = "Boredoom"),
+	EBoredom = 106 UMETA(Display = "Boredom"),
 };
 
 USTRUCT(BlueprintType)
