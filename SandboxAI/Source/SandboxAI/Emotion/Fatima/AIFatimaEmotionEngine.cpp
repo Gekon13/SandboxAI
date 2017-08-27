@@ -19,8 +19,8 @@ UAIFatimaEmotionEngine::UAIFatimaEmotionEngine() {
 	SpeedFactor = 1.5f;
 }
 
-void UAIFatimaEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge) {
-	Super::InitializeEmotionEngine(emotionKnowledge);
+void UAIFatimaEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* Knowledge) {
+	Super::InitializeEmotionEngine(Knowledge);
 
 	GetOuter()->GetWorld()->GetTimerManager().SetTimer(GoalsTimerHandle, this, &UAIFatimaEmotionEngine::UpdateGoals, GoalsInterval, true);
 }
@@ -30,16 +30,16 @@ void UAIFatimaEmotionEngine::TickEmotionEngine(float DeltaSeconds) {
 
 	CalculateMood(DeltaSeconds);
 	CalculateEmotion(&Emotions.JoyDistress, &Personality.JoyDistress);
-	CalculateEmotion(&Emotions.HappyforResentment, &Personality.HappyforResentment);
-	CalculateEmotion(&Emotions.GloatingPity, &Personality.GloatingPity);
+	CalculateEmotion(&Emotions.HappyforPitty, &Personality.HappyforPitty);
+	CalculateEmotion(&Emotions.AdmirationGloating, &Personality.AdmirationGloating);
 	CalculateEmotion(&Emotions.PrideShame, &Personality.PrideShame);
-	CalculateEmotion(&Emotions.AdmirationReproach, &Personality.AdmirationReproach);
-	CalculateEmotion(&Emotions.GratificationRemorse, &Personality.GratificationRemorse);
-	CalculateEmotion(&Emotions.GratitudeAnger, &Personality.GratitudeAnger);
+	CalculateEmotion(&Emotions.ConcentrationBore, &Personality.ConcentrationBore);
+	CalculateEmotion(&Emotions.AngerRemorse, &Personality.AngerRemorse);
+	CalculateEmotion(&Emotions.GratitudeResentment, &Personality.GratitudeResentment);
 	CalculateEmotion(&Emotions.LoveHate, &Personality.LoveHate);
 	CalculateEmotion(&Emotions.HopeFear, &Personality.HopeFear);
-	CalculateEmotion(&Emotions.ReliefDisappointment, &Personality.ReliefDisappointment);
-	CalculateEmotion(&Emotions.SatisfactionFearsconfirmed, &Personality.SatisfactionFearsconfirmed);
+	CalculateEmotion(&Emotions.ReliefFearsConfirmed, &Personality.ReliefFearsConfirmed);
+	CalculateEmotion(&Emotions.SatisfactionDisapointment, &Personality.SatisfactionDisapointment);
 	UpdateActions();
 }
 
@@ -50,23 +50,36 @@ void UAIFatimaEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emo
 	Arguments.Add(TargetActor->GetName());
 	auto Text = FString::Format(TEXT("Perceived action: {0}, source: {1}, target {2}"), Arguments);
 	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, Text);
+
+	auto InformationMatchingByActions = EmotionKnowledge->Informations.FilterByPredicate([EmotionActionName, SourceActor, TargetActor](const FAIEmotionInformation& Information) {
+		return Information.EmotionActionName == EmotionActionName && Information.ActionSource.DoesActorMatchTarget(SourceActor) && Information.ActionTarget.DoesActorMatchTarget(TargetActor);
+	});
+
+	for (auto& Information : InformationMatchingByActions) {
+		for (auto&& EmotionDelta : Information.EmotionDeltas) {
+			auto ImpulseValue = EmotionDelta.EmotionPairDelta;
+			auto x = EmotionDelta.EmotionPairName;
+			const auto Appraisal = FFatimaAppraisal(ImpulseValue, 0, 0, 0, 0, 0, 0); //TODO create appraisal based on name
+			OnEventUpdated(Appraisal);
+		}
+	}
 }
 
 float UAIFatimaEmotionEngine::GetEngineScale() const {
 	return 1.0f;
 }
 
-void UAIFatimaEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous) {
-	auto Appraisal = FFatimaAppraisal(value, 0, 0, 0, 0, 0, 0);
+void UAIFatimaEmotionEngine::DirectValencedImpulseInternal(float Value, bool bContinuous) {
+	auto Appraisal = FFatimaAppraisal(Value, 0, 0, 0, 0, 0, 0);
 	OnEventUpdated(Appraisal);
 }
 
 void UAIFatimaEmotionEngine::UpdateEmotions(FFatimaAppraisal* Appraisal, float MoodFactor) {
 	auto GeneratedEmotions = Appraisal->GenerateEmotions();
-	for (auto AppraisalEmotion : GeneratedEmotions) {
-		auto Emotion = Emotions.FindEmotionWithName(AppraisalEmotion.Name);
+	for (const auto AppraisalEmotion : GeneratedEmotions) {
+		const auto Emotion = Emotions.FindEmotionWithName(AppraisalEmotion.Name);
 		if (Emotion) {
-			auto OldValue = Emotion->Amount;
+			const auto OldValue = Emotion->Amount;
 			Emotion->Amount = FMath::Clamp(Emotion->Amount + AppraisalEmotion.Amount + MoodFactor, MinEmotion, MaxEmotion);
 			Emotion->AmountAfterEvent = Emotion->Amount;
 			Emotion->TimeOfEvent = GetOuter()->GetWorld()->GetTimeSeconds();
@@ -87,7 +100,7 @@ void UAIFatimaEmotionEngine::CalculateMood(float DeltaTime) {
 
 void UAIFatimaEmotionEngine::CalculateEmotion(FFatimaEmotion* Emotion, FFatimaEmotion* PersonalityEmotion) const {
 	if (Emotion->Amount != PersonalityEmotion->Amount && !Emotion->bContinuous) {
-		auto CurrentTime = GetOuter()->GetWorld()->GetTimeSeconds() - Emotion->TimeOfEvent;
+		const auto CurrentTime = GetOuter()->GetWorld()->GetTimeSeconds() - Emotion->TimeOfEvent;
 		Emotion->Amount = FMath::Clamp(Emotion->AmountAfterEvent * (FMath::Exp(-Emotion->DecayFactor * CurrentTime - PersonalityEmotion->Amount) + PersonalityEmotion->Amount), MinEmotion, MaxEmotion);
 		if (FMath::Abs(Emotion->Amount - PersonalityEmotion->Amount) <= EmotionThreshold) {
 			Emotion->Amount = PersonalityEmotion->Amount;
@@ -102,7 +115,7 @@ void UAIFatimaEmotionEngine::UpdateActions() {
 }
 
 void UAIFatimaEmotionEngine::OnEventUpdated(FFatimaAppraisal Appraisal) {
-	auto MoodFactor = Mood * MoodRelevance / MaxMood;
+	const auto MoodFactor = Mood * MoodRelevance / MaxMood;
 	UpdateEmotions(&Appraisal, MoodFactor);
 }
 
