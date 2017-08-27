@@ -29,6 +29,7 @@ enum class EEmotionName : uint8
 {
 	None = 0 UMETA(DisplayName = "None"),
 
+	// our magic model
 	Joy = 2 UMETA(DisplayName = "Joy"),
 	Distress = 3 UMETA(DisplayName = "Distress"),
 
@@ -61,6 +62,22 @@ enum class EEmotionName : uint8
 
 	Concentration = 22 UMETA(DisplayName = "Concentration"),
 	Bore = 23 UMETA(DisplayName = "Bore"),
+
+	// Wasabi emotions -  Becker-Asano 2008
+	WASABI_Angry = 200,
+	WASABI_Annoyed = 201,
+	WASABI_Bored = 202,
+	WASABI_Concentrated = 203,
+	WASABI_Depressed = 204,
+	WASABI_Fearful = 205,
+	WASABI_Happy = 206,
+	WASABI_Sad = 207,
+	WASABI_Surprised = 208,
+
+	// additional wasabi - Mehrabian 1977
+	WASABI_Extended_Anxious = 209,
+
+	// offset for enum numbers = EEmotionEngineModel * 50  - (uint8 has max value of 255)
 };
 
 UENUM(BlueprintType)

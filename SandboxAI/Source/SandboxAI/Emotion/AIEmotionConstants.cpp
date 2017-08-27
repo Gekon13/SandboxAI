@@ -45,6 +45,18 @@ TMap<EEmotionName, FString> FAIEmotionConstants::BuildEmotionNamesMap()
 	emotionNames.Add(EEmotionName::Concentration, TEXT("Concentration"));
 	emotionNames.Add(EEmotionName::Bore, TEXT("Bore"));
 
+	emotionNames.Add(EEmotionName::WASABI_Angry, TEXT("Angry"));
+	emotionNames.Add(EEmotionName::WASABI_Annoyed, TEXT("Annoyed"));
+	emotionNames.Add(EEmotionName::WASABI_Bored, TEXT("Bored"));
+	emotionNames.Add(EEmotionName::WASABI_Concentrated, TEXT("Concentrated"));
+	emotionNames.Add(EEmotionName::WASABI_Depressed, TEXT("Depressed"));
+	emotionNames.Add(EEmotionName::WASABI_Fearful, TEXT("Fearful"));
+	emotionNames.Add(EEmotionName::WASABI_Happy, TEXT("Happy"));
+	emotionNames.Add(EEmotionName::WASABI_Sad, TEXT("Sad"));
+	emotionNames.Add(EEmotionName::WASABI_Surprised, TEXT("Surprised"));
+
+	emotionNames.Add(EEmotionName::WASABI_Extended_Anxious, TEXT("Anxious"));
+
 	return emotionNames;
 }
 

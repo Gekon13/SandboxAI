@@ -107,7 +107,7 @@ public:
 	FORCEINLINE FWasabiSpacePointVMB();
 	FORCEINLINE FWasabiSpacePointVMB(const FVector& source);
 	FORCEINLINE FWasabiSpacePointVMB(const FWasabiSpacePointVMB& source);
-	FORCEINLINE FWasabiSpacePointVMB(float Pleasure, float Arousal, float Dominance);
+	FORCEINLINE FWasabiSpacePointVMB(float Valence, float Mood, float Boredom);
 
 	FORCEINLINE float GetValence() { return X; }
 	FORCEINLINE const float GetValence() const { return X; }
@@ -136,8 +136,10 @@ struct PROJECT_API FWasabiSpacePointPADEmotion : public FWasabiSpacePointPAD
 {
 	GENERATED_BODY()
 public:
-	float InnerRadius;
-	float OuterRadius;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float InnerRadius;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float OuterRadius;
 	
 	FORCEINLINE FWasabiSpacePointPADEmotion();
 	FORCEINLINE FWasabiSpacePointPADEmotion(const FVector& source);
@@ -185,8 +187,67 @@ public: // methods
 	FORCEINLINE FWasabiEmotion(const EEmotionName& emotionName, const std::initializer_list<FWasabiSpacePointPADEmotion>& wasabiSpacePointPADEmotion);
 
 	void UpdateEmotion(const FWasabiSpacePointPAD& wasabiSpacePointPAD);
+	void UpdateEmotionNoDominance(const FWasabiSpacePointPAD& wasabiSpacePointPAD);
 	FORCEINLINE FAISingleEmotionState ToSingleEmotionState() const;
+
+protected:
+	FORCEINLINE static float DistanceNoDominance(const FWasabiSpacePointPAD& first, const FWasabiSpacePointPAD& second);
 };
+
+float FWasabiEmotion::DistanceNoDominance(const FWasabiSpacePointPAD& first, const FWasabiSpacePointPAD& second)
+{
+	float valence = second.GetPleasure() - first.GetPleasure();
+	float mood = second.GetArousal() - first.GetArousal();
+	return FMath::Sqrt(valence * valence + mood * mood);
+}
+
+namespace WasabiEmotions
+{
+	const FWasabiEmotion Angry = FWasabiEmotion(EEmotionName::WASABI_Angry, std::initializer_list<FWasabiSpacePointPADEmotion>({ 
+		FWasabiSpacePointPADEmotion (80.0f,80.0f,100.0f)
+	}) );
+
+	const FWasabiEmotion Annoyed = FWasabiEmotion(EEmotionName::WASABI_Annoyed, std::initializer_list<FWasabiSpacePointPADEmotion>({
+		FWasabiSpacePointPADEmotion(-50.0f,0.0f,100.0f)
+	}));
+
+	const FWasabiEmotion Bored = FWasabiEmotion(EEmotionName::WASABI_Bored, std::initializer_list<FWasabiSpacePointPADEmotion>({
+		FWasabiSpacePointPADEmotion(0.0f,-80.0f,100.0f)
+	}));
+
+	const FWasabiEmotion Concentrated = FWasabiEmotion(EEmotionName::WASABI_Concentrated, std::initializer_list<FWasabiSpacePointPADEmotion>({
+		FWasabiSpacePointPADEmotion(0.0f,0.0f,100.0f),
+		FWasabiSpacePointPADEmotion(0.0f,0.0f,-100.0f)
+	}));
+
+	const FWasabiEmotion Depressed = FWasabiEmotion(EEmotionName::WASABI_Depressed, std::initializer_list<FWasabiSpacePointPADEmotion>({
+		FWasabiSpacePointPADEmotion(0.0f,-80.0f,-100.0f)
+	}));
+
+	const FWasabiEmotion Fearful = FWasabiEmotion(EEmotionName::WASABI_Fearful, std::initializer_list<FWasabiSpacePointPADEmotion>({
+		FWasabiSpacePointPADEmotion(-80.0f,80.0f,100.0f)
+	}));
+
+	const FWasabiEmotion Happy = FWasabiEmotion(EEmotionName::WASABI_Happy, std::initializer_list<FWasabiSpacePointPADEmotion>({
+		FWasabiSpacePointPADEmotion(80.0f,80.0f, 100.0f),
+		FWasabiSpacePointPADEmotion(80.0f,80.0f,-100.0f),
+		FWasabiSpacePointPADEmotion(50.0f,0.0f, 100.0f),
+		FWasabiSpacePointPADEmotion(50.0f,0.0f,-100.0f)
+	}));
+
+	const FWasabiEmotion Sad = FWasabiEmotion(EEmotionName::WASABI_Sad, std::initializer_list<FWasabiSpacePointPADEmotion>({
+		FWasabiSpacePointPADEmotion(-50.0f,0.0f,-100.0f)
+	}));
+
+	const FWasabiEmotion Surprised = FWasabiEmotion(EEmotionName::WASABI_Surprised, std::initializer_list<FWasabiSpacePointPADEmotion>({
+		FWasabiSpacePointPADEmotion(10.0f,80.0f,100.0f),
+		FWasabiSpacePointPADEmotion(10.0f,80.0f,-100.0f)
+	}));
+
+	const FWasabiEmotion Anxious = FWasabiEmotion(EEmotionName::WASABI_Extended_Anxious, std::initializer_list<FWasabiSpacePointPADEmotion>({
+		FWasabiSpacePointPADEmotion(16.0f,88.0f,-15.0f)
+	}));
+}
 
 FWasabiEmotion::FWasabiEmotion() 
 	: EmotionName(EEmotionName::None), Strength(0.0f), bActive(false)  {}

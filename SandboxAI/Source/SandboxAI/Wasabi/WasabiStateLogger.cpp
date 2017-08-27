@@ -18,7 +18,7 @@ AWasabiStateLogger::AWasabiStateLogger()
 
 	LogFilePrefix = FString( TEXT("WASABI_LOG") );
 
-	PrintEvery = 1;
+	PrintEvery = 5;
 	bCumulateInputValency = true;
 }
 

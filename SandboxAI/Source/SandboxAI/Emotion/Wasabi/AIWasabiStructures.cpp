@@ -6,8 +6,8 @@
 #define ColumnSeparator FString(TEXT(","))
 
 const float FWasabiConstants::WasabiSpaceRadius = 100.0f;
-const float FWasabiConstants::FWasabiEmotionDefaultInnerRadius = 10.0f;
-const float FWasabiConstants::FWasabiEmotionDefaultOuterRadius = 25.0f;
+const float FWasabiConstants::FWasabiEmotionDefaultInnerRadius = 20.0f;
+const float FWasabiConstants::FWasabiEmotionDefaultOuterRadius = 64.0f;
 //const FString FWasabiConstants::ColumnSeparator = FString(TEXT(","));
 
 const float FWasabiDefaults::ValenceTension  = 69.0f;
@@ -91,20 +91,7 @@ void FWasabiEmotion::UpdateEmotion(const FWasabiSpacePointPAD& wasabiSpacePointP
 
 	if (emotionSpacePointIndexWithSmallestDistance != -1)
 	{
-		if (bActive)
-		{
-			if (smallestDistance > EmotionSpacePoints[emotionSpacePointIndexWithSmallestDistance].GetOuterRadius())
-			{
-				bActive = false;
-			}
-		}
-		else
-		{
-			if (smallestDistance <= EmotionSpacePoints[emotionSpacePointIndexWithSmallestDistance].GetInnerRadius())
-			{
-				bActive = true;
-			}
-		}
+		bActive = smallestDistance <= EmotionSpacePoints[emotionSpacePointIndexWithSmallestDistance].GetOuterRadius();
 	}
 	else
 	{
@@ -123,7 +110,53 @@ void FWasabiEmotion::UpdateEmotion(const FWasabiSpacePointPAD& wasabiSpacePointP
 		{
 			const float outerRadius = EmotionSpacePoints[emotionSpacePointIndexWithSmallestDistance].GetOuterRadius();
 			
-			Strength = ((smallestDistance - innerRadius) / (outerRadius - innerRadius)) * FWasabiConstants::WasabiSpaceRadius;
+			Strength = (1.0f - FMath::Clamp((smallestDistance - innerRadius) / (outerRadius - innerRadius), 0.0f, 1.0f)) * FWasabiConstants::WasabiSpaceRadius;
+		}
+	}
+	else
+	{
+		Strength = 0.0f;
+	}
+}
+
+void FWasabiEmotion::UpdateEmotionNoDominance(const FWasabiSpacePointPAD& wasabiSpacePointPAD)
+{
+	float smallestDistance = HUGE_VALF;
+	int32 emotionSpacePointIndexWithSmallestDistance = -1;
+
+	int32 emotionSpacePointNumber = EmotionSpacePoints.Num();
+	for (int32 emotionSpacePointIndex = 0; emotionSpacePointIndex < emotionSpacePointNumber; ++emotionSpacePointIndex)
+	{
+		float distance = DistanceNoDominance(wasabiSpacePointPAD, EmotionSpacePoints[emotionSpacePointIndex]);
+		if (distance < smallestDistance)
+		{
+			smallestDistance = distance;
+			emotionSpacePointIndexWithSmallestDistance = emotionSpacePointIndex;
+		}
+	}
+
+	if (emotionSpacePointIndexWithSmallestDistance != -1)
+	{
+		bActive = smallestDistance <= EmotionSpacePoints[emotionSpacePointIndexWithSmallestDistance].GetOuterRadius();
+	}
+	else
+	{
+		bActive = false;
+	}
+
+	if (bActive)
+	{
+		const float innerRadius = EmotionSpacePoints[emotionSpacePointIndexWithSmallestDistance].GetInnerRadius();
+
+		if (smallestDistance <= innerRadius)
+		{
+			Strength = FWasabiConstants::WasabiSpaceRadius;
+		}
+		else
+		{
+			const float outerRadius = EmotionSpacePoints[emotionSpacePointIndexWithSmallestDistance].GetOuterRadius();
+
+			Strength = (1.0f - FMath::Clamp((smallestDistance - innerRadius) / (outerRadius - innerRadius), 0.0f, 1.0f)) * FWasabiConstants::WasabiSpaceRadius;
 		}
 	}
 	else
