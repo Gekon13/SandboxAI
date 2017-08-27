@@ -14,14 +14,14 @@ class PROJECT_API UAIFatimaEmotionEngine : public UAIBaseEmotionEngine
 public:
 	UAIFatimaEmotionEngine();
 
-	void InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge) override;
+	void InitializeEmotionEngine(UAIEmotionKnowledge* Knowledge) override;
 	void TickEmotionEngine(float DeltaSeconds) override;
 	void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor) override;
 	void AddGoal(FFatimaGoal Goal) { Goals.Add(Goal); }
 
 protected:
 	float GetEngineScale() const override;
-	void DirectValencedImpulseInternal(float value, bool bContinuous) override;
+	void DirectValencedImpulseInternal(float Value, bool bContinuous) override;
 
 	void UpdateEmotions(FFatimaAppraisal* Appraisal, float MoodFactor);
 	void CalculateMood(float DeltaTime);

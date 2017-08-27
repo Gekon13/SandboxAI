@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Emotion/AIEmotionConstants.h"
 #include "FatimaStructures.generated.h"
 
 USTRUCT()
@@ -11,15 +12,15 @@ struct FFatimaEmotion
 	GENERATED_BODY()
 
 public:
-	FFatimaEmotion() : FFatimaEmotion("Test") {}
-	FFatimaEmotion(FString Name);
+	FFatimaEmotion() : FFatimaEmotion(EEmotionPairName::None) {}
+	FFatimaEmotion(EEmotionPairName Name);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion", meta = (ClampMin = "-1.0", ClampMax = "1.0"))
 		float Amount;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion", meta = (ClampMin = "0.0", ClampMax = "1.0"))
 		float DecayFactor;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotion")
-		FString Name;
+		EEmotionPairName Name;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotion")
 		float AmountAfterEvent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotion")
@@ -35,30 +36,30 @@ struct FFatimaEmotions
 
 public:
 	FFatimaEmotions();
-	FFatimaEmotion* FindEmotionWithName(FString Name);
+	FFatimaEmotion* FindEmotionWithName(EEmotionPairName Name);
 
 	UPROPERTY(EditAnywhere, Category = "Emotion")
 		FFatimaEmotion JoyDistress;
 	UPROPERTY(EditAnywhere, Category = "Emotion")
-		FFatimaEmotion HappyforResentment;
+		FFatimaEmotion HappyforPitty;
 	UPROPERTY(EditAnywhere, Category = "Emotion")
-		FFatimaEmotion GloatingPity;
+		FFatimaEmotion AdmirationGloating;
 	UPROPERTY(EditAnywhere, Category = "Emotion")
 		FFatimaEmotion PrideShame;
 	UPROPERTY(EditAnywhere, Category = "Emotion")
-		FFatimaEmotion AdmirationReproach;
+		FFatimaEmotion ConcentrationBore;
 	UPROPERTY(EditAnywhere, Category = "Emotion")
-		FFatimaEmotion GratificationRemorse;
+		FFatimaEmotion AngerRemorse;
 	UPROPERTY(EditAnywhere, Category = "Emotion")
-		FFatimaEmotion GratitudeAnger;
+		FFatimaEmotion GratitudeResentment;
 	UPROPERTY(EditAnywhere, Category = "Emotion")
 		FFatimaEmotion LoveHate;
 	UPROPERTY(EditAnywhere, Category = "Emotion")
 		FFatimaEmotion HopeFear;
 	UPROPERTY(EditAnywhere, Category = "Emotion")
-		FFatimaEmotion ReliefDisappointment;
+		FFatimaEmotion ReliefFearsConfirmed;
 	UPROPERTY(EditAnywhere, Category = "Emotion")
-		FFatimaEmotion SatisfactionFearsconfirmed;
+		FFatimaEmotion SatisfactionDisapointment;
 
 };
 

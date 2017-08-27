@@ -4,7 +4,7 @@
 #include "FatimaStructures.h"
 
 
-FFatimaEmotion::FFatimaEmotion(FString Name) :Name(Name) {
+FFatimaEmotion::FFatimaEmotion(EEmotionPairName Name) :Name(Name) {
 	Amount = 0;
 	DecayFactor = 0.01f;
 	AmountAfterEvent = 0;
@@ -13,40 +13,40 @@ FFatimaEmotion::FFatimaEmotion(FString Name) :Name(Name) {
 }
 
 FFatimaEmotions::FFatimaEmotions() {
-	JoyDistress = FFatimaEmotion("Joy / Distress");
-	HappyforResentment = FFatimaEmotion("Happyfor / Resentment");
-	GloatingPity = FFatimaEmotion("Gloating / Pity");
-	PrideShame = FFatimaEmotion("Pride / Shame");
-	AdmirationReproach = FFatimaEmotion("Admiration / Reproach");
-	GratificationRemorse = FFatimaEmotion("Gratification / Remorse");
-	GratitudeAnger = FFatimaEmotion("Gratitude / Anger");
-	LoveHate = FFatimaEmotion("Love / Hate");
-	HopeFear = FFatimaEmotion("Hope / Fear");
-	ReliefDisappointment = FFatimaEmotion("Relief / Disappointment");
-	SatisfactionFearsconfirmed = FFatimaEmotion("Satisfaction / Fearsconfirmed");
+	JoyDistress = FFatimaEmotion(EEmotionPairName::Joy_Distress);
+	HappyforPitty = FFatimaEmotion(EEmotionPairName::Happyfor_Pitty);
+	AdmirationGloating = FFatimaEmotion(EEmotionPairName::Admiration_Gloating);
+	PrideShame = FFatimaEmotion(EEmotionPairName::Pride_Shame);
+	ConcentrationBore = FFatimaEmotion(EEmotionPairName::Concentration_Bore);
+	AngerRemorse = FFatimaEmotion(EEmotionPairName::Anger_Remorse);
+	GratitudeResentment = FFatimaEmotion(EEmotionPairName::Gratitude_Resentment);
+	LoveHate = FFatimaEmotion(EEmotionPairName::Love_Hate);
+	HopeFear = FFatimaEmotion(EEmotionPairName::Hope_Fear);
+	ReliefFearsConfirmed = FFatimaEmotion(EEmotionPairName::Relief_FearsConfirmed);
+	SatisfactionDisapointment = FFatimaEmotion(EEmotionPairName::Satisfaction_Disapointment);
 }
 
-FFatimaEmotion* FFatimaEmotions::FindEmotionWithName(FString Name) {
+FFatimaEmotion* FFatimaEmotions::FindEmotionWithName(EEmotionPairName Name) {
 	if (JoyDistress.Name == Name) {
 		return &JoyDistress;
 	}
-	if (HappyforResentment.Name == Name) {
-		return &HappyforResentment;
+	if (HappyforPitty.Name == Name) {
+		return &HappyforPitty;
 	}
-	if (GloatingPity.Name == Name) {
-		return &GloatingPity;
+	if (AdmirationGloating.Name == Name) {
+		return &AdmirationGloating;
 	}
 	if (PrideShame.Name == Name) {
 		return &PrideShame;
 	}
-	if (AdmirationReproach.Name == Name) {
-		return &AdmirationReproach;
+	if (ConcentrationBore.Name == Name) {
+		return &ConcentrationBore;
 	}
-	if (GratificationRemorse.Name == Name) {
-		return &GratificationRemorse;
+	if (AngerRemorse.Name == Name) {
+		return &AngerRemorse;
 	}
-	if (GratitudeAnger.Name == Name) {
-		return &GratitudeAnger;
+	if (GratitudeResentment.Name == Name) {
+		return &GratitudeResentment;
 	}
 	if (LoveHate.Name == Name) {
 		return &LoveHate;
@@ -54,11 +54,11 @@ FFatimaEmotion* FFatimaEmotions::FindEmotionWithName(FString Name) {
 	if (HopeFear.Name == Name) {
 		return &HopeFear;
 	}
-	if (ReliefDisappointment.Name == Name) {
-		return &ReliefDisappointment;
+	if (ReliefFearsConfirmed.Name == Name) {
+		return &ReliefFearsConfirmed;
 	}
-	if (SatisfactionFearsconfirmed.Name == Name) {
-		return &SatisfactionFearsconfirmed;
+	if (SatisfactionDisapointment.Name == Name) {
+		return &SatisfactionDisapointment;
 	}
 
 	return nullptr;
@@ -92,27 +92,27 @@ TArray<FFatimaEmotion> FFatimaAppraisal::GenerateEmotions() {
 		GeneratedEmotions.Add(Emotions.JoyDistress);
 	}
 	if (Desirability != 0 && DesirabilityForOthers != 0) {
-		auto Factor = (Desirability + DesirabilityForOthers) / 2;
-		Emotions.HappyforResentment.Amount = Factor;
-		Emotions.GloatingPity.Amount = Factor;
+		const auto Factor = (Desirability + DesirabilityForOthers) / 2;
+		Emotions.HappyforPitty.Amount = Factor;
+		Emotions.AdmirationGloating.Amount = Factor;
 
-		GeneratedEmotions.Add(Emotions.HappyforResentment);
-		GeneratedEmotions.Add(Emotions.GloatingPity);
+		GeneratedEmotions.Add(Emotions.HappyforPitty);
+		GeneratedEmotions.Add(Emotions.AdmirationGloating);
 	}
 	if (Praiseworthiness != 0) {
 		Emotions.PrideShame.Amount = Praiseworthiness;
-		Emotions.AdmirationReproach.Amount = Praiseworthiness;
+		Emotions.ConcentrationBore.Amount = Praiseworthiness;
 
 		GeneratedEmotions.Add(Emotions.PrideShame);
-		GeneratedEmotions.Add(Emotions.AdmirationReproach);
+		GeneratedEmotions.Add(Emotions.ConcentrationBore);
 	}
 	if (Desirability != 0 && Praiseworthiness != 0) {
-		auto Factor = (Desirability + Praiseworthiness) / 2;
-		Emotions.GratificationRemorse.Amount = Factor;
-		Emotions.GratitudeAnger.Amount = Factor;
+		const auto Factor = (Desirability + Praiseworthiness) / 2;
+		Emotions.AngerRemorse.Amount = Factor;
+		Emotions.GratitudeResentment.Amount = Factor;
 
-		GeneratedEmotions.Add(Emotions.GratificationRemorse);
-		GeneratedEmotions.Add(Emotions.GratitudeAnger);
+		GeneratedEmotions.Add(Emotions.AngerRemorse);
+		GeneratedEmotions.Add(Emotions.GratitudeResentment);
 	}
 	if (Like != 0) {
 		Emotions.JoyDistress.Amount = Like;
@@ -120,14 +120,14 @@ TArray<FFatimaEmotion> FFatimaAppraisal::GenerateEmotions() {
 		GeneratedEmotions.Add(Emotions.LoveHate);
 	}
 	if (GoalStatus != 0 || GoalConduciveness != 0 || GoalSucessProbability != 0) {
-		auto Factor = (GoalStatus + GoalConduciveness + GoalSucessProbability) / 3;
+		const auto Factor = (GoalStatus + GoalConduciveness + GoalSucessProbability) / 3;
 		Emotions.HopeFear.Amount = Factor;
-		Emotions.ReliefDisappointment.Amount = Factor;
-		Emotions.SatisfactionFearsconfirmed.Amount = Factor;
+		Emotions.ReliefFearsConfirmed.Amount = Factor;
+		Emotions.SatisfactionDisapointment.Amount = Factor;
 
 		GeneratedEmotions.Add(Emotions.HopeFear);
-		GeneratedEmotions.Add(Emotions.ReliefDisappointment);
-		GeneratedEmotions.Add(Emotions.SatisfactionFearsconfirmed);
+		GeneratedEmotions.Add(Emotions.ReliefFearsConfirmed);
+		GeneratedEmotions.Add(Emotions.SatisfactionDisapointment);
 	}
 
 	return GeneratedEmotions;
