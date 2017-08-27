@@ -17,22 +17,28 @@ class PROJECT_API UAIWasabiEmotionEngine : public UAIBaseEmotionEngine
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Params")
 		FAIWasabiAppraisal WasabiAppraisal;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Params")
 		EWasabiCoreType WasabiCoreType;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Params")
 		FWasabiCharacterTraits CharacterTraits;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Params")
+		bool bLogWasabiState;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Params")
+		TArray<FWasabiComplexStepState> WasabiStates;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Params")
 		TArray<FWasabiEmotion> KnownEmotions;
 
-	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "")
+	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Params")
 		UAIWasabiOriginalEngineCore* OriginalEngineCore;
 
-	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "")
+	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Params")
 		UAIWasabiImprovedEngineCore* ImprovedEngineCore;
 
 
@@ -44,6 +50,7 @@ protected:
 		float JoyDistressCoeficient;
 
 	UAIWasabiBaseEngineCore* EngineCore;
+	float _timeElapsed;
 
 public:
 	
@@ -59,6 +66,11 @@ public:
 
 	UFUNCTION()
 		virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor) override; 
+
+	UFUNCTION()
+		FWasabiComplexStepState GetWasabiComplexStepState() const;
+
+	FORCEINLINE TArray<FWasabiComplexStepState>* GetWasabiComplexStateStates() {return &WasabiStates; }
 
 protected:
 	virtual float GetEngineScale() const override;

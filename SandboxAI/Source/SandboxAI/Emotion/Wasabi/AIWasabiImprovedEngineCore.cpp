@@ -225,6 +225,11 @@ void UAIWasabiImprovedEngineCore::Tick(float DeltaSeconds)
 	bPendingImpulse = false;
 }
 
+FWasabiEngineStepState UAIWasabiImprovedEngineCore::GetWasabiEngineStepState() const
+{
+	return LastEngineStepState;
+}
+
 void UAIWasabiImprovedEngineCore::MapVMBToPAD()
 {
 	WasabiSpacePointPAD.SetDominance(OverrideDominance);

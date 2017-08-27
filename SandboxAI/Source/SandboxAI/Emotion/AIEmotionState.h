@@ -28,6 +28,8 @@ public:
 	FORCEINLINE FAISingleEmotionState(EEmotionName emotion, float strength, bool active); // prefered constructor
 
 	FORCEINLINE FString ToString() const;
+	FString ToStringColumnNames();
+	FString ToStringLine();
 };
 
 FAISingleEmotionState::FAISingleEmotionState() : Emotion(EEmotionName::None), Strength(0.0f), bActive(false) {}
@@ -59,6 +61,8 @@ public:
 	FORCEINLINE void Add(const TArray<FAISingleEmotionState>& emotions) { Emotions.Append(emotions); }
 
 	FString ToString();
+	FString ToStringColumnNames();
+	FString ToStringLine();
 };
 
 FAIEmotionState::FAIEmotionState() {}

@@ -19,6 +19,11 @@ void UAIWasabiBaseEngineCore::Tick(float DeltaSeconds)
 {
 }
 
+FWasabiEngineStepState UAIWasabiBaseEngineCore::GetWasabiEngineStepState() const
+{
+	return FWasabiEngineStepState();
+}
+
 void UAIWasabiBaseEngineCore::MapCharacterTraitsToParams(const FWasabiCharacterTraits& characterTraits)
 {
 }

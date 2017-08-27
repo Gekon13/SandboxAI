@@ -13,6 +13,8 @@ AEmotionSplineAIController::AEmotionSplineAIController() : Super()
 	MinColor = FLinearColor::Green;
 	MaxColor = FLinearColor::Red;
 
+	bHandleSpeedAction = true;
+
 	SetCoeficient(0.5f);
 }
 
@@ -36,7 +38,7 @@ void AEmotionSplineAIController::UnPossess()
 void AEmotionSplineAIController::HandleDecisionMade(const FEmotionDecisionInfo& decisionInfo)
 {
 	//UE_LOG(LogTemp, Log, TEXT("I got Decision: %s"), *decisionInfo.ActionName);
-	if (decisionInfo.ActionName.Compare(ActionWithSpeedCoeficient) == 0)
+	if (bHandleSpeedAction && decisionInfo.ActionName.Compare(ActionWithSpeedCoeficient) == 0)
 	{
 		SetCoeficient(decisionInfo.ActionFValue);
 	}

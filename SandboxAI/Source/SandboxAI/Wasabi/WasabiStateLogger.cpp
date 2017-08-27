@@ -5,6 +5,8 @@
 #include "WasabiStateLogger.h"
 #include "WasabiBaseAIController.h"
 #include "Emotion/Wasabi/AIWasabiStructures.h"
+#include "Emotion/Wasabi/AIWasabiBaseEngineCore.h"
+#include "Emotion/AIEmotionComponent.h"
 #include <ctime>
 #include <iomanip>
 
@@ -62,89 +64,58 @@ void AWasabiStateLogger::SaveFile()
 				//FString someString = FString(TEXT("Hello to the world\r\n"));
 				//archive->Serialize((void*)(*someString), someString.Len() * 2); // times two because DWORDS
 
-				if (pawnToLog != nullptr)
+				UAIWasabiEmotionEngine* wasabiEmotionEngine = GetWasabiEmotionEngine(pawnToLog);
+
+				if (wasabiEmotionEngine != nullptr)
 				{
-					AController* tmpAIController = pawnToLog->GetController();
-					if (tmpAIController != nullptr)
+					TArray<FWasabiComplexStepState>* tmpWasabiStatesPtr = wasabiEmotionEngine->GetWasabiComplexStateStates();
+					if (tmpWasabiStatesPtr != nullptr && tmpWasabiStatesPtr->Num() > 0)
 					{
-						AWasabiBaseAIController* wasabiBaseAIController = Cast<AWasabiBaseAIController>(tmpAIController);
-						if (wasabiBaseAIController != nullptr)
+						size_t charSize = sizeof(TCHAR);
+						int32 recordNumber = tmpWasabiStatesPtr->Num();
+						int32 startLine = 1;
+						int32 printCount = recordNumber / PrintEvery;
+
+						FString header = FString::Printf(TEXT("Entity, %s, recordCount, %d, print every, %d, printed, %d"), *LogTargets[targetIndex].LogName, recordNumber, PrintEvery, printCount);
+						header.Append(LINE_TERMINATOR);
+						archive->Serialize((void*)(*header), header.Len() * charSize);
+
+						FString columnNames = (*tmpWasabiStatesPtr)[0].ToStringColumnNames();
+						columnNames.Append(LINE_TERMINATOR);
+						archive->Serialize((void*)(*columnNames), columnNames.Len() * charSize);
+
+						float valencyAccumulator = 0.0f;
+						for (int32 i = startLine; i < recordNumber; ++i)
 						{
-							TArray<FWasabiEngineStepState>* tmpWasabiStatesPtr = wasabiBaseAIController->GetWasabiStepStates();
-							if (tmpWasabiStatesPtr != nullptr)
+							valencyAccumulator += (*tmpWasabiStatesPtr)[i].WasabiEngineStepState.InputValency;
+
+							if ((startLine - i) % PrintEvery == 0)
 							{
-								if (tmpWasabiStatesPtr->Num() > 0)
-								{
-									size_t charSize = sizeof(TCHAR);
-									int32 recordNumber = tmpWasabiStatesPtr->Num();
-									int32 startLine = 1;
-									int32 printCount = recordNumber / PrintEvery;
-									float loopLength = 0.0f;
+								FString tmpLine = (*tmpWasabiStatesPtr)[i].ToStringLineOverrideInputValency(valencyAccumulator);
+								valencyAccumulator = 0.0f;
 
-									ASandboxAISplineAIController* splineAIController = Cast<ASandboxAISplineAIController>(tmpAIController);
-									if (splineAIController != nullptr)
-									{
-										loopLength = splineAIController->GetSplineLength();
-									}
+								tmpLine.Append(LINE_TERMINATOR);
 
-									FString header = FString::Printf(TEXT("Entity, %s, recordCount, %d, print every, %d, printed, %d, Loop length, %f"), *LogTargets[targetIndex].LogName, recordNumber, PrintEvery, printCount, loopLength);
-									header.Append(LINE_TERMINATOR);
-									archive->Serialize((void*)(*header), header.Len() * charSize);
-
-									FString columnNames = (*tmpWasabiStatesPtr)[0].ToStringColumnNames();
-									columnNames.Append(LINE_TERMINATOR);
-									archive->Serialize((void*)(*columnNames), columnNames.Len() * charSize);
-
-									float valencyAccumulator = 0.0f;
-									for (int32 i = startLine; i < recordNumber; ++i)
-									{
-										valencyAccumulator += (*tmpWasabiStatesPtr)[i].InputValency;
-										
-										if ((startLine - i) % PrintEvery == 0)
-										{
-											FString tmpLine = (*tmpWasabiStatesPtr)[i].ToStringLineOverrideInputValency(valencyAccumulator);
-											valencyAccumulator = 0.0f;
-
-											tmpLine.Append(LINE_TERMINATOR);
-
-											archive->Serialize((void*)(*tmpLine), tmpLine.Len() * charSize);
-										}
-									}
-									//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, FString::Printf(TEXT("Saved data to file: %s")));
-									UE_LOG(WasabiLog, Warning, TEXT("Saved data to file: %s"), *filePath);
-								}
-								else
-								{
-									GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, FString::Printf(TEXT("Array is empty")));
-								}
-							}
-							else
-							{
-								GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, FString::Printf(TEXT("Array is null")));
+								archive->Serialize((void*)(*tmpLine), tmpLine.Len() * charSize);
 							}
 						}
-						else
-						{
-							GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, FString::Printf(TEXT("Failed to cast ai controller to wasabi ai controller")));
-						}
+						//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, FString::Printf(TEXT("Saved data to file: %s")));
+						UE_LOG(WasabiLog, Warning, TEXT("Saved data to file: %s"), *filePath);
 					}
 					else
 					{
-						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, FString::Printf(TEXT("Pawn returned null ai controller")));
+						if (GEngine != nullptr)
+						{
+							GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Array of states is null or empty."), *fileName));
+						}
 					}
 				}
-				else
-				{
-					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, FString::Printf(TEXT("pawn is null")));
-				}
-
-
 				archive->Close();
 
 			}
 			else
 			{
-				if (GEngine)
+				if (GEngine != nullptr)
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Failed to open file"), *fileName));
 				}
@@ -152,13 +123,13 @@ void AWasabiStateLogger::SaveFile()
 		}
 		else
 		{
-			if (GEngine)
+			if (GEngine != nullptr)
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("FileManager did not get."), *fileName));
 			}
 		}
 	}
-	if (GEngine)
+	if (GEngine != nullptr)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("Finished printing") );
 	}
@@ -193,7 +164,8 @@ void AWasabiStateLogger::SaveFileHorizontal()
 			{
 				APawn* pawnToLog = LogTargets[targetIndex].LogTarget;
 
-				if (pawnToLog != nullptr)
+				UAIWasabiEmotionEngine* wasabiEmotionEngine = GetWasabiEmotionEngine(pawnToLog);
+				if (wasabiEmotionEngine != nullptr)
 				{
 					AController* tmpAIController = pawnToLog->GetController();
 					if (tmpAIController != nullptr)
@@ -400,4 +372,45 @@ void AWasabiStateLogger::SaveFileHorizontal()
 		}
 	}
 	
+}
+
+UAIEmotionComponent* AWasabiStateLogger::GetEmotionComponent(APawn* pawnToInspect)
+{
+	UAIEmotionComponent* emotionComponentPtr = nullptr;
+
+	if (pawnToInspect != nullptr)
+	{
+		AController* controller = pawnToInspect->GetController();
+		if (controller != nullptr)
+		{
+			UActorComponent* foundComponent = controller->GetComponentByClass(UAIEmotionComponent::StaticClass());
+			if (foundComponent != nullptr)
+			{
+				emotionComponentPtr = Cast<UAIEmotionComponent>(foundComponent);
+			}
+		}
+	}
+
+	return emotionComponentPtr;
+}
+
+
+UAIWasabiEmotionEngine* AWasabiStateLogger::GetWasabiEmotionEngine(APawn* pawnToInspect)
+{
+	UAIWasabiEmotionEngine* wasabiEmotionEnginePtr = nullptr;
+
+	if (pawnToInspect != nullptr)
+	{
+		UAIEmotionComponent* emotionComponent = GetEmotionComponent(pawnToInspect);
+		if (emotionComponent != nullptr)
+		{
+			UAIBaseEmotionEngine* baseEmotionEngine = emotionComponent->GetEmotionEngine();
+			if (baseEmotionEngine != nullptr)
+			{
+				wasabiEmotionEnginePtr = Cast<UAIWasabiEmotionEngine>(baseEmotionEngine);
+			}
+		}
+	}
+
+	return wasabiEmotionEnginePtr;
 }

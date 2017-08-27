@@ -264,6 +264,37 @@ FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI(const FWasabiEngineStepStat
 FWasabiEngineStepStateCGI::FWasabiEngineStepStateCGI(const FWasabiSpacePointPAD& iPAD, const FWasabiSpacePointVMB& iVMB, int32 iIndex, float iInputValency, float iJoy, float iDistress, float iDistanceCovered, float iSpeed)
 	: FWasabiEngineStepState(iPAD, iVMB, iIndex, iInputValency), Joy(iJoy), Distress(iDistress), DistanceCovered(iDistanceCovered), Speed(iSpeed) {}
 
+USTRUCT(BlueprintType)
+struct PROJECT_API FWasabiComplexStepState
+{
+	GENERATED_BODY()
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FWasabiEngineStepState WasabiEngineStepState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FAIEmotionState EmotionState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Time;
+
+	FORCEINLINE FWasabiComplexStepState();
+	FORCEINLINE FWasabiComplexStepState(const FWasabiEngineStepState& wasabiEngineStepState);
+	FORCEINLINE FWasabiComplexStepState(const FWasabiEngineStepState& wasabiEngineStepState, const FAIEmotionState& emotionState);
+	FORCEINLINE FWasabiComplexStepState(float time);
+	FORCEINLINE FWasabiComplexStepState(const FWasabiEngineStepState& wasabiEngineStepState, float time);
+	FORCEINLINE FWasabiComplexStepState(const FWasabiEngineStepState& wasabiEngineStepState, const FAIEmotionState& emotionState, float time);
+
+	FString ToStringColumnNames();
+	FString ToStringLine();
+	FString ToStringLineOverrideInputValency(float inputValency);
+};
+
+FWasabiComplexStepState::FWasabiComplexStepState() : WasabiEngineStepState(FWasabiEngineStepState()), EmotionState(FAIEmotionState()), Time(0.0f) {}
+FWasabiComplexStepState::FWasabiComplexStepState(const FWasabiEngineStepState& wasabiEngineStepState) : WasabiEngineStepState(wasabiEngineStepState), EmotionState(FAIEmotionState()), Time(0.0f) {}
+FWasabiComplexStepState::FWasabiComplexStepState(const FWasabiEngineStepState& wasabiEngineStepState, const FAIEmotionState& emotionState) : WasabiEngineStepState(wasabiEngineStepState), EmotionState(emotionState), Time(0.0f) {}
+FWasabiComplexStepState::FWasabiComplexStepState(float time) : WasabiEngineStepState(FWasabiEngineStepState()), EmotionState(FAIEmotionState()), Time(time) {}
+FWasabiComplexStepState::FWasabiComplexStepState(const FWasabiEngineStepState& wasabiEngineStepState, float time) : WasabiEngineStepState(wasabiEngineStepState), EmotionState(FAIEmotionState()), Time(time) {}
+FWasabiComplexStepState::FWasabiComplexStepState(const FWasabiEngineStepState& wasabiEngineStepState, const FAIEmotionState& emotionState, float time) : WasabiEngineStepState(wasabiEngineStepState), EmotionState(emotionState), Time(time) {}
 
 UENUM(BlueprintType)
 enum class EWasabiCoreType : uint8

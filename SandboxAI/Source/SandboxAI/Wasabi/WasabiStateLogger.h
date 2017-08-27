@@ -6,6 +6,9 @@
 #include "Emotion/Wasabi/AIWasabiStructures.h"
 #include "WasabiStateLogger.generated.h"
 
+class UAIWasabiEmotionEngine;
+class UAIEmotionComponent;
+
 USTRUCT(BlueprintType)
 struct SANDBOXAI_API FLogTarget
 {
@@ -50,4 +53,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void SaveFileHorizontal();
+
+protected:
+
+	static UAIEmotionComponent* GetEmotionComponent(APawn* pawnToInspect);
+	static UAIWasabiEmotionEngine* GetWasabiEmotionEngine(APawn* pawnToInspect);
 };

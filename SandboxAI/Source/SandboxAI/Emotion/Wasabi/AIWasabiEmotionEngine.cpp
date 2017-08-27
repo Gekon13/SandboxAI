@@ -8,12 +8,16 @@
 #include "AIWasabiImprovedEngineCore.h"
 
 UAIWasabiEmotionEngine::UAIWasabiEmotionEngine() :
+	WasabiAppraisal(FAIWasabiAppraisal()),
 	CharacterTraits(FWasabiCharacterTraits())
 {
 	OriginalEngineCore = CreateDefaultSubobject<UAIWasabiOriginalEngineCore>(TEXT("OriginalEngineCore"));
 	ImprovedEngineCore = CreateDefaultSubobject<UAIWasabiImprovedEngineCore>(TEXT("ImprovedEngineCore"));
 
 	WasabiCoreType = EWasabiCoreType::Original;
+	bLogWasabiState = false;
+
+	_timeElapsed = 0.0f;
 }
 
 void UAIWasabiEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
@@ -35,6 +39,7 @@ void UAIWasabiEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotio
 		GetEngineCore()->Initialize(CharacterTraits);
 	}
 
+	_timeElapsed = 0.0f;
 	WasabiAppraisal.Initialize(EngineCore, emotionKnowledge, nullptr);
 }
 
@@ -44,6 +49,7 @@ void UAIWasabiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 
 	if (GetEngineCore() != nullptr)
 	{
+		_timeElapsed += DeltaSeconds;
 		GetEngineCore()->Tick(DeltaSeconds);
 
 		const FWasabiSpacePointPAD currentSpacePointPAD = GetEngineCore()->GetWasabiSpacePointPAD();
@@ -67,6 +73,11 @@ void UAIWasabiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 			JoyDistressCoeficient = 0.5f;
 			MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], JoyDistressCoeficient));
 		}
+
+		if (bLogWasabiState)
+		{
+			WasabiStates.Add(GetWasabiComplexStepState());
+		}
 	}
 }
 
@@ -89,6 +100,11 @@ void UAIWasabiEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emo
 	//UE_LOG(LogTemp, Log, TEXT("Perceived action: %s, source: %s, target %s"), *FAIEmotionConstants::ActionNames[EmotionActionName], sourceActor != nullptr ? *sourceActor->GetName() : TEXT("None"), targetActor != nullptr ? *targetActor->GetName() : TEXT("None"));
 
 	WasabiAppraisal.AppraiseAction(EmotionActionName, sourceActor, targetActor);
+}
+
+FWasabiComplexStepState UAIWasabiEmotionEngine::GetWasabiComplexStepState() const
+{
+	return FWasabiComplexStepState(GetEngineCore()->GetWasabiEngineStepState(), GetEmotionState(), _timeElapsed);
 }
 
 float UAIWasabiEmotionEngine::GetEngineScale() const

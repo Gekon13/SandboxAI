@@ -32,6 +32,8 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE FWasabiSpacePointPAD GetWasabiSpacePointPAD() const { return WasabiSpacePointPAD; }
 
+	virtual FWasabiEngineStepState GetWasabiEngineStepState() const;
+
 protected:
 	virtual void MapCharacterTraitsToParams(const FWasabiCharacterTraits& characterTraits);
 };

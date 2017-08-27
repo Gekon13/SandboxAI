@@ -341,6 +341,58 @@ FString FWasabiEngineStepStateCGI::ToStringLineCustom(float inputValency)
 	return result;
 }
 
+FString FWasabiComplexStepState::ToStringColumnNames()
+{
+	FString result = FString();
+
+	FString separator = ColumnSeparator;
+
+	result.Append(TEXT("Time"));
+	result.Append(separator);
+
+	result.Append(WasabiEngineStepState.ToStringColumnNames());
+	// separator is included inside
+
+	result.Append(EmotionState.ToStringColumnNames());
+	// separator is inside
+
+
+	return result;
+}
+FString FWasabiComplexStepState::ToStringLine()
+{
+	FString result = FString();
+
+	FString separator = ColumnSeparator;
+
+	result.Append(FString::Printf(TEXT("%.4f%s"),Time,*separator));
+
+	result.Append(WasabiEngineStepState.ToStringLine());
+	// separator is included inside
+
+	result.Append(EmotionState.ToStringLine());
+	// separator is inside
+
+	return result;
+}
+
+FString FWasabiComplexStepState::ToStringLineOverrideInputValency(float inputValency)
+{
+	FString result = FString();
+
+	FString separator = ColumnSeparator;
+
+	result.Append(FString::Printf(TEXT("%.4f%s"), Time, *separator));
+
+	result.Append(WasabiEngineStepState.ToStringLineOverrideInputValency(inputValency));
+	// separator is included inside
+
+	result.Append(EmotionState.ToStringLine());
+	// separator is inside
+
+	return result;
+}
+
 void FWasabiCharacterTraits::Validate()
 {
 	Extraversion = FMath::Clamp(Extraversion, -1.0f, 1.0f);

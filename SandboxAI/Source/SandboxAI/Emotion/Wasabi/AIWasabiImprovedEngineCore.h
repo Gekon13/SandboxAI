@@ -78,10 +78,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Params")
 		FWasabiEngineStepState LastEngineStepState;
 
-	int32 _stepCounter;
-
-	
-
 public:
 	UAIWasabiImprovedEngineCore();
 	
@@ -92,10 +88,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		virtual void Tick(float DeltaSeconds) override;
 
-	UFUNCTION(BlueprintCallable)
-		FORCEINLINE FWasabiEngineStepState GetEngineStepState() { return LastEngineStepState;	}
-
-
+	virtual FWasabiEngineStepState GetWasabiEngineStepState() const override;
 
 protected:
 	/** Call this to apply impulse directly to VMB space */

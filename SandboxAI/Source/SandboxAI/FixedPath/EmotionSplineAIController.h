@@ -31,6 +31,9 @@ public: // members
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion")
 		FLinearColor MaxColor;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion")
+		bool bHandleSpeedAction;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotion")
 		float Coeficient;
 

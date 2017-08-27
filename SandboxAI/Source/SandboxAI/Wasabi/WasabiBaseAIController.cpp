@@ -35,8 +35,9 @@ void AWasabiBaseAIController::Tick(float DeltaSeconds)
 			SetEmotionVisualColor(FMath::Lerp<FLinearColor>(MinColor, MaxColor, coeficient));
 		}
 
-		FWasabiEngineStepState stepState = WasabiEmotionComponent->GetWasabiEngineCore()->GetEngineStepState();
-		WasabiStates.Add(stepState);
+		//FWasabiEngineStepState stepState = WasabiEmotionComponent->GetWasabiEngineCore()->GetWasabiEngineStepState();
+		//WasabiStates.Add(stepState);
+		
 		//FWasabiEngineStepStateCGI stepStateCGI = FWasabiEngineStepStateCGI(stepState);
 		//stepStateCGI.Joy = JoyDistance;
 		//stepStateCGI.Distress = DistressDistance;
