@@ -12,7 +12,7 @@ const float FWasabiConstants::FWasabiEmotionDefaultOuterRadius = 64.0f;
 
 const float FWasabiDefaults::ValenceTension  = 69.0f;
 const float FWasabiDefaults::MoodTension = 10.0f;
-const float FWasabiDefaults::BoredomTension = 100.0f;
+const float FWasabiDefaults::BoredomTension = 80.0f;
 const float FWasabiDefaults::Slope = 500.0f;
 const float FWasabiDefaults::Mass = 5000.0f;
 const float FWasabiDefaults::ValenceBoredomRegion = 5.0f;
@@ -23,12 +23,12 @@ const float FWasabiDefaults::Disequilibrium = 0.3f;
 
 const float FWasabiCustomDefaults::ValenceTension = 140.0f;
 const float FWasabiCustomDefaults::MoodTension = 20.0f;
-const float FWasabiCustomDefaults::BoredomTension = 200.0f;
+const float FWasabiCustomDefaults::BoredomTension = 80.0f;
 const float FWasabiCustomDefaults::Slope = 500.0f;
 const float FWasabiCustomDefaults::Mass = 5000.0f;
 const float FWasabiCustomDefaults::ValenceBoredomRegion = 5.0f;
 const float FWasabiCustomDefaults::MoodBoredomRegion = 5.0f;
-const float FWasabiCustomDefaults::BoredomPerSecond = 30.0f;
+const float FWasabiCustomDefaults::BoredomPerSecond = 15.0f;
 const float FWasabiCustomDefaults::Prevalence = 30.0f;
 const float FWasabiCustomDefaults::Disequilibrium = 0.3f;
 
@@ -43,6 +43,9 @@ const FWasabiSpacePointPAD FWasabiSpacePointPAD::WasabiSpacePointPADMax = FWasab
 
 const FWasabiSpacePointVMB FWasabiSpacePointVMB::WasabiSpacePointVMBMin = FWasabiSpacePointVMB(-FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius);
 const FWasabiSpacePointVMB FWasabiSpacePointVMB::WasabiSpacePointVMBMax = FWasabiSpacePointVMB(FWasabiConstants::WasabiSpaceRadius, FWasabiConstants::WasabiSpaceRadius, 0.0f);
+
+const FWasabiSpacePointVMB FWasabiSpacePointVMB::ImprovedWasabiSpacePointVMBMin = FWasabiSpacePointVMB(-FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius, -FWasabiConstants::WasabiSpaceRadius);
+const FWasabiSpacePointVMB FWasabiSpacePointVMB::ImprovedWasabiSpacePointVMBMax = FWasabiSpacePointVMB(FWasabiConstants::WasabiSpaceRadius, FWasabiConstants::WasabiSpaceRadius, FWasabiConstants::WasabiSpaceRadius);
 
 const FWasabiSpacePointPADEmotion FWasabiSpacePointPADEmotion::MockJoy = FWasabiSpacePointPADEmotion(FWasabiConstants::WasabiSpaceRadius * 0.5f, 0.0f, -FWasabiConstants::WasabiSpaceRadius);
 const FWasabiSpacePointPADEmotion FWasabiSpacePointPADEmotion::MockDistress = FWasabiSpacePointPADEmotion(-FWasabiConstants::WasabiSpaceRadius * 0.5f, 0.0f, -FWasabiConstants::WasabiSpaceRadius);
@@ -71,6 +74,19 @@ void FWasabiSpacePointVMB::ClampMoodBySpace()
 void FWasabiSpacePointVMB::ClampBoredomBySpace()
 {
 	Z = FMath::Clamp<float>(Z, WasabiSpacePointVMBMin.Z, WasabiSpacePointVMBMax.Z);
+}
+
+void FWasabiSpacePointVMB::ImprovedClampValenceBySpace()
+{
+	X = FMath::Clamp<float>(X, ImprovedWasabiSpacePointVMBMin.X, ImprovedWasabiSpacePointVMBMax.X);
+}
+void FWasabiSpacePointVMB::ImprovedClampMoodBySpace()
+{
+	Y = FMath::Clamp<float>(Y, ImprovedWasabiSpacePointVMBMin.Y, ImprovedWasabiSpacePointVMBMax.Y);
+}
+void FWasabiSpacePointVMB::ImprovedClampBoredomBySpace()
+{
+	Z = FMath::Clamp<float>(Z, ImprovedWasabiSpacePointVMBMin.Z, ImprovedWasabiSpacePointVMBMax.Z);
 }
 
 void FWasabiEmotion::UpdateEmotion(const FWasabiSpacePointPAD& wasabiSpacePointPAD)

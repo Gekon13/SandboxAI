@@ -7,7 +7,7 @@
 #include "AIWasabiOriginalEngineCore.h"
 #include "AIWasabiImprovedEngineCore.h"
 
-//#define TEST_0
+#define TEST_0
 //#define TEST_1
 //#define TEST_ALL
 

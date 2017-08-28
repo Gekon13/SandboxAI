@@ -17,7 +17,7 @@ UAIWasabiImprovedEngineCore::UAIWasabiImprovedEngineCore() :
 	Prevalence = 30.0f; // default from wasabi is 30
 
 	Disequilibrium = 0.3f; // my happy new param for wasabi
-	BoredomTension = 200.0f; // this should occur and fade fast
+	BoredomTension = 80.0f; // this should occur and fade fast
 	
 	OverrideDominance = -FWasabiConstants::WasabiSpaceRadius;
 
@@ -52,7 +52,7 @@ void UAIWasabiImprovedEngineCore::Impulse(float value)
 }
 void UAIWasabiImprovedEngineCore::InternalImpulse(float value)
 {
-	float deltaDisequalibrium = FMath::Min(FMath::Sign(WasabiSpacePointVMB.GetValence() * value), 0.0f) * FMath::Abs(value) * Disequilibrium;
+	float deltaDisequalibrium = FMath::Abs( FMath::Min(FMath::Sign(WasabiSpacePointVMB.GetValence() * value), 0.0f) ) * FMath::Abs(value) * Disequilibrium;
 	if (deltaDisequalibrium > 0.0f)
 	{
 		DisequilibriumVelocity = 0.0f;
@@ -60,7 +60,7 @@ void UAIWasabiImprovedEngineCore::InternalImpulse(float value)
 	}
 
 	WasabiSpacePointVMB.SetValence(WasabiSpacePointVMB.GetValence() + value);
-	WasabiSpacePointVMB.ClampValenceBySpace();
+	WasabiSpacePointVMB.ImprovedClampValenceBySpace();
 	ValenceVelocity = 0.0f;
 	MoodVelocity = 0.0f;
 }

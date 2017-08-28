@@ -104,6 +104,9 @@ public:
 	static const FWasabiSpacePointVMB WasabiSpacePointVMBMin;
 	static const FWasabiSpacePointVMB WasabiSpacePointVMBMax;
 
+	static const FWasabiSpacePointVMB ImprovedWasabiSpacePointVMBMin;
+	static const FWasabiSpacePointVMB ImprovedWasabiSpacePointVMBMax;
+
 	FORCEINLINE FWasabiSpacePointVMB();
 	FORCEINLINE FWasabiSpacePointVMB(const FVector& source);
 	FORCEINLINE FWasabiSpacePointVMB(const FWasabiSpacePointVMB& source);
@@ -124,6 +127,10 @@ public:
 	void ClampValenceBySpace();
 	void ClampMoodBySpace();
 	void ClampBoredomBySpace();
+
+	void ImprovedClampValenceBySpace();
+	void ImprovedClampMoodBySpace();
+	void ImprovedClampBoredomBySpace();
 };
 
 FWasabiSpacePointVMB::FWasabiSpacePointVMB() : Super() { }
