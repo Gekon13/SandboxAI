@@ -56,6 +56,7 @@ protected:
 public:	
 	UAIEmotionComponent();
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void TickComponent(float DeltaSeconds, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;		
 	
 	FORCEINLINE UAIBaseEmotionEngine* GetEmotionEngine() const { return EmotionEnginePtr; }

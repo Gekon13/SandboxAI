@@ -83,6 +83,15 @@ void UAIEmotionComponent::BeginPlay()
 	}
 }
 
+void UAIEmotionComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	if (AIController != nullptr)
+	{
+		AIController->GetPerceptionComponent()->OnTargetPerceptionUpdated.RemoveDynamic(this, &UAIEmotionComponent::OnPerceptionUpdatedActor);
+	}
+}
 
 void UAIEmotionComponent::TickComponent(float DeltaSeconds, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -172,11 +181,11 @@ void UAIEmotionComponent::OnPerceptionUpdatedActor(AActor* Actor, FAIStimulus St
 				if (Stimulus.WasSuccessfullySensed())
 				{
 					emotionVisible->OnEmotionActionPerformed.AddDynamic(GetEmotionEngine(), &UAIBaseEmotionEngine::HandleEmotionActionPerformed);
-					emotionVisible->RequestSeeAction(ControlledPawn);
+					GetEmotionEngine()->HandleEmotionActionPerformed(EEmotionActionName::See, ControlledPawn, Actor);
 				}
 				else
 				{
-					emotionVisible->RequestUnSeeAction(ControlledPawn);
+					GetEmotionEngine()->HandleEmotionActionPerformed(EEmotionActionName::UnSee, ControlledPawn, Actor);
 					emotionVisible->OnEmotionActionPerformed.RemoveDynamic(GetEmotionEngine(), &UAIBaseEmotionEngine::HandleEmotionActionPerformed);
 				}
 			}

@@ -24,9 +24,6 @@ class SANDBOXAI_API IAIEmotionVisibleInterface
 public:
 	FEmotionActionPerformed OnEmotionActionPerformed;
 
-	void RequestSeeAction(AActor* sourceActor = nullptr);
-	void RequestUnSeeAction(AActor* sourceActor = nullptr);
-
 protected:
 	UFUNCTION(BlueprintNativeEvent)
 		void NotifyOnEmotionActionPerformed(EEmotionActionName emotionActionName, AActor* sourceActor = nullptr, AActor* targetActor = nullptr);

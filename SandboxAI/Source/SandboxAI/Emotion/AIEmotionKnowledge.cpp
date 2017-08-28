@@ -2,6 +2,8 @@
 
 #include "SandboxAI.h"
 #include <initializer_list>
+#include "Emotion/Dummies/VisibleFriend.h"
+#include "Emotion/Dummies/VisibleEnemy.h"
 #include "AIEmotionKnowledge.h"
 
 UAIEmotionKnowledge::UAIEmotionKnowledge()
@@ -19,8 +21,8 @@ UAIEmotionKnowledge::UAIEmotionKnowledge()
 	Informations.Add(FAIEmotionInformation(EEmotionActionName::HopePromisingGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Hope_Fear, 0.5f) })));
 	Informations.Add(FAIEmotionInformation(EEmotionActionName::ScaryGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Hope_Fear, -0.5f) })));
 
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) }), FAIEmotionTarget(AActor::StaticClass(), FName("Friend")) ));
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f) }), FAIEmotionTarget(AActor::StaticClass(), FName("Enemy")) ));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) }), FAIEmotionTarget(AVisibleFriend::StaticClass()) ));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f) }), FAIEmotionTarget(AVisibleEnemy::StaticClass()) ));
 }
 
 void UAIEmotionKnowledge::SetScale(float newScale)
