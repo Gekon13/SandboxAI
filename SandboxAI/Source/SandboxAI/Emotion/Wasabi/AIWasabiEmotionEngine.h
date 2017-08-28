@@ -72,6 +72,9 @@ public:
 
 	FORCEINLINE TArray<FWasabiComplexStepState>* GetWasabiComplexStateStates() {return &WasabiStates; }
 
+	FORCEINLINE EWasabiCoreType GetWasabiCoreType() const {return  WasabiCoreType;}
+	FORCEINLINE void SetWasabiCoreType(EWasabiCoreType wasabiCoreType) { WasabiCoreType = wasabiCoreType; }
+
 protected:
 	virtual float GetEngineScale() const override;
 

@@ -61,6 +61,11 @@ public:
 	
 	FORCEINLINE UAIBaseEmotionEngine* GetEmotionEngine() const { return EmotionEnginePtr; }
 
+	FORCEINLINE UAIFatimaEmotionEngine* GetFatimaEmotionEngine() const {return FatimaEmotionEngine;}
+	FORCEINLINE UAIPsiEmotionEngine* GetPsiEmotionEngine() const {return PsiEmotionEngine;}
+	FORCEINLINE UAISimplexEmotionEngine* GetSimplexEmotionEngine() const { return SimplexEmotionEngine; }
+	FORCEINLINE UAIWasabiEmotionEngine* GetWasabiEmotionEngine() const { return WasabiEmotionEngine; }
+
 protected:
 
 	void ReceivePassedDecision(const FEmotionDecisionInfo& decisionInfo);
