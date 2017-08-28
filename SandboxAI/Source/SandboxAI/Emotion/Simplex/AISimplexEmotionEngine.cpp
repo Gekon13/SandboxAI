@@ -46,6 +46,7 @@ void UAISimplexEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Em
 
 		for(auto Iterator = EmotionalStateChanges.CreateIterator(); Iterator; ++Iterator)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("GeneratedEmotion: %s"), *((*Iterator).ToString()));
 			CurrentEmotionalState += (*Iterator);
 		}
 	}

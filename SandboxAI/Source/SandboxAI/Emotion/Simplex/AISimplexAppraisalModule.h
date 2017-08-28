@@ -6,6 +6,7 @@
 #include "UObject/NoExportTypes.h"
 #include "AISimplexStructures.h"
 #include "Emotion/AIEmotionConstants.h"
+#include "Emotion/AIEmotionKnowledge.h"
 #include "AISimplexAppraisalModule.generated.h"
 
 class UAIEmotionKnowledge;
@@ -14,7 +15,7 @@ class UAIEmotionKnowledge;
  * OCC based appraisal module for SIMPLEX model
  */
 UCLASS()
-class SANDBOXAI_API UAISimplexAppraisalModule : public UObject
+class PROJECT_API UAISimplexAppraisalModule : public UObject
 {
 	GENERATED_BODY()
 	
@@ -26,7 +27,7 @@ protected:
 protected:
 	FSimplexPADPoint Internal_DoAppraisalForConsequences(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor);
 	FSimplexPADPoint Internal_DoAppraisalForActions(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor);
-	FSimplexPADPoint Internal_DoAppraisalForObjects(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor);
+	FSimplexPADPoint Internal_DoAppraisalForObjects(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor);	
 
 public:
 	TArray<FSimplexPADPoint> DoAppraisal(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor);

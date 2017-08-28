@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "Emotion/AIEmotionConstants.h"
+#include "Emotion/AIEmotionKnowledge.h"
 #include "AISimplexStructures.generated.h"
 
 //Representation of a point in PAD space
@@ -21,6 +23,16 @@ public:
 
 	static FSimplexPADPoint Joy;
 	static FSimplexPADPoint Distress;
+	static FSimplexPADPoint Hope;
+	static FSimplexPADPoint Fear;
+	static FSimplexPADPoint Love;
+	static FSimplexPADPoint Hate;
+	static FSimplexPADPoint HappyFor;
+	static FSimplexPADPoint Pitty;
+	static FSimplexPADPoint Admiration;
+	static FSimplexPADPoint Gloating;
+	static FSimplexPADPoint Pride;
+	static FSimplexPADPoint Shame;
 
 public:
 	FORCEINLINE FSimplexPADPoint(float InPleasure = 0.0f, float InArousal = 0.0f, float InDominance = 0.0f) : Pleasure(FMath::Clamp(InPleasure, -1.0f, 1.0f)), Arousal(FMath::Clamp(InArousal, -1.0f, 1.0f)), Dominance(FMath::Clamp(InDominance, -1.0f, 1.0f)) { }
@@ -107,6 +119,7 @@ public:
 
 	static float Dist(const FSimplexPADPoint& From, const FSimplexPADPoint& To);
 	static FSimplexPADPoint InterpTo(const FSimplexPADPoint& Current, const FSimplexPADPoint& Target, float DeltaTime, float InterpSpeed);
+	static bool IsNearlyZero(const FSimplexPADPoint& PADPoint, float Tolerance = SMALL_NUMBER);
 };
 
 FORCEINLINE FSimplexPADPoint operator*(float scalar, const FSimplexPADPoint& PADPoint)
@@ -185,4 +198,25 @@ public:
 
 		return (DecayFactor + MaxDecay) / DoubleMaxDecay;
 	}
+};
+
+enum class ESimplexEmotionType
+{
+	Positive,
+	Negative,
+	Neutral
+};
+
+struct FSimplexAppraisalInfo
+{
+public:
+	ESimplexEmotionType Type;
+	float Power;
+	bool bFromKnowledgeOrMemory;
+
+protected:
+	static TArray<FAIEmotionInformation> GetMatchingInformationsFrom(UAIEmotionKnowledge* Source, EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor);
+
+public:
+	static FSimplexAppraisalInfo ProcessEmotion(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor, UAIEmotionKnowledge* Knowledge, UAIEmotionKnowledge* Memory);
 };

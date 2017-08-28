@@ -2,7 +2,6 @@
 
 #include "SandboxAI.h"
 #include "AISimplexAppraisalModule.h"
-#include "Emotion/AIEmotionKnowledge.h"
 
 FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForConsequences(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor)
 {
@@ -13,13 +12,41 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForConsequences(
 		return FSimplexPADPoint();
 	}
 
+	FSimplexAppraisalInfo AppraisalInfo = FSimplexAppraisalInfo::ProcessEmotion(EmotionActionName, SourceActor, TargetActor, Knowledge, Memory);
+
 	if(TargetPawn == Knowledge->ControlledActor)
 	{
 		//Consequences for self
+		if(AppraisalInfo.bFromKnowledgeOrMemory)
+		{
+			if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+			{
+				return FSimplexPADPoint();
+			}
+
+			return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Joy : FSimplexPADPoint::Distress) * AppraisalInfo.Power;
+		}
+		else
+		{
+			//No action in knowledge or memory (how should I generate emotions?)
+		}
 	}
 	else
 	{
 		//Consequences for others
+		if(AppraisalInfo.bFromKnowledgeOrMemory)
+		{
+			if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+			{
+				return FSimplexPADPoint();
+			}
+
+			return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::HappyFor : FSimplexPADPoint::Pitty)* AppraisalInfo.Power;
+		}
+		else
+		{
+			//No action in knowledge or memory (how should I generate emotions?)
+		}
 	}
 
 	return FSimplexPADPoint();
@@ -34,13 +61,41 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForActions(EEmot
 		return FSimplexPADPoint();
 	}
 
+	FSimplexAppraisalInfo AppraisalInfo = FSimplexAppraisalInfo::ProcessEmotion(EmotionActionName, SourceActor, TargetActor, Knowledge, Memory);
+
 	if(SourcePawn == Knowledge->ControlledActor)
 	{
 		//Actions performed by self
+		if(AppraisalInfo.bFromKnowledgeOrMemory)
+		{
+			if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+			{
+				return FSimplexPADPoint();
+			}
+
+			return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Pride : FSimplexPADPoint::Shame) * AppraisalInfo.Power;
+		}
+		else
+		{
+			//No action in knowledge or memory (how should I generate emotions?)
+		}
 	}
 	else
 	{
 		//Actions performed by others
+		if(AppraisalInfo.bFromKnowledgeOrMemory)
+		{
+			if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+			{
+				return FSimplexPADPoint();
+			}
+
+			return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Admiration : FSimplexPADPoint::Gloating) * AppraisalInfo.Power;
+		}
+	else
+	{
+		//No action in knowledge or memory (how should I generate emotions?)
+	}
 	}
 
 	return FSimplexPADPoint();
@@ -56,13 +111,20 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForObjects(EEmot
 		return FSimplexPADPoint();
 	}
 
-	if(SourcePawn)
+	FSimplexAppraisalInfo AppraisalInfo = FSimplexAppraisalInfo::ProcessEmotion(EmotionActionName, SourceActor, TargetActor, Knowledge, Memory);
+
+	if(AppraisalInfo.bFromKnowledgeOrMemory)
 	{
-		//Object is the target of an action
+		if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+		{
+			return FSimplexPADPoint();
+		}
+
+		return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Love : FSimplexPADPoint::Hate) * AppraisalInfo.Power;
 	}
 	else
 	{
-		//Object is the source of an action
+		//No action in knowledge or memory (how should I generate emotions?)
 	}
 
 	return FSimplexPADPoint();
@@ -71,8 +133,24 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForObjects(EEmot
 TArray<FSimplexPADPoint> UAISimplexAppraisalModule::DoAppraisal(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor)
 {
 	TArray<FSimplexPADPoint> GeneratedEmotions;
-	GeneratedEmotions.Add(Internal_DoAppraisalForConsequences(EmotionActionName, SourceActor, TargetActor));
-	GeneratedEmotions.Add(Internal_DoAppraisalForActions(EmotionActionName, SourceActor, TargetActor));
-	GeneratedEmotions.Add(Internal_DoAppraisalForObjects(EmotionActionName, SourceActor, TargetActor));
+	FSimplexPADPoint ConsequencesEmotion = Internal_DoAppraisalForConsequences(EmotionActionName, SourceActor, TargetActor);
+	FSimplexPADPoint ActionsEmotion = Internal_DoAppraisalForActions(EmotionActionName, SourceActor, TargetActor);
+	FSimplexPADPoint ObjectsEmotion = Internal_DoAppraisalForObjects(EmotionActionName, SourceActor, TargetActor);
+
+	if(!FSimplexPADPoint::IsNearlyZero(ConsequencesEmotion))
+	{
+		GeneratedEmotions.Add(ConsequencesEmotion);
+	}
+
+	if(!FSimplexPADPoint::IsNearlyZero(ActionsEmotion))
+	{
+		GeneratedEmotions.Add(ActionsEmotion);
+	}
+
+	if(!FSimplexPADPoint::IsNearlyZero(ObjectsEmotion))
+	{
+		GeneratedEmotions.Add(ObjectsEmotion);
+	}
+
 	return GeneratedEmotions;
 }
