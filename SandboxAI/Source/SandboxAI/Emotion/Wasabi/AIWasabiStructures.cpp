@@ -28,9 +28,9 @@ const float FWasabiCustomDefaults::Slope = 500.0f;
 const float FWasabiCustomDefaults::Mass = 5000.0f;
 const float FWasabiCustomDefaults::ValenceBoredomRegion = 5.0f;
 const float FWasabiCustomDefaults::MoodBoredomRegion = 5.0f;
-const float FWasabiCustomDefaults::BoredomPerSecond = 15.0f;
+const float FWasabiCustomDefaults::BoredomPerSecond = 5.0f;
 const float FWasabiCustomDefaults::Prevalence = 30.0f;
-const float FWasabiCustomDefaults::Disequilibrium = 0.3f;
+const float FWasabiCustomDefaults::Disequilibrium = 0.6f;
 
 const float FWasabiCharacterTraits::ExtraversionImpactFactor = 0.81f;
 const float FWasabiCharacterTraits::AgreeablenessImpactFactor = 0.69f;
