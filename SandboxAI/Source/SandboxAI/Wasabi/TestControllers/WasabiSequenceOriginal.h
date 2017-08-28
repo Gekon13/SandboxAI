@@ -4,18 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "FixedPath/EmotionSplineAIController.h"
-#include "EmotionSplineAIControllerOne.generated.h"
+#include "WasabiSequenceOriginal.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SANDBOXAI_API AEmotionSplineAIControllerOne : public AEmotionSplineAIController
+class SANDBOXAI_API AWasabiSequenceOriginal : public AEmotionSplineAIController
 {
 	GENERATED_BODY()
-	
+
 public:
-	AEmotionSplineAIControllerOne();
-	
+	AWasabiSequenceOriginal();
 	
 };

@@ -59,6 +59,9 @@ public:
 //#define WasabiDefaults FWasabiDefaults
 #define WasabiDefaults FWasabiCustomDefaults
 
+#define WASABI_EMOTIONS_HAPPY_ANGRY
+//#define WASABI_EMOTIONS_ALL
+
 USTRUCT(BlueprintType)
 struct PROJECT_API FWasabiSpacePointPAD : public FVector
 {
