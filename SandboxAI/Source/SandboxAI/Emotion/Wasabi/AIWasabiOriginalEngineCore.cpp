@@ -210,8 +210,8 @@ void UAIWasabiOriginalEngineCore::MapCharacterTraitsToParams(const FWasabiCharac
 	MoodTension = WasabiDefaults::MoodTension * (1.0f + FWasabiCharacterTraits::ConscientiousnessImpactFactor * characterTraits.Conscientiousness);
 	Slope = WasabiDefaults::Slope * (1.0f + FWasabiCharacterTraits::EmotionalStabilityImpactFactor * characterTraits.EmotionalStability);
 	Mass = WasabiDefaults::Mass * (1.0f + FWasabiCharacterTraits::ConscientiousnessImpactFactor * characterTraits.Conscientiousness);
-	ValenceBoredomRegion = WasabiDefaults::ValenceBoredomRegion * (1.0f + FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
-	MoodBoredomRegion = WasabiDefaults::MoodBoredomRegion * (1.0f + FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
-	BoredomPerSecond = WasabiDefaults::BoredomPerSecond * (1.0f + FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
+	ValenceBoredomRegion = WasabiDefaults::ValenceBoredomRegion * (1.0f - FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
+	MoodBoredomRegion = WasabiDefaults::MoodBoredomRegion * (1.0f - FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
+	BoredomPerSecond = WasabiDefaults::BoredomPerSecond * (1.0f - FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
 	Prevalence = WasabiDefaults::Prevalence * (0.19f + FWasabiCharacterTraits::ExtraversionImpactFactor * characterTraits.Extraversion);
 }

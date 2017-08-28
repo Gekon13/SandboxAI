@@ -7,10 +7,6 @@
 #include "AIWasabiOriginalEngineCore.h"
 #include "AIWasabiImprovedEngineCore.h"
 
-#define TEST_0
-//#define TEST_1
-//#define TEST_ALL
-
 UAIWasabiEmotionEngine::UAIWasabiEmotionEngine() :
 	WasabiAppraisal(FAIWasabiAppraisal()),
 	CharacterTraits(FWasabiCharacterTraits())
@@ -19,11 +15,6 @@ UAIWasabiEmotionEngine::UAIWasabiEmotionEngine() :
 	ImprovedEngineCore = CreateDefaultSubobject<UAIWasabiImprovedEngineCore>(TEXT("ImprovedEngineCore"));
 
 	WasabiCoreType = EWasabiCoreType::Original;
-#if  defined(TEST_0) ||  defined(TEST_1) || defined(TEST_ALL)
-	bLogWasabiState = true;
-#else
-	bLogWasabiState = false;
-#endif
 
 	_timeElapsed = 0.0f;
 }
@@ -41,38 +32,6 @@ void UAIWasabiEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotio
 		EngineCore = ImprovedEngineCore;
 		break;
 	}
-
-#if  defined(TEST_0) ||  defined(TEST_1) || defined(TEST_ALL)
-	bLogWasabiState = true;
-#else
-	bLogWasabiState = false;
-#endif
-
-#ifdef TEST_0
-	KnownEmotions.Add(WasabiEmotions::Concentrated);
-	KnownEmotions.Add(WasabiEmotions::Anxious);
-#endif
-
-#ifdef TEST_1
-	KnownEmotions.Add(WasabiEmotions::Angry);
-	KnownEmotions.Add(WasabiEmotions::Annoyed);
-	KnownEmotions.Add(WasabiEmotions::Depressed);
-	KnownEmotions.Add(WasabiEmotions::Fearful);
-	KnownEmotions.Add(WasabiEmotions::Happy);
-#endif
-
-#ifdef TEST_ALL
-	KnownEmotions.Add(WasabiEmotions::Angry);
-	KnownEmotions.Add(WasabiEmotions::Annoyed);
-	KnownEmotions.Add(WasabiEmotions::Bored);
-	KnownEmotions.Add(WasabiEmotions::Concentrated);
-	KnownEmotions.Add(WasabiEmotions::Depressed);
-	KnownEmotions.Add(WasabiEmotions::Fearful);
-	KnownEmotions.Add(WasabiEmotions::Happy);
-	KnownEmotions.Add(WasabiEmotions::Sad);
-	KnownEmotions.Add(WasabiEmotions::Surprised);
-	KnownEmotions.Add(WasabiEmotions::Anxious);
-#endif
 
 	if (GetEngineCore() != nullptr)
 	{
@@ -151,6 +110,11 @@ void UAIWasabiEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emo
 FWasabiComplexStepState UAIWasabiEmotionEngine::GetWasabiComplexStepState() const
 {
 	return FWasabiComplexStepState(GetEngineCore()->GetWasabiEngineStepState(), GetEmotionState(), _timeElapsed);
+}
+
+void UAIWasabiEmotionEngine::AddEmotion(const FWasabiEmotion& newWasabiEmotion)
+{
+	KnownEmotions.Add(newWasabiEmotion);
 }
 
 float UAIWasabiEmotionEngine::GetEngineScale() const

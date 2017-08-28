@@ -75,6 +75,14 @@ public:
 	FORCEINLINE EWasabiCoreType GetWasabiCoreType() const {return  WasabiCoreType;}
 	FORCEINLINE void SetWasabiCoreType(EWasabiCoreType wasabiCoreType) { WasabiCoreType = wasabiCoreType; }
 
+	FORCEINLINE bool GetLogWasabiState() const { return bLogWasabiState; }
+	FORCEINLINE void SetLogWasabiState(bool logWasabiState) { bLogWasabiState = logWasabiState; }
+
+	void AddEmotion(const FWasabiEmotion& newWasabiEmotion);
+
+	FORCEINLINE FWasabiCharacterTraits GetCharacterTraits() const { return CharacterTraits; }
+	FORCEINLINE void SetCharacterTraits(const FWasabiCharacterTraits& characterTraits) { CharacterTraits = characterTraits; }
+
 protected:
 	virtual float GetEngineScale() const override;
 
