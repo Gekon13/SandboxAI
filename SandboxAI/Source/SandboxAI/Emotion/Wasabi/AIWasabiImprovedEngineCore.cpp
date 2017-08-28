@@ -57,6 +57,7 @@ void UAIWasabiImprovedEngineCore::InternalImpulse(float value)
 	{
 		DisequilibriumVelocity = 0.0f;
 		WasabiSpacePointVMB.SetBoredom(WasabiSpacePointVMB.GetBoredom() + deltaDisequalibrium);
+		WasabiSpacePointVMB.ImprovedClampBoredomBySpace();
 	}
 
 	WasabiSpacePointVMB.SetValence(WasabiSpacePointVMB.GetValence() + value);
@@ -214,9 +215,9 @@ void UAIWasabiImprovedEngineCore::Tick(float DeltaSeconds)
 		}
 	}
 
-	WasabiSpacePointVMB.ClampValenceBySpace();
-	WasabiSpacePointVMB.ClampMoodBySpace();
-	WasabiSpacePointVMB.ClampBoredomBySpace();
+	WasabiSpacePointVMB.ImprovedClampValenceBySpace();
+	WasabiSpacePointVMB.ImprovedClampMoodBySpace();
+	WasabiSpacePointVMB.ImprovedClampBoredomBySpace();
 
 	MapVMBToPAD();
 
@@ -249,5 +250,5 @@ void UAIWasabiImprovedEngineCore::MapCharacterTraitsToParams(const FWasabiCharac
 	MoodBoredomRegion = WasabiDefaults::MoodBoredomRegion * (1.0f + FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
 	BoredomPerSecond = WasabiDefaults::BoredomPerSecond * (1.0f + FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
 	Prevalence = WasabiDefaults::Prevalence * ((1.0f - FWasabiCharacterTraits::ExtraversionImpactFactor) + FWasabiCharacterTraits::ExtraversionImpactFactor * characterTraits.Extraversion);
-	Disequilibrium = WasabiDefaults::Disequilibrium * (1.0f * FWasabiCharacterTraits::EmotionalStabilityImpactFactor * characterTraits.EmotionalStability);
+	Disequilibrium = WasabiDefaults::Disequilibrium * (1.0f + FWasabiCharacterTraits::EmotionalStabilityImpactFactor * characterTraits.EmotionalStability);
 }
