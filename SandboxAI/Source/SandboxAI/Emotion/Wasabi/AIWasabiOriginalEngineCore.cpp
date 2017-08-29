@@ -129,8 +129,7 @@ void UAIWasabiOriginalEngineCore::Tick(float DeltaSeconds)
 	}
 	else
 	{
-		//deltaMoodFromValence = WasabiSpacePointVMB.GetValence() * (Slope / 100.0f) / Mass; // implementation wise - this was wrong
-		deltaMoodFromValence = deltaValence * (Slope / 100.0f) / Mass; // implementation wise
+		deltaMoodFromValence = WasabiSpacePointVMB.GetValence() * (Slope / 100.0f) / Mass; // implementation wise
 	}
 	WasabiSpacePointVMB.SetMood(WasabiSpacePointVMB.GetMood() + deltaMoodFromValence);
 

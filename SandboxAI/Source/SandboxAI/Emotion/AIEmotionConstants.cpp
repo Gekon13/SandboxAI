@@ -52,6 +52,7 @@ TMap<EEmotionName, FString> FAIEmotionConstants::BuildEmotionNamesMap()
 	emotionNames.Add(EEmotionName::WASABI_Depressed, TEXT("Depressed"));
 	emotionNames.Add(EEmotionName::WASABI_Fearful, TEXT("Fearful"));
 	emotionNames.Add(EEmotionName::WASABI_Happy, TEXT("Happy"));
+	emotionNames.Add(EEmotionName::WASABI_Friendly, TEXT("Friendly"));
 	emotionNames.Add(EEmotionName::WASABI_Sad, TEXT("Sad"));
 	emotionNames.Add(EEmotionName::WASABI_Surprised, TEXT("Surprised"));
 

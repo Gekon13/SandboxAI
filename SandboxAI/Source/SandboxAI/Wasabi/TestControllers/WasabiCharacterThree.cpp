@@ -26,6 +26,8 @@ AWasabiCharacterThree::AWasabiCharacterThree() : Super()
 	EmotionComponent->GetWasabiEmotionEngine()->AddEmotion(WasabiEmotions::Depressed);
 	EmotionComponent->GetWasabiEmotionEngine()->AddEmotion(WasabiEmotions::Fearful);
 	EmotionComponent->GetWasabiEmotionEngine()->AddEmotion(WasabiEmotions::Happy);
+	EmotionComponent->GetWasabiEmotionEngine()->AddEmotion(WasabiEmotions::Friendly);
+	EmotionComponent->GetWasabiEmotionEngine()->AddEmotion(WasabiEmotions::Sad);
 #endif
 
 #ifdef WASABI_EMOTIONS_ALL
@@ -36,6 +38,7 @@ AWasabiCharacterThree::AWasabiCharacterThree() : Super()
 	EmotionComponent->GetWasabiEmotionEngine()->AddEmotion(WasabiEmotions::Depressed);
 	EmotionComponent->GetWasabiEmotionEngine()->AddEmotion(WasabiEmotions::Fearful);
 	EmotionComponent->GetWasabiEmotionEngine()->AddEmotion(WasabiEmotions::Happy);
+	EmotionComponent->GetWasabiEmotionEngine()->AddEmotion(WasabiEmotions::Friendly);
 	EmotionComponent->GetWasabiEmotionEngine()->AddEmotion(WasabiEmotions::Sad);
 	EmotionComponent->GetWasabiEmotionEngine()->AddEmotion(WasabiEmotions::Surprised);
 	EmotionComponent->GetWasabiEmotionEngine()->AddEmotion(WasabiEmotions::Anxious);

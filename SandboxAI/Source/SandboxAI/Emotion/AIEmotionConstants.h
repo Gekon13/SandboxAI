@@ -71,11 +71,12 @@ enum class EEmotionName : uint8
 	WASABI_Depressed = 204,
 	WASABI_Fearful = 205,
 	WASABI_Happy = 206,
-	WASABI_Sad = 207,
-	WASABI_Surprised = 208,
+	WASABI_Friendly = 207,
+	WASABI_Sad = 208,
+	WASABI_Surprised = 209,
 
 	// additional wasabi - Mehrabian 1977
-	WASABI_Extended_Anxious = 209,
+	WASABI_Extended_Anxious = 210,
 
 	// offset for enum numbers = EEmotionEngineModel * 50  - (uint8 has max value of 255)
 };

@@ -59,8 +59,8 @@ public:
 //#define WasabiDefaults FWasabiDefaults
 #define WasabiDefaults FWasabiCustomDefaults
 
-#define WASABI_EMOTIONS_HAPPY_ANGRY
-//#define WASABI_EMOTIONS_ALL
+//#define WASABI_EMOTIONS_HAPPY_ANGRY
+#define WASABI_EMOTIONS_ALL
 
 USTRUCT(BlueprintType)
 struct PROJECT_API FWasabiSpacePointPAD : public FVector
@@ -239,10 +239,13 @@ namespace WasabiEmotions
 	}));
 
 	const FWasabiEmotion Happy = FWasabiEmotion(EEmotionName::WASABI_Happy, std::initializer_list<FWasabiSpacePointPADEmotion>({
-		FWasabiSpacePointPADEmotion(80.0f,80.0f, 100.0f),
-		FWasabiSpacePointPADEmotion(80.0f,80.0f,-100.0f),
 		FWasabiSpacePointPADEmotion(50.0f,0.0f, 100.0f),
 		FWasabiSpacePointPADEmotion(50.0f,0.0f,-100.0f)
+	}));
+
+	const FWasabiEmotion Friendly = FWasabiEmotion(EEmotionName::WASABI_Friendly, std::initializer_list<FWasabiSpacePointPADEmotion>({
+		FWasabiSpacePointPADEmotion(80.0f,80.0f, 100.0f),
+		FWasabiSpacePointPADEmotion(80.0f,80.0f,-100.0f)
 	}));
 
 	const FWasabiEmotion Sad = FWasabiEmotion(EEmotionName::WASABI_Sad, std::initializer_list<FWasabiSpacePointPADEmotion>({
