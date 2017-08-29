@@ -5,23 +5,26 @@
 #include "AISimplexAppraisalModule.h"
 #include "Emotion/AIEmotionKnowledge.h"
 
-UAISimplexEmotionEngine::UAISimplexEmotionEngine()
+UAISimplexEmotionEngine::UAISimplexEmotionEngine() : Super()
 {
+	Memory = CreateDefaultSubobject<UAIEmotionKnowledge>(TEXT("Emotion memory"));
+
+	AppraisalModule = CreateDefaultSubobject<UAISimplexAppraisalModule>("OCC appraisal module");
 }
 
-void UAISimplexEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge)
+void UAISimplexEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* InEmotionKnowledge)
 {
-	Super::InitializeEmotionEngine(emotionKnowledge);
+	Super::InitializeEmotionEngine(InEmotionKnowledge);
 
 	NeutralEmotionalState = Personality.ToPADPoint();
 	CurrentEmotionalState = NeutralEmotionalState;
 
 	DecayFactor = Personality.GetDecayFactor();
 
-	Memory = NewObject<UAIEmotionKnowledge>();
-
-	AppraisalModule = NewObject<UAISimplexAppraisalModule>();
-	AppraisalModule->InitializeAppraisalModule(EmotionKnowledge, Memory, &Personality);
+	if(AppraisalModule)
+	{
+		AppraisalModule->InitializeAppraisalModule(EmotionKnowledge, Memory, &Personality);
+	}
 }
 
 void UAISimplexEmotionEngine::TickEmotionEngine(float DeltaSeconds)
@@ -57,16 +60,16 @@ float UAISimplexEmotionEngine::GetEngineScale() const
 	return 1.0f;
 }
 
-void UAISimplexEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
+void UAISimplexEmotionEngine::DirectValencedImpulseInternal(float Value, bool bContinuous)
 {
-	bool bIsImpulsePositive = value > 0.0f;
+	bool bIsImpulsePositive = Value > 0.0f;
 	if(bIsImpulsePositive)
 	{
-		CurrentEmotionalState += FSimplexPADPoint::Joy * Personality.GetInfluenceOnEmotion(true) * FMath::Abs(value);
+		CurrentEmotionalState += FSimplexPADPoint::Joy * Personality.GetInfluenceOnEmotion(true) * FMath::Abs(Value);
 	}
 	else
 	{
-		CurrentEmotionalState += FSimplexPADPoint::Distress * Personality.GetInfluenceOnEmotion(false) * FMath::Abs(value);
+		CurrentEmotionalState += FSimplexPADPoint::Distress * Personality.GetInfluenceOnEmotion(false) * FMath::Abs(Value);
 	}
 }
 
@@ -74,6 +77,8 @@ void UAISimplexEmotionEngine::DirectValencedImpulseInternal(float value, bool bC
 void UAISimplexEmotionEngine::UpdateRunAction(float JoyDistress)
 {
 	float Value = 0.5f * (-JoyDistress + 1.0f);
+
+	UE_LOG(LogTemp, Warning, TEXT("JoyDistress: %.3f"), JoyDistress);
 
 	MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], Value));
 }

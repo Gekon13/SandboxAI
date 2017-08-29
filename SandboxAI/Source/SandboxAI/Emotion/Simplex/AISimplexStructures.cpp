@@ -69,8 +69,8 @@ FSimplexAppraisalInfo FSimplexAppraisalInfo::ProcessEmotion(EEmotionActionName E
 	TArray<FAIEmotionInformation> MemoryMatchingInformations = GetMatchingInformationsFrom(Memory, EmotionActionName, SourceActor, TargetActor);
 	uint32 MemoryMatchingInformationNum = MemoryMatchingInformations.Num();
 
-	Result.bFromKnowledgeOrMemory = (KnowledgeMatchingInformationNum + MemoryMatchingInformationNum > 0);
-	if(!Result.bFromKnowledgeOrMemory)
+	Result.bSuccessful = (KnowledgeMatchingInformationNum + MemoryMatchingInformationNum > 0);
+	if(!Result.bSuccessful)
 	{
 		return Result;
 	}

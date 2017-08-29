@@ -212,7 +212,7 @@ struct FSimplexAppraisalInfo
 public:
 	ESimplexEmotionType Type;
 	float Power;
-	bool bFromKnowledgeOrMemory;
+	bool bSuccessful;
 
 protected:
 	static TArray<FAIEmotionInformation> GetMatchingInformationsFrom(UAIEmotionKnowledge* Source, EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor);

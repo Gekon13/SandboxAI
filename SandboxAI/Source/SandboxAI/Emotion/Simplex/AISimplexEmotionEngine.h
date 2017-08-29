@@ -25,13 +25,15 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotions")
 		float DecayFactor;
 
-	UAISimplexAppraisalModule* AppraisalModule;
-	UAIEmotionKnowledge* Memory;
+	UPROPERTY(Instanced, VisibleAnywhere, Category = "Emotions")
+		UAISimplexAppraisalModule* AppraisalModule;
+	UPROPERTY(Instanced, VisibleAnywhere, Category = "Emotions")
+		UAIEmotionKnowledge* Memory;
 
 public:
 	UAISimplexEmotionEngine();
 	
-	virtual void InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge) override;
+	virtual void InitializeEmotionEngine(UAIEmotionKnowledge* InEmotionKnowledge) override;
 	virtual void TickEmotionEngine(float DeltaSeconds) override;
 
 	UFUNCTION()
@@ -40,7 +42,7 @@ public:
 protected:
 	virtual float GetEngineScale() const override;
 
-	virtual void DirectValencedImpulseInternal(float value, bool bContinuous);
+	virtual void DirectValencedImpulseInternal(float Value, bool bContinuous);
 
 	//Temporary, just for the backward compability with "old" SandboxAI emotion engines implementation
 	void UpdateRunAction(float JoyDistress);

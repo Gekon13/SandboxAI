@@ -14,42 +14,27 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForConsequences(
 
 	FSimplexAppraisalInfo AppraisalInfo = FSimplexAppraisalInfo::ProcessEmotion(EmotionActionName, SourceActor, TargetActor, Knowledge, Memory);
 
+	if(!AppraisalInfo.bSuccessful || AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+	{
+		return FSimplexPADPoint();
+	}
+
+	float Influence = 1.0f;
+	if(Personality)
+	{
+		Influence = Personality->GetInfluenceOnEmotion(AppraisalInfo.Type == ESimplexEmotionType::Positive);
+	}
+
 	if(TargetPawn == Knowledge->ControlledActor)
 	{
 		//Consequences for self
-		if(AppraisalInfo.bFromKnowledgeOrMemory)
-		{
-			if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
-			{
-				return FSimplexPADPoint();
-			}
-
-			return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Joy : FSimplexPADPoint::Distress) * AppraisalInfo.Power;
-		}
-		else
-		{
-			//No action in knowledge or memory (how should I generate emotions?)
-		}
+		return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Joy : FSimplexPADPoint::Distress) * AppraisalInfo.Power * Influence;
 	}
 	else
 	{
 		//Consequences for others
-		if(AppraisalInfo.bFromKnowledgeOrMemory)
-		{
-			if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
-			{
-				return FSimplexPADPoint();
-			}
-
-			return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::HappyFor : FSimplexPADPoint::Pitty)* AppraisalInfo.Power;
-		}
-		else
-		{
-			//No action in knowledge or memory (how should I generate emotions?)
-		}
+		return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::HappyFor : FSimplexPADPoint::Pitty)* AppraisalInfo.Power * Influence;
 	}
-
-	return FSimplexPADPoint();
 }
 
 FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForActions(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor)
@@ -63,42 +48,27 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForActions(EEmot
 
 	FSimplexAppraisalInfo AppraisalInfo = FSimplexAppraisalInfo::ProcessEmotion(EmotionActionName, SourceActor, TargetActor, Knowledge, Memory);
 
+	if(!AppraisalInfo.bSuccessful || AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+	{
+		return FSimplexPADPoint();
+	}
+
+	float Influence = 1.0f;
+	if(Personality)
+	{
+		Influence = Personality->GetInfluenceOnEmotion(AppraisalInfo.Type == ESimplexEmotionType::Positive);
+	}
+
 	if(SourcePawn == Knowledge->ControlledActor)
 	{
 		//Actions performed by self
-		if(AppraisalInfo.bFromKnowledgeOrMemory)
-		{
-			if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
-			{
-				return FSimplexPADPoint();
-			}
-
-			return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Pride : FSimplexPADPoint::Shame) * AppraisalInfo.Power;
-		}
-		else
-		{
-			//No action in knowledge or memory (how should I generate emotions?)
-		}
+		return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Pride : FSimplexPADPoint::Shame) * AppraisalInfo.Power * Influence;
 	}
 	else
 	{
 		//Actions performed by others
-		if(AppraisalInfo.bFromKnowledgeOrMemory)
-		{
-			if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
-			{
-				return FSimplexPADPoint();
-			}
-
-			return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Admiration : FSimplexPADPoint::Gloating) * AppraisalInfo.Power;
-		}
-	else
-	{
-		//No action in knowledge or memory (how should I generate emotions?)
+		return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Admiration : FSimplexPADPoint::Gloating) * AppraisalInfo.Power * Influence;
 	}
-	}
-
-	return FSimplexPADPoint();
 }
 
 FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForObjects(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor)
@@ -113,21 +83,18 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForObjects(EEmot
 
 	FSimplexAppraisalInfo AppraisalInfo = FSimplexAppraisalInfo::ProcessEmotion(EmotionActionName, SourceActor, TargetActor, Knowledge, Memory);
 
-	if(AppraisalInfo.bFromKnowledgeOrMemory)
+	if(!AppraisalInfo.bSuccessful || AppraisalInfo.Type == ESimplexEmotionType::Neutral)
 	{
-		if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
-		{
-			return FSimplexPADPoint();
-		}
-
-		return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Love : FSimplexPADPoint::Hate) * AppraisalInfo.Power;
-	}
-	else
-	{
-		//No action in knowledge or memory (how should I generate emotions?)
+		return FSimplexPADPoint();
 	}
 
-	return FSimplexPADPoint();
+	float Influence = 1.0f;
+	if(Personality)
+	{
+		Influence = Personality->GetInfluenceOnEmotion(AppraisalInfo.Type == ESimplexEmotionType::Positive);
+	}
+
+	return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Love : FSimplexPADPoint::Hate) * AppraisalInfo.Power * Influence;
 }
 
 TArray<FSimplexPADPoint> UAISimplexAppraisalModule::DoAppraisal(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor)
