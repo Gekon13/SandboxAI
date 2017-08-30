@@ -243,7 +243,7 @@ void UAIWasabiImprovedEngineCore::MapCharacterTraitsToParams(const FWasabiCharac
 	ValenceTension = WasabiDefaults::ValenceTension * (1.0f + FWasabiCharacterTraits::ConscientiousnessImpactFactor * characterTraits.Conscientiousness);
 	MoodTension = WasabiDefaults::MoodTension * (1.0f + FWasabiCharacterTraits::ConscientiousnessImpactFactor * characterTraits.Conscientiousness);
 	BoredomTension = WasabiDefaults::BoredomTension * (1.0f + FWasabiCharacterTraits::EmotionalStabilityImpactFactor * characterTraits.EmotionalStability);
-	Slope = WasabiDefaults::Slope * (1.0f + FWasabiCharacterTraits::EmotionalStabilityImpactFactor * characterTraits.EmotionalStability);
+	Slope = WasabiDefaults::Slope * (1.0f - FWasabiCharacterTraits::EmotionalStabilityImpactFactor * characterTraits.EmotionalStability);
 	Mass = WasabiDefaults::Mass * (1.0f + FWasabiCharacterTraits::ConscientiousnessImpactFactor * characterTraits.Conscientiousness);
 	ValenceBoredomRegion = WasabiDefaults::ValenceBoredomRegion * (1.0f - FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
 	MoodBoredomRegion = WasabiDefaults::MoodBoredomRegion * (1.0f - FWasabiCharacterTraits::SophisticationImpactFactor * characterTraits.Sophistication);
