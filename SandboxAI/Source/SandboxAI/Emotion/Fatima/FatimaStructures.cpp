@@ -4,8 +4,7 @@
 #include "FatimaStructures.h"
 
 
-FFatimaEmotion::FFatimaEmotion(EEmotionPairName Name) :Name(Name) {
-	Amount = 0;
+FFatimaEmotion::FFatimaEmotion(EEmotionPairName Name, float Value) :Amount(Value), Name(Name) {
 	DecayFactor = 0.01f;
 	AmountAfterEvent = 0;
 	TimeOfEvent = 0;

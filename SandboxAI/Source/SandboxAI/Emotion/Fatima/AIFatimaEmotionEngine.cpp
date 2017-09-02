@@ -47,8 +47,8 @@ void UAIFatimaEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emo
 	TArray<FStringFormatArg> Arguments;
 	Arguments.Add(FAIEmotionConstants::ActionNames[EmotionActionName]);
 	Arguments.Add(SourceActor->GetName());
-	Arguments.Add(TargetActor->GetName());
-	auto Text = FString::Format(TEXT("Perceived action: {0}, source: {1}, target {2}"), Arguments);
+	Arguments.Add(TargetActor ? TargetActor->GetName() : "NONE");
+	const auto Text = FString::Format(TEXT("Perceived action: {0}, source: {1}, target {2}"), Arguments);
 	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, Text);
 
 	auto InformationMatchingByActions = EmotionKnowledge->Informations.FilterByPredicate([EmotionActionName, SourceActor, TargetActor](const FAIEmotionInformation& Information) {
@@ -56,12 +56,7 @@ void UAIFatimaEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emo
 	});
 
 	for (auto& Information : InformationMatchingByActions) {
-		for (auto&& EmotionDelta : Information.EmotionDeltas) {
-			auto ImpulseValue = EmotionDelta.EmotionPairDelta;
-			auto x = EmotionDelta.EmotionPairName;
-			const auto Appraisal = FFatimaAppraisal(ImpulseValue, 0, 0, 0, 0, 0, 0); //TODO create appraisal based on name
-			OnEventUpdated(Appraisal);
-		}
+		AppraisalEmotions(Information.EmotionDeltas);
 	}
 }
 
@@ -71,20 +66,33 @@ float UAIFatimaEmotionEngine::GetEngineScale() const {
 
 void UAIFatimaEmotionEngine::DirectValencedImpulseInternal(float Value, bool bContinuous) {
 	auto Appraisal = FFatimaAppraisal(Value, 0, 0, 0, 0, 0, 0);
-	OnEventUpdated(Appraisal);
+	UpdateEmotions(&Appraisal);
 }
 
-void UAIFatimaEmotionEngine::UpdateEmotions(FFatimaAppraisal* Appraisal, float MoodFactor) {
+void UAIFatimaEmotionEngine::UpdateEmotion(const float MoodFactor, const FFatimaEmotion AppraisalEmotion) {
+	const auto Emotion = Emotions.FindEmotionWithName(AppraisalEmotion.Name);
+	if (Emotion) {
+		const auto OldValue = Emotion->Amount;
+		Emotion->Amount = FMath::Clamp(Emotion->Amount + AppraisalEmotion.Amount + MoodFactor, MinEmotion, MaxEmotion);
+		Emotion->AmountAfterEvent = Emotion->Amount;
+		Emotion->TimeOfEvent = GetOuter()->GetWorld()->GetTimeSeconds();
+		Mood = FMath::Clamp(Mood + Emotion->Amount - OldValue, MinMood, MaxMood);
+	}
+}
+
+void UAIFatimaEmotionEngine::UpdateEmotions(FFatimaAppraisal* Appraisal) {
+	const auto MoodFactor = Mood * MoodRelevance / MaxMood;
 	auto GeneratedEmotions = Appraisal->GenerateEmotions();
 	for (const auto AppraisalEmotion : GeneratedEmotions) {
-		const auto Emotion = Emotions.FindEmotionWithName(AppraisalEmotion.Name);
-		if (Emotion) {
-			const auto OldValue = Emotion->Amount;
-			Emotion->Amount = FMath::Clamp(Emotion->Amount + AppraisalEmotion.Amount + MoodFactor, MinEmotion, MaxEmotion);
-			Emotion->AmountAfterEvent = Emotion->Amount;
-			Emotion->TimeOfEvent = GetOuter()->GetWorld()->GetTimeSeconds();
-			Mood = FMath::Clamp(Mood + Emotion->Amount - OldValue, MinMood, MaxMood);
-		}
+		UpdateEmotion(MoodFactor, AppraisalEmotion);
+	}
+}
+
+void UAIFatimaEmotionEngine::AppraisalEmotions(TArray<FAIEmotionDelta> EmotionDeltas) {
+	const auto MoodFactor = Mood * MoodRelevance / MaxMood;
+	for (const auto EmotionDelta : EmotionDeltas) {
+		const auto AppraisalEmotion = FFatimaEmotion(EmotionDelta.EmotionPairName, EmotionDelta.EmotionPairDelta);
+		UpdateEmotion(MoodFactor, AppraisalEmotion);
 	}
 }
 
@@ -110,19 +118,14 @@ void UAIFatimaEmotionEngine::CalculateEmotion(FFatimaEmotion* Emotion, FFatimaEm
 
 void UAIFatimaEmotionEngine::UpdateActions() {
 	auto EmotionCoefficient = (Emotions.JoyDistress.Amount - MinEmotion) / (MaxEmotion - MinEmotion);
-	auto CurrentSpeed = 1 - EmotionCoefficient;
+	const auto CurrentSpeed = 1 - EmotionCoefficient;
 	MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], CurrentSpeed));
 }
 
-void UAIFatimaEmotionEngine::OnEventUpdated(FFatimaAppraisal Appraisal) {
-	const auto MoodFactor = Mood * MoodRelevance / MaxMood;
-	UpdateEmotions(&Appraisal, MoodFactor);
-}
-
 void UAIFatimaEmotionEngine::UpdateGoals() {
-	for (auto Goal : Goals) {
-		auto GoalStatus = (*Goal.Variable - Goal.StartValue) / (Goal.SuccessValue - Goal.StartValue);
+	for (const auto Goal : Goals) {
+		const auto GoalStatus = (*Goal.Variable - Goal.StartValue) / (Goal.SuccessValue - Goal.StartValue);
 		auto Appraisal = FFatimaAppraisal::UpdateAppraisal(FFatimaAppraisal(0, 0, 0, 0, GoalStatus, 0, 0), GoalsInterval);
-		OnEventUpdated(Appraisal);
+		UpdateEmotions(&Appraisal);
 	}
 }

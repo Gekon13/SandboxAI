@@ -23,13 +23,11 @@ protected:
 	float GetEngineScale() const override;
 	void DirectValencedImpulseInternal(float Value, bool bContinuous) override;
 
-	void UpdateEmotions(FFatimaAppraisal* Appraisal, float MoodFactor);
+	void UpdateEmotions(FFatimaAppraisal* Appraisal);
+	void AppraisalEmotions(TArray<FAIEmotionDelta> EmotionDeltas);
 	void CalculateMood(float DeltaTime);
 	void CalculateEmotion(FFatimaEmotion* Emotion, FFatimaEmotion* PersonalityEmotion) const;
 	void UpdateActions();
-
-	UFUNCTION()
-		void OnEventUpdated(FFatimaAppraisal Appraisal);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Emotions")
 		FFatimaEmotions Personality;
@@ -53,11 +51,9 @@ protected:
 		float SpeedFactor;
 
 private:
-	//void SetEmotionContinuous(FFatimaAppraisal Appraisal, bool Continuous);
-	//void UpdateContinuousStimulus();
+	void UpdateEmotion(const float MoodFactor, const FFatimaEmotion AppraisalEmotion);
 	void UpdateGoals();
 
 	float MinMood, MaxMood, MinEmotion, MaxEmotion;
-	//TArray<FEmotionStimulusFatima> EmotionStimuluses;
 	FTimerHandle ContinuousTimerHandle, GoalsTimerHandle;
 };
