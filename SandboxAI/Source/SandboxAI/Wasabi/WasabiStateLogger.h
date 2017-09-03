@@ -42,11 +42,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Logger", meta = (ClampMin=1, ClampMax=60, UIMin=1, UIMax=60))
 		int32 PrintEvery;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Logger")
+		FColor LogColor;
+
 public:	
 	AWasabiStateLogger();
 
 	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaSeconds) override;
 	
 	UFUNCTION(BlueprintCallable)
 		void SaveFile();
@@ -55,6 +58,9 @@ public:
 		void SaveFileHorizontal();
 
 protected:
+	float _cooldownTimer;
+	float _cooldownLength;
+	bool _bCanLogToFile;
 
 	static UAIEmotionComponent* GetEmotionComponent(APawn* pawnToInspect);
 	static UAIWasabiEmotionEngine* GetWasabiEmotionEngine(APawn* pawnToInspect);

@@ -7,6 +7,8 @@
 #include "AIWasabiOriginalEngineCore.h"
 #include "AIWasabiImprovedEngineCore.h"
 
+const int UAIWasabiEmotionEngine::_maxStatesLength = 10000;
+
 UAIWasabiEmotionEngine::UAIWasabiEmotionEngine() :
 	WasabiAppraisal(FAIWasabiAppraisal()),
 	CharacterTraits(FWasabiCharacterTraits())
@@ -39,6 +41,7 @@ void UAIWasabiEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* emotio
 	}
 
 	_timeElapsed = 0.0f;
+	_wasabiStateNumber = 0;
 	WasabiAppraisal.Initialize(EngineCore, emotionKnowledge, nullptr);
 }
 
@@ -81,7 +84,11 @@ void UAIWasabiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 
 		if (bLogWasabiState)
 		{
-			WasabiStates.Add(GetWasabiComplexStepState());
+			if (_wasabiStateNumber < _maxStatesLength)
+			{
+				WasabiStates.Add(GetWasabiComplexStepState());
+				++_wasabiStateNumber;
+			}
 		}
 	}
 }

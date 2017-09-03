@@ -20,26 +20,60 @@ AWasabiStateLogger::AWasabiStateLogger()
 
 	PrintEvery = 5;
 	bCumulateInputValency = true;
+
+	_cooldownTimer = 0.0f;
+	_cooldownLength = 2.5f;
+	_bCanLogToFile = true;
+
+	LogColor = FColor::Green;
 }
 
 // Called when the game starts or when spawned
 void AWasabiStateLogger::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	_cooldownTimer = 0.0f;
+	_bCanLogToFile = true;
 }
 
 // Called every frame
-void AWasabiStateLogger::Tick(float DeltaTime)
+void AWasabiStateLogger::Tick(float DeltaSeconds)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(DeltaSeconds);
+	if (!_bCanLogToFile)
+	{
+		_cooldownTimer += DeltaSeconds;
+		if (_cooldownTimer > _cooldownLength)
+		{
+			_bCanLogToFile = true;
+		}
+	}
 }
 
 void AWasabiStateLogger::SaveFile()
 {
+	const float timeToShow = 10.0f;
+	if (_bCanLogToFile)
+	{
+		_bCanLogToFile = true;
+	}
+	else
+	{
+		if (GEngine != nullptr)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, timeToShow * 0.5f, LogColor, TEXT("Log to file is on cooldown!"));
+		}
+		return;
+	}
+
 	std::time_t timePoint = std::time(NULL);
 	std::tm* localTime = std::localtime(&timePoint);
 	
+	if (GEngine != nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("Start logging to file."));
+	}
+
 	FString dateTime = FString::Printf(TEXT("%d-%d-%d_%d-%d-%d"), localTime->tm_year + 1990, localTime->tm_mon+1, localTime->tm_mday, localTime->tm_hour, localTime->tm_min, localTime->tm_sec);
 
 	for (int32 targetIndex = 0; targetIndex < LogTargets.Num(); ++targetIndex)
@@ -112,6 +146,10 @@ void AWasabiStateLogger::SaveFile()
 				}
 				archive->Close();
 
+				if (GEngine != nullptr)
+				{
+					GEngine->AddOnScreenDebugMessage(-1, timeToShow, LogColor, FString::Printf(TEXT("Created log: %s"), *filePath));
+				}
 			}
 			else
 			{
@@ -131,7 +169,7 @@ void AWasabiStateLogger::SaveFile()
 	}
 	if (GEngine != nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("Finished printing") );
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("Finished logging."));
 	}
 }
 

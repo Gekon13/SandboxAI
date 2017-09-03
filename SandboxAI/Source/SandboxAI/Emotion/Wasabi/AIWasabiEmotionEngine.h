@@ -51,6 +51,8 @@ protected:
 
 	UAIWasabiBaseEngineCore* EngineCore;
 	float _timeElapsed;
+	static const int _maxStatesLength;
+	int _wasabiStateNumber;
 
 public:
 	
