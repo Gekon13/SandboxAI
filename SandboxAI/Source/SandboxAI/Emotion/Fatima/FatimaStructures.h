@@ -13,7 +13,8 @@ struct FFatimaEmotion
 
 public:
 	FFatimaEmotion() : FFatimaEmotion(EEmotionPairName::None) {}
-	FFatimaEmotion(EEmotionPairName Name);
+	FFatimaEmotion(EEmotionPairName Name) :FFatimaEmotion(Name, 0.f) {}
+	FFatimaEmotion(EEmotionPairName Name, float Value);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion", meta = (ClampMin = "-1.0", ClampMax = "1.0"))
 		float Amount;
