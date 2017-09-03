@@ -1,0 +1,35 @@
+TEYON:
+Teyons states for friendly:
+- Dead,
+- Fleeing
+- Aggresive
+- Alert
+- Intrigued
+- Aware
+- Idle
+
+States description:
+Fleeing - run over waypoints, when finished be aware if have not seen enemy, else be intrigued or agressive
+Aggresive - switch to alert if target lost, else shoot if sight lost, run around obstacles
+Alert - if saw enemy switch to Agressive, patrol with alert, if saw sth go intrigued
+Intrigued - check intrigued location (visual or sound), else patroll in some way
+Aware - look at specific for sound or sight location, if nth happens go idle
+Idle - waypoints or random location patroll with some idle in place with waiting
+
+
+
+// this if from teyon engine, it's placed in UGameplayComponent
+
+UENUM(BlueprintType)
+enum class ETeamType : uint8
+{
+	FRIENDLY = 0,
+	ENEMY,
+	NEUTRAL
+};
+
+
+...
+
+UPROPERTY(EditAnywhere, BlueprintReadOnly, SaveGame, Category = "Team")
+ETeamType TeamID;

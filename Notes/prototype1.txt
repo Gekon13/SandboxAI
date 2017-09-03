@@ -1,0 +1,2 @@
+Aktorzy biegaj¹ po œcie¿ce. Przy œcie¿ce stoj¹ pozytywne oraz negatywne elementy.
+Aktor przyœpiesza kiedy jego stan emocjonalny jest bardziej Distress a zwalnia kiedy jego stan emcjonalny jest bardziej Joy.

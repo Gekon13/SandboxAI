@@ -1,0 +1,36 @@
+Prototyp zak³ada niewielk¹ scenê po której poruszaj¹ siê aktorzy wypisa¿eni w silnik emocji.
+Aktorzy s¹ podzielenie na dwa zespo³y.
+Ka¿dy za aktorów jest identyfikowalny po imieniu.
+
+Za³o¿enia:
+- wykorzystanie elementów UE4
+- mo¿liwie bardzo c++ code-base (ma³o blueprintów)
+- wrzucenia scenki, na której siê coœ dzieje
+- fake UGameplayController - ma mieæ jedno pole: TeamID (ETeamType)
+- fake UGameplayController, który ma #ifdef TERMINATOR_API (nie wiem czy to wy³¹czy refleksjê)
+- trzeba podpi¹æ handle action seen dla siebie samego
+
+Zawartoœæ sceny:
+- shelter x2 (dla ka¿dego zespo³u)
+- neutral ground
+
+Mo¿liwoœci aktorów(narzêdzia dla BT):
+- chodzenie do celu - FVector
+- patrzenie sie na - *AActor
+- wyznaczanie celu kolejnego way pointa - my location FVector
+- strzelanie rysowane za pomoc¹ trace
+
+Stany aktorów(sterowanie dla silników emocji, w nawiasach propozycja po³¹czenia sterowania ze stanem):
+- radoœæ (high joy, high controll) - biegam i siê cieszê
+- przyjaznoœæ (high joy, low controll) - chodzê za kimœ z mojego teamu
+- obojêtnoœæ (mid joy, *) - waypoints
+- agresja (low joy, high controll) - atakuje
+- smutek (low joy, high controller) - uciekam
+
+Wiedza o akcjach(+ ocena pozytywna dla postrzegania, - ocena negatywna dla postrzegania; wiedza jest pisana z perspektywy agenta, który otrzyma wiedzê):
+[-]jak cokolwiek zadaje mi obra¿enia
+[+]jak widzê kogoœ z mojego teamu
+[-]jak widzê kogoœ z innego teamu
+[+]jak ktoœ strzela do kogoœ z innego teamu (mogê byæ ja)
+[-]jak ktoœ strzela do kogoœ z mojego teamu (zak³adamy, ¿e ja nie)
+
