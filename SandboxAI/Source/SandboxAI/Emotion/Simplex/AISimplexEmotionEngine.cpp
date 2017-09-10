@@ -5,11 +5,33 @@
 #include "AISimplexAppraisalModule.h"
 #include "Emotion/AIEmotionKnowledge.h"
 
-UAISimplexEmotionEngine::UAISimplexEmotionEngine() : Super()
+#define AddEmotionToFAIEmotionState(EmotionState, EmotionName, CurrentPADState) EmotionState.Add(FAISingleEmotionState(EEmotionName::EmotionName, FSimplexPADPoint::Dist(FSimplexPADPoint::EmotionName, CurrentPADState), true));
+
+UAISimplexEmotionEngine::UAISimplexEmotionEngine()
 {
 	Memory = CreateDefaultSubobject<UAIEmotionKnowledge>(TEXT("Emotion memory"));
 
 	AppraisalModule = CreateDefaultSubobject<UAISimplexAppraisalModule>("OCC appraisal module");
+}
+
+FAIEmotionState UAISimplexEmotionEngine::GetEmotionState() const
+{
+	FAIEmotionState CurrentEmotionState;
+
+	AddEmotionToFAIEmotionState(CurrentEmotionState, Joy, CurrentEmotionalState);
+	AddEmotionToFAIEmotionState(CurrentEmotionState, Distress, CurrentEmotionalState);
+	AddEmotionToFAIEmotionState(CurrentEmotionState, Hope, CurrentEmotionalState);
+	AddEmotionToFAIEmotionState(CurrentEmotionState, Fear, CurrentEmotionalState);
+	AddEmotionToFAIEmotionState(CurrentEmotionState, Love, CurrentEmotionalState);
+	AddEmotionToFAIEmotionState(CurrentEmotionState, Hate, CurrentEmotionalState);
+	AddEmotionToFAIEmotionState(CurrentEmotionState, Happyfor, CurrentEmotionalState);
+	AddEmotionToFAIEmotionState(CurrentEmotionState, Pitty, CurrentEmotionalState);
+	AddEmotionToFAIEmotionState(CurrentEmotionState, Admiration, CurrentEmotionalState);
+	AddEmotionToFAIEmotionState(CurrentEmotionState, Gloating, CurrentEmotionalState);
+	AddEmotionToFAIEmotionState(CurrentEmotionState, Pride, CurrentEmotionalState);
+	AddEmotionToFAIEmotionState(CurrentEmotionState, Shame, CurrentEmotionalState);
+
+	return CurrentEmotionState;
 }
 
 void UAISimplexEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* InEmotionKnowledge)
@@ -49,7 +71,6 @@ void UAISimplexEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Em
 
 		for(auto Iterator = EmotionalStateChanges.CreateIterator(); Iterator; ++Iterator)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("GeneratedEmotion: %s"), *((*Iterator).ToString()));
 			CurrentEmotionalState += (*Iterator);
 		}
 	}
@@ -77,8 +98,6 @@ void UAISimplexEmotionEngine::DirectValencedImpulseInternal(float Value, bool bC
 void UAISimplexEmotionEngine::UpdateRunAction(float JoyDistress)
 {
 	float Value = 0.5f * (-JoyDistress + 1.0f);
-
-	UE_LOG(LogTemp, Warning, TEXT("JoyDistress: %.3f"), JoyDistress);
 
 	MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], Value));
 }

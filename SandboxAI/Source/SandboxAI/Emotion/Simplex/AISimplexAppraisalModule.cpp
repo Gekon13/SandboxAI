@@ -14,8 +14,15 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForConsequences(
 
 	FSimplexAppraisalInfo AppraisalInfo = FSimplexAppraisalInfo::ProcessEmotion(EmotionActionName, SourceActor, TargetActor, Knowledge, Memory);
 
-	if(!AppraisalInfo.bSuccessful || AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+	if(!AppraisalInfo.bSuccessful)
 	{
+		//The consequences of an action are not known... So a little fear comes!
+		return FSimplexPADPoint::Fear * 0.1f;
+	}
+
+	if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+	{
+		//There is no change in emotion state caused by inspected action so there is no generated emotion
 		return FSimplexPADPoint();
 	}
 
@@ -33,7 +40,7 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForConsequences(
 	else
 	{
 		//Consequences for others
-		return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::HappyFor : FSimplexPADPoint::Pitty)* AppraisalInfo.Power * Influence;
+		return (AppraisalInfo.Type == ESimplexEmotionType::Positive ? FSimplexPADPoint::Happyfor : FSimplexPADPoint::Pitty)* AppraisalInfo.Power * Influence;
 	}
 }
 
@@ -48,8 +55,15 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForActions(EEmot
 
 	FSimplexAppraisalInfo AppraisalInfo = FSimplexAppraisalInfo::ProcessEmotion(EmotionActionName, SourceActor, TargetActor, Knowledge, Memory);
 
-	if(!AppraisalInfo.bSuccessful || AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+	if(!AppraisalInfo.bSuccessful)
 	{
+		//Oops, the connection of action, source and target is not known... So a little fear comes!
+		return FSimplexPADPoint::Fear * 0.1f;
+	}
+
+	if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+	{
+		//There is no change in emotion state caused by inspected action so there is no generated emotion
 		return FSimplexPADPoint();
 	}
 
@@ -83,8 +97,15 @@ FSimplexPADPoint UAISimplexAppraisalModule::Internal_DoAppraisalForObjects(EEmot
 
 	FSimplexAppraisalInfo AppraisalInfo = FSimplexAppraisalInfo::ProcessEmotion(EmotionActionName, SourceActor, TargetActor, Knowledge, Memory);
 
-	if(!AppraisalInfo.bSuccessful || AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+	if(!AppraisalInfo.bSuccessful)
 	{
+		//Wooo, what an object is that? Or what does it cause?... I feel fear...
+		return FSimplexPADPoint::Fear * 0.1f;
+	}
+
+	if(AppraisalInfo.Type == ESimplexEmotionType::Neutral)
+	{
+		//There is no change in emotion state caused by inspected action so there is no generated emotion
 		return FSimplexPADPoint();
 	}
 

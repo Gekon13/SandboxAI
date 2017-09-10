@@ -7,7 +7,6 @@
 #include "AISimplexEmotionEngine.generated.h"
 
 class UAISimplexAppraisalModule;
-class UAIEmotionKnowledge;
 
 UCLASS(BlueprintType)
 class PROJECT_API UAISimplexEmotionEngine : public UAIBaseEmotionEngine
@@ -32,6 +31,9 @@ protected:
 
 public:
 	UAISimplexEmotionEngine();
+
+	UFUNCTION(BlueprintCallable)
+		virtual FAIEmotionState GetEmotionState() const override;
 	
 	virtual void InitializeEmotionEngine(UAIEmotionKnowledge* InEmotionKnowledge) override;
 	virtual void TickEmotionEngine(float DeltaSeconds) override;

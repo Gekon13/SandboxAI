@@ -27,7 +27,7 @@ public:
 	static FSimplexPADPoint Fear;
 	static FSimplexPADPoint Love;
 	static FSimplexPADPoint Hate;
-	static FSimplexPADPoint HappyFor;
+	static FSimplexPADPoint Happyfor;
 	static FSimplexPADPoint Pitty;
 	static FSimplexPADPoint Admiration;
 	static FSimplexPADPoint Gloating;
