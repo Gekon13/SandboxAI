@@ -3,6 +3,9 @@
 #include "SandboxAI.h"
 #include "AISimplexStructures.h"
 
+float FSimplexPADPoint::MaxDistance = 2.0f * FMath::Sqrt(3);
+float FSimplexPADPoint::OnePerMaxDistance = 1.0f / MaxDistance;
+
 //PAD values from "ALMA – A Layered Model of Affect" by Patrick Gebhard
 FSimplexPADPoint FSimplexPADPoint::Joy = FSimplexPADPoint(0.4f, 0.2f, 0.1f);
 FSimplexPADPoint FSimplexPADPoint::Distress = FSimplexPADPoint(-0.4f, -0.2f, -0.5f);
@@ -17,6 +20,19 @@ FSimplexPADPoint FSimplexPADPoint::Gloating = FSimplexPADPoint(0.3f, -0.3f, -0.1
 FSimplexPADPoint FSimplexPADPoint::Pride = FSimplexPADPoint(0.4f, 0.3f, 0.3f);
 FSimplexPADPoint FSimplexPADPoint::Shame = FSimplexPADPoint(-0.3f, 0.1f, -0.6f);
 
+FSimplexPADPoint FSimplexPADPoint::GetSafeNormal() const
+{
+	const float LengthSquared = Pleasure * Pleasure + Arousal * Arousal + Dominance * Dominance;
+	if(FMath::IsNearlyZero(LengthSquared) || FMath::IsNearlyEqual(LengthSquared, 1.0f))
+	{
+		return *this;
+	}
+
+	const float Length = FMath::Sqrt(LengthSquared);
+
+	return *this / Length;
+}
+
 float FSimplexPADPoint::Dist(const FSimplexPADPoint& From, const FSimplexPADPoint& To)
 {
 	return FMath::Sqrt(FMath::Square(From.Pleasure - To.Pleasure) + FMath::Square(From.Arousal - To.Arousal) + FMath::Square(From.Dominance - To.Dominance));
@@ -29,24 +45,34 @@ FSimplexPADPoint FSimplexPADPoint::InterpTo(const FSimplexPADPoint& Current, con
 		return Target;
 	}
 
-	// Difference between colors
+	// Difference between pad points
 	const float Dist = FSimplexPADPoint::Dist(Target, Current);
 
-	// If distance is too small, just set the desired color
-	if(Dist < KINDA_SMALL_NUMBER)
+	// Actual delta change
+	const float DeltaChange = DeltaTime * InterpSpeed;
+
+	// If distance is too small or distance is lower than delta change, just set the desired pad point
+	if(Dist < KINDA_SMALL_NUMBER || Dist < DeltaChange)
 	{
 		return Target;
 	}
 
 	// Delta change, Clamp so we do not over shoot.
-	const FSimplexPADPoint DeltaMove = (Target - Current) * FMath::Clamp<float>(DeltaTime * InterpSpeed, 0.0f, 1.0f);
+	const FSimplexPADPoint DeltaMove = (Target - Current);
 
-	return Current + DeltaMove;
+	return Current + DeltaMove.GetSafeNormal() * DeltaChange;
 }
 
 bool FSimplexPADPoint::IsNearlyZero(const FSimplexPADPoint& PADPoint, float Tolerance)
 {
 	return FMath::Abs(PADPoint.Pleasure) < Tolerance && FMath::Abs(PADPoint.Arousal) < Tolerance && FMath::Abs(PADPoint.Dominance) < Tolerance;
+}
+
+float FSimplexPADPoint::CalculateEmotionStrength(const FSimplexPADPoint& CurrentState, const FSimplexPADPoint& TargetEmotion)
+{
+	float Dist = FSimplexPADPoint::Dist(CurrentState, TargetEmotion);
+
+	return 1.0f - Dist * FSimplexPADPoint::OnePerMaxDistance;
 }
 
 TArray<FAIEmotionInformation> FSimplexAppraisalInfo::GetMatchingInformationsFrom(UAIEmotionKnowledge* Source, EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor)

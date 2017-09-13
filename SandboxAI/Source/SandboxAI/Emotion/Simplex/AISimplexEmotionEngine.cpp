@@ -5,7 +5,7 @@
 #include "AISimplexAppraisalModule.h"
 #include "Emotion/AIEmotionKnowledge.h"
 
-#define AddEmotionToFAIEmotionState(EmotionState, EmotionName, CurrentPADState) EmotionState.Add(FAISingleEmotionState(EEmotionName::EmotionName, FSimplexPADPoint::Dist(FSimplexPADPoint::EmotionName, CurrentPADState), true));
+#define AddEmotionToFAIEmotionState(EmotionState, EmotionName, CurrentPADState) EmotionState.Add(FAISingleEmotionState(EEmotionName::EmotionName, FSimplexPADPoint::CalculateEmotionStrength(CurrentPADState, FSimplexPADPoint::EmotionName), true));
 
 UAISimplexEmotionEngine::UAISimplexEmotionEngine()
 {

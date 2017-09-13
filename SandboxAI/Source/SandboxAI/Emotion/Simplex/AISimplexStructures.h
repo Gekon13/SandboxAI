@@ -13,6 +13,10 @@ struct PROJECT_API FSimplexPADPoint
 {
 	GENERATED_BODY()
 
+protected:
+	static float MaxDistance;
+	static float OnePerMaxDistance;
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "", meta = (ClampMin = "-1.0", ClampMax = "1.0", UIMin = "-1.0", UIMax = "1.0"))
 		float Pleasure;
@@ -36,6 +40,8 @@ public:
 
 public:
 	FORCEINLINE FSimplexPADPoint(float InPleasure = 0.0f, float InArousal = 0.0f, float InDominance = 0.0f) : Pleasure(FMath::Clamp(InPleasure, -1.0f, 1.0f)), Arousal(FMath::Clamp(InArousal, -1.0f, 1.0f)), Dominance(FMath::Clamp(InDominance, -1.0f, 1.0f)) { }
+
+	FSimplexPADPoint GetSafeNormal() const;
 
 	FORCEINLINE FSimplexPADPoint operator+(const FSimplexPADPoint& PointB) const
 	{
@@ -120,6 +126,7 @@ public:
 	static float Dist(const FSimplexPADPoint& From, const FSimplexPADPoint& To);
 	static FSimplexPADPoint InterpTo(const FSimplexPADPoint& Current, const FSimplexPADPoint& Target, float DeltaTime, float InterpSpeed);
 	static bool IsNearlyZero(const FSimplexPADPoint& PADPoint, float Tolerance = SMALL_NUMBER);
+	static float CalculateEmotionStrength(const FSimplexPADPoint& CurrentState, const FSimplexPADPoint& TargetEmotion);
 };
 
 FORCEINLINE FSimplexPADPoint operator*(float scalar, const FSimplexPADPoint& PADPoint)
