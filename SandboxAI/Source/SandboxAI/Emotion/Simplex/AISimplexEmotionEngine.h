@@ -13,7 +13,7 @@ class PROJECT_API UAISimplexEmotionEngine : public UAIBaseEmotionEngine
 {
 	GENERATED_BODY()
 
-protected:
+public:
 	UPROPERTY(EditAnywhere, Category = "Personality")
 		FSimplexPersonality Personality;
 
@@ -24,6 +24,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotions")
 		float DecayFactor;
 
+protected:
 	UPROPERTY(Instanced, VisibleAnywhere, Category = "Emotions")
 		UAISimplexAppraisalModule* AppraisalModule;
 	UPROPERTY(Instanced, VisibleAnywhere, Category = "Emotions")
@@ -40,6 +41,16 @@ public:
 
 	UFUNCTION()
 	virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor) override;
+
+	FORCEINLINE const FSimplexPADPoint& GetNeutralEmotionalState() const
+	{
+		return NeutralEmotionalState;
+	}
+
+	FORCEINLINE const FSimplexPADPoint& GetCurrentEmotionalState() const
+	{
+		return CurrentEmotionalState;
+	}
 
 protected:
 	virtual float GetEngineScale() const override;

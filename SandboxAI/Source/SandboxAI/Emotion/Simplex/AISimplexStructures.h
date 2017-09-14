@@ -13,7 +13,7 @@ struct PROJECT_API FSimplexPADPoint
 {
 	GENERATED_BODY()
 
-protected:
+public:
 	static float MaxDistance;
 	static float OnePerMaxDistance;
 
@@ -204,6 +204,11 @@ public:
 		DecayFactor += NeuroticismWeight * Neuroticism;
 
 		return (DecayFactor + MaxDecay) / DoubleMaxDecay;
+	}
+
+	FORCEINLINE FString ToString() const
+	{
+		return FString::Printf(TEXT("O: %.3f, C: %.3f, E: %.3f, A: %.3f, N: %.3f"), OpennessToExperience, Conscientiousness, Extraversion, Agreeableness, Neuroticism);
 	}
 };
 

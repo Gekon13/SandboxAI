@@ -3,6 +3,8 @@
 #include "SandboxAI.h"
 #include "EmotionSplineAIController.h"
 #include "Emotion/AIEmotionComponent.h"
+#include "Emotion/Simplex/AISimplexEmotionEngine.h"
+#include "Emotion/Simplex/AISimplexStructures.h"
 
 AEmotionSplineAIController::AEmotionSplineAIController() : Super()
 {
