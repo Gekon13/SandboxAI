@@ -13,5 +13,5 @@ ASimplexTestControllerLowO::ASimplexTestControllerLowO() : Super()
 	EmotionComponent->EmotionEngineModel = EEmotionEngineModel::Simplex;
 
 	FSimplexPersonality& Personality = EmotionComponent->GetSimplexEmotionEngine()->Personality;
-	Personality.OpennessToExperience = -0.6f;
+	Personality.OpennessToExperience = -1.0f;
 }

@@ -58,5 +58,5 @@ protected:
 	virtual void DirectValencedImpulseInternal(float Value, bool bContinuous);
 
 	//Temporary, just for the backward compability with "old" SandboxAI emotion engines implementation
-	void UpdateRunAction(float JoyDistress);
+	void UpdateRunAction();
 };

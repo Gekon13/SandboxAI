@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Emotion/AIEmotionConstants.h"
 #include "SimplexLogger.generated.h"
 
 class UAIEmotionComponent;
@@ -27,7 +28,9 @@ public:
 public:
 	void Initialize();
 
-	float GetLogValue() const;
+	float GetEmotionalDeviation() const;
+	float GetEmotionPair(EEmotionPairName EmotionPair) const;
+	float GetRunSpeed() const;
 };
 
 UCLASS()
@@ -40,7 +43,16 @@ protected:
 		TArray<FSimplexLoggerInfo> LoggerInfo;
 
 	UPROPERTY(EditAnywhere, Category = "Logger")
+		FString LogName;
+
+	UPROPERTY(EditAnywhere, Category = "Logger")
 		float LogEverySeconds;
+
+	UPROPERTY(EditAnywhere, Category = "Logger")
+		bool bEmotionDeviation;
+
+	UPROPERTY(EditAnywhere, Category = "Logger")
+		bool bRun;
 
 	FString LogText;
 	float Timer;

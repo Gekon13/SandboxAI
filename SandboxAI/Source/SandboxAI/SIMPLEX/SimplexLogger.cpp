@@ -6,8 +6,6 @@
 #include "Emotion/Simplex/AISimplexEmotionEngine.h"
 #include "FixedPath/EmotionSplineAIController.h"
 
-#include <ctime>
-
 // Sets default values
 ASimplexLogger::ASimplexLogger()
 {
@@ -27,7 +25,14 @@ void ASimplexLogger::BeginPlay()
 	for(uint32 i = 0; i < LoggerInfosCount; ++i)
 	{
 		LoggerInfo[i].Initialize();
-		LogText += LoggerInfo[i].SampleName + FString(",");
+		if(bEmotionDeviation || bRun)
+		{
+			LogText += LoggerInfo[i].SampleName + FString(",");
+		}
+		else
+		{
+			LogText += FString::Printf(TEXT("%s, %s, %s,"), *(FString::Printf(TEXT("%s_JD"), *LoggerInfo[i].SampleName)), *(FString::Printf(TEXT("%s_LH"), *LoggerInfo[i].SampleName)), *(FString::Printf(TEXT("%s_HF"), *LoggerInfo[i].SampleName)));
+		}
 	}
 	LogText += FString("\n");
 
@@ -58,7 +63,21 @@ void ASimplexLogger::Tick(float DeltaTime)
 	const uint32 LoggerInfosCount = LoggerInfo.Num();
 	for(uint32 i = 0; i < LoggerInfosCount; ++i)
 	{
-		LogText += FString::Printf(TEXT("\"%.4f\""), LoggerInfo[i].GetLogValue()) + FString(",");
+		if(bRun)
+		{
+			LogText += FString::Printf(TEXT("\"%.4f\","), LoggerInfo[i].GetRunSpeed());
+		}
+		else
+		{
+			if(bEmotionDeviation)
+			{
+				LogText += FString::Printf(TEXT("\"%.4f\","), LoggerInfo[i].GetEmotionalDeviation());
+			}
+			else
+			{
+				LogText += FString::Printf(TEXT("\"%.4f\",\"%.4f\",\"%.4f\","), LoggerInfo[i].GetEmotionPair(EEmotionPairName::Joy_Distress), LoggerInfo[i].GetEmotionPair(EEmotionPairName::Love_Hate), LoggerInfo[i].GetEmotionPair(EEmotionPairName::Hope_Fear));
+			}
+		}
 	}
 	LogText += FString("\n");
 }
@@ -73,12 +92,7 @@ void ASimplexLogger::SaveToFile()
 			LogText[i] = ',';
 		}
 	}
-
-	std::time_t timePoint = std::time(NULL);
-	std::tm* localTime = std::localtime(&timePoint);
-
-	FString DateString = FString::Printf(TEXT("%d-%d-%d_%d-%d-%d"), localTime->tm_year + 1990, localTime->tm_mon + 1, localTime->tm_mday, localTime->tm_hour, localTime->tm_min, localTime->tm_sec);
-	FString FilePath = FString::Printf(TEXT("SIMPLEX_%s.csv"), *DateString);
+	FString FilePath = FString::Printf(TEXT("SIMPLEX_%s.csv"), *LogName);
 
 	IFileManager* FileManager = &IFileManager::Get();
 	if(FileManager)
@@ -112,7 +126,7 @@ void FSimplexLoggerInfo::Initialize()
 	}
 }
 
-float FSimplexLoggerInfo::GetLogValue() const
+float FSimplexLoggerInfo::GetEmotionalDeviation() const
 {
 	if(!SimplexEmotionEngine)
 	{
@@ -123,4 +137,53 @@ float FSimplexLoggerInfo::GetLogValue() const
 	const FSimplexPADPoint& CurrentPAD = SimplexEmotionEngine->GetCurrentEmotionalState();
 
 	return FSimplexPADPoint::Dist(NeutralPAD, CurrentPAD);
+}
+
+float FSimplexLoggerInfo::GetEmotionPair(EEmotionPairName EmotionPair) const
+{
+	if(!SimplexEmotionEngine)
+	{
+		return 0.0f;
+	}
+
+	float DistFromPositive = 0.0f;
+	float DistFromNegative = 0.0f;
+
+	const FSimplexPADPoint& CurrentPAD = SimplexEmotionEngine->GetCurrentEmotionalState();
+
+	switch(EmotionPair)
+	{
+	case EEmotionPairName::Joy_Distress:
+		DistFromPositive = FSimplexPADPoint::Dist(FSimplexPADPoint::Joy, CurrentPAD);
+		DistFromNegative = FSimplexPADPoint::Dist(FSimplexPADPoint::Distress, CurrentPAD);
+		break;
+
+	case EEmotionPairName::Love_Hate:
+		DistFromPositive = FSimplexPADPoint::Dist(FSimplexPADPoint::Love, CurrentPAD);
+		DistFromNegative = FSimplexPADPoint::Dist(FSimplexPADPoint::Hate, CurrentPAD);
+		break;
+
+	case EEmotionPairName::Hope_Fear:
+		DistFromPositive = FSimplexPADPoint::Dist(FSimplexPADPoint::Hope, CurrentPAD);
+		DistFromNegative = FSimplexPADPoint::Dist(FSimplexPADPoint::Fear, CurrentPAD);
+		break;
+	}
+
+	return FMath::Clamp(DistFromPositive - DistFromNegative, 0.0f, 1.0f);
+}
+
+float FSimplexLoggerInfo::GetRunSpeed() const
+{
+	if(!PawnToLog || !PawnToLog->IsA<ACharacter>())
+	{
+		return 0.0f;
+	}
+
+	UCharacterMovementComponent* Movement = ((ACharacter*)PawnToLog)->GetCharacterMovement();
+	if(!Movement)
+	{
+		return 0.0f;
+	}
+
+	return Movement->MaxWalkSpeed;
 }

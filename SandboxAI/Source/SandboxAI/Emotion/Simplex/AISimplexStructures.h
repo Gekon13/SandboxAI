@@ -124,6 +124,7 @@ public:
 	}
 
 	static float Dist(const FSimplexPADPoint& From, const FSimplexPADPoint& To);
+	static float DistBetween(const FSimplexPADPoint& A, const FSimplexPADPoint& B, const FSimplexPADPoint& Current);
 	static FSimplexPADPoint InterpTo(const FSimplexPADPoint& Current, const FSimplexPADPoint& Target, float DeltaTime, float InterpSpeed);
 	static bool IsNearlyZero(const FSimplexPADPoint& PADPoint, float Tolerance = SMALL_NUMBER);
 	static float CalculateEmotionStrength(const FSimplexPADPoint& CurrentState, const FSimplexPADPoint& TargetEmotion);
@@ -172,7 +173,7 @@ public:
 	//Returns value between 0 (inclusive) and 1 (inclusive)
 	FORCEINLINE float GetInfluenceOnEmotion(bool bIsPositiveEmotion) const
 	{
-		static const float ConscientiousnessWeight = 1.0f;
+		static const float ConscientiousnessWeight = 0.5f;
 		static const float OpennessWeight = 0.5f;
 		static const float ExtraversionNeuroticismWeight = 1.0f;
 

@@ -13,5 +13,5 @@ ASimplexTestControllerHighN::ASimplexTestControllerHighN() : Super()
 	EmotionComponent->EmotionEngineModel = EEmotionEngineModel::Simplex;
 
 	FSimplexPersonality& Personality = EmotionComponent->GetSimplexEmotionEngine()->Personality;
-	Personality.Neuroticism = 0.6f;
+	Personality.Neuroticism = 1.0f;
 }

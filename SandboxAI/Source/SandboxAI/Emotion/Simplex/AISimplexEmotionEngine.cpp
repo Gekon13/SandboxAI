@@ -55,12 +55,8 @@ void UAISimplexEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 
 	CurrentEmotionalState = FSimplexPADPoint::InterpTo(CurrentEmotionalState, NeutralEmotionalState, DeltaSeconds, DecayFactor);
 
-	float DistanceFromJoy = FSimplexPADPoint::Dist(CurrentEmotionalState, FSimplexPADPoint::Joy);
-	float DistanceFromDistress = FSimplexPADPoint::Dist(CurrentEmotionalState, FSimplexPADPoint::Distress);
-	float JoyDistress = FMath::Clamp(DistanceFromDistress - DistanceFromJoy, -1.0f, 1.0f);
-
 	//Temporary, will be removed later (when real knowledge about actions->consequences will come)
-	UpdateRunAction(JoyDistress);
+	UpdateRunAction();
 }
 
 void UAISimplexEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor)
@@ -95,9 +91,15 @@ void UAISimplexEmotionEngine::DirectValencedImpulseInternal(float Value, bool bC
 }
 
 //Temporary, just for the backward compability with "old" SandboxAI emotion engines implementation
-void UAISimplexEmotionEngine::UpdateRunAction(float JoyDistress)
+void UAISimplexEmotionEngine::UpdateRunAction()
 {
-	float Value = 0.5f * (-JoyDistress + 1.0f);
+	float Value = FSimplexPADPoint::Dist(CurrentEmotionalState, NeutralEmotionalState);
+	
+	if(FSimplexPADPoint::Dist(CurrentEmotionalState, FSimplexPADPoint(1, 1, 1)) > FSimplexPADPoint::Dist(NeutralEmotionalState, FSimplexPADPoint(1, 1, 1)))
+	{
+		Value *= -1.0f;
+	}
+	Value = 1.0f - (Value + 1.0f) * 0.5f;
 
-	MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], Value));
+	MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], FMath::Clamp(Value, 0.0f, 1.0f)));
 }

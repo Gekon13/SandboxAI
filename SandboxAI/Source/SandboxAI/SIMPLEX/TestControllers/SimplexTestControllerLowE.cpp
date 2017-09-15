@@ -13,5 +13,5 @@ ASimplexTestControllerLowE::ASimplexTestControllerLowE() : Super()
 	EmotionComponent->EmotionEngineModel = EEmotionEngineModel::Simplex;
 
 	FSimplexPersonality& Personality = EmotionComponent->GetSimplexEmotionEngine()->Personality;
-	Personality.Extraversion = -0.6f;
+	Personality.Extraversion = -1.0f;
 }

@@ -38,6 +38,19 @@ float FSimplexPADPoint::Dist(const FSimplexPADPoint& From, const FSimplexPADPoin
 	return FMath::Sqrt(FMath::Square(From.Pleasure - To.Pleasure) + FMath::Square(From.Arousal - To.Arousal) + FMath::Square(From.Dominance - To.Dominance));
 }
 
+float FSimplexPADPoint::DistBetween(const FSimplexPADPoint& A, const FSimplexPADPoint& B, const FSimplexPADPoint& Current)
+{
+	FVector AVec(A.Pleasure, A.Arousal, A.Dominance);
+	FVector BVec(B.Pleasure, B.Arousal, B.Dominance);
+	FVector CurrentVec(Current.Pleasure, Current.Arousal, Current.Dominance);
+
+	FVector AToB = (BVec - AVec);
+	float Dot = FVector::DotProduct(AToB.GetSafeNormal(), CurrentVec - AVec);
+	FVector CurrentProjectedToAB = AToB.GetSafeNormal() * Dot / AToB.Size();
+
+	return CurrentProjectedToAB.Size() * OnePerMaxDistance;
+}
+
 FSimplexPADPoint FSimplexPADPoint::InterpTo(const FSimplexPADPoint& Current, const FSimplexPADPoint& Target, float DeltaTime, float InterpSpeed)
 {
 	if(InterpSpeed <= 0.0f)
@@ -57,7 +70,6 @@ FSimplexPADPoint FSimplexPADPoint::InterpTo(const FSimplexPADPoint& Current, con
 		return Target;
 	}
 
-	// Delta change, Clamp so we do not over shoot.
 	const FSimplexPADPoint DeltaMove = (Target - Current);
 
 	return Current + DeltaMove.GetSafeNormal() * DeltaChange;
@@ -135,7 +147,7 @@ FSimplexAppraisalInfo FSimplexAppraisalInfo::ProcessEmotion(EEmotionActionName E
 
 	if(!FMath::IsNearlyZero(WholeAbsoluteValue))
 	{
-		Result.Power = PositiveNegative / WholeAbsoluteValue;
+		Result.Power = FMath::Abs(PositiveNegative) / WholeAbsoluteValue;
 	}
 
 	return Result;
