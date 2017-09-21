@@ -8,7 +8,7 @@ AWasabiCharacterThree::AWasabiCharacterThree() : Super()
 {
 	bHandleSpeedAction = false;
 	EmotionComponent->EmotionEngineModel = EEmotionEngineModel::Wasabi;
-	EmotionComponent->GetWasabiEmotionEngine()->SetWasabiCoreType(EWasabiCoreType::Improved);
+	EmotionComponent->GetWasabiEmotionEngine()->SetWasabiCoreType(EWasabiCoreType::Original);
 
 	EmotionComponent->GetWasabiEmotionEngine()->SetLogWasabiState(true);
 
