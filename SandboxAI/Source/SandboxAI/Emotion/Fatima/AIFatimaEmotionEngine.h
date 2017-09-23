@@ -18,6 +18,7 @@ public:
 	void TickEmotionEngine(float DeltaSeconds) override;
 	void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor) override;
 	void AddGoal(FFatimaGoal Goal) { Goals.Add(Goal); }
+	void SetPersonality(FFatimaEmotions NewPersonality) { Personality = NewPersonality; }
 
 protected:
 	float GetEngineScale() const override;
@@ -29,31 +30,27 @@ protected:
 	void CalculateEmotion(FFatimaEmotion* Emotion, FFatimaEmotion* PersonalityEmotion) const;
 	void UpdateActions();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Emotions")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Configuration")
 		FFatimaEmotions Personality;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Emotions", meta = (ClampMin = "-11.0", ClampMax = "11.0"))
+	UPROPERTY(EditDefaultsOnly, Category = "Configuration", meta = (ClampMin = "0", ClampMax = "1.0"))
+		float PersonalityRelevance;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Configuration|Mood", meta = (ClampMin = "-11.0", ClampMax = "11.0"))
 		float Mood;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Emotions")
-		FFatimaEmotions Emotions;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotions")
-		TArray<FFatimaGoal> Goals;
-	UPROPERTY(EditDefaultsOnly, Category = "Configuration", meta = (ClampMin = "0", ClampMax = "1.0"))
-		float EmotionThreshold;
-	UPROPERTY(EditDefaultsOnly, Category = "Configuration", meta = (ClampMin = "0"))
+	UPROPERTY(EditDefaultsOnly, Category = "Configuration|Mood", meta = (ClampMin = "0"))
 		float MoodDecrementAmount;
-	UPROPERTY(EditDefaultsOnly, Category = "Configuration", meta = (ClampMin = "0", ClampMax = "1.0"))
+	UPROPERTY(EditDefaultsOnly, Category = "Configuration|Mood", meta = (ClampMin = "0", ClampMax = "1.0"))
 		float MoodRelevance;
-	UPROPERTY(EditDefaultsOnly, Category = "Configuration", meta = (ClampMin = "0"))
-		float ContinuousEmotionsInterval;
-	UPROPERTY(EditDefaultsOnly, Category = "Configuration", meta = (ClampMin = "0"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotions")
+		FFatimaEmotions CurrentEmotions;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Configuration|Goals")
+		TArray<FFatimaGoal> Goals;
+	UPROPERTY(EditDefaultsOnly, Category = "Configuration|Goals", meta = (ClampMin = "0"))
 		float GoalsInterval;
-	UPROPERTY(EditDefaultsOnly, Category = "Configuration|Actions", meta = (ClampMin = "0"))
-		float SpeedFactor;
 
 private:
 	void UpdateEmotion(const float MoodFactor, const FFatimaEmotion AppraisalEmotion);
 	void UpdateGoals();
 
 	float MinMood, MaxMood, MinEmotion, MaxEmotion;
-	FTimerHandle ContinuousTimerHandle, GoalsTimerHandle;
+	FTimerHandle GoalsTimerHandle;
 };

@@ -20,13 +20,11 @@ public:
 		float Amount;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion", meta = (ClampMin = "0.0", ClampMax = "1.0"))
 		float DecayFactor;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotion")
-		EEmotionPairName Name;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotion")
-		float AmountAfterEvent;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Emotion")
-		float TimeOfEvent;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Emotion", meta = (ClampMin = "0.0", ClampMax = "1.0"))
+		float Threshold;
 
+	EEmotionPairName Name;
+	float AmountAfterEvent, TimeOfEvent;
 	bool bContinuous;
 };
 

@@ -6,6 +6,7 @@
 
 FFatimaEmotion::FFatimaEmotion(EEmotionPairName Name, float Value) :Amount(Value), Name(Name) {
 	DecayFactor = 0.01f;
+	Threshold = 0.01f;
 	AmountAfterEvent = 0;
 	TimeOfEvent = 0;
 	bContinuous = false;

@@ -3,6 +3,8 @@
 #include "SandboxAI.h"
 #include "AIFatimaEmotionEngine.h"
 
+#define SAVE_LOG false
+
 UAIFatimaEmotionEngine::UAIFatimaEmotionEngine() {
 	Mood = 0;
 	MinMood = -11.f;
@@ -10,13 +12,10 @@ UAIFatimaEmotionEngine::UAIFatimaEmotionEngine() {
 	MinEmotion = -1.f;
 	MaxEmotion = 1.f;
 
-	EmotionThreshold = 0.005f;
+	PersonalityRelevance = 0.1f;
 	MoodDecrementAmount = 0.005f;
 	MoodRelevance = 0.1f;
-	ContinuousEmotionsInterval = 0.1f;
 	GoalsInterval = 0.5f;
-
-	SpeedFactor = 1.5f;
 }
 
 void UAIFatimaEmotionEngine::InitializeEmotionEngine(UAIEmotionKnowledge* Knowledge) {
@@ -29,27 +28,27 @@ void UAIFatimaEmotionEngine::TickEmotionEngine(float DeltaSeconds) {
 	Super::TickEmotionEngine(DeltaSeconds);
 
 	CalculateMood(DeltaSeconds);
-	CalculateEmotion(&Emotions.JoyDistress, &Personality.JoyDistress);
-	CalculateEmotion(&Emotions.HappyforPitty, &Personality.HappyforPitty);
-	CalculateEmotion(&Emotions.AdmirationGloating, &Personality.AdmirationGloating);
-	CalculateEmotion(&Emotions.PrideShame, &Personality.PrideShame);
-	CalculateEmotion(&Emotions.ConcentrationBore, &Personality.ConcentrationBore);
-	CalculateEmotion(&Emotions.AngerRemorse, &Personality.AngerRemorse);
-	CalculateEmotion(&Emotions.GratitudeResentment, &Personality.GratitudeResentment);
-	CalculateEmotion(&Emotions.LoveHate, &Personality.LoveHate);
-	CalculateEmotion(&Emotions.HopeFear, &Personality.HopeFear);
-	CalculateEmotion(&Emotions.ReliefFearsConfirmed, &Personality.ReliefFearsConfirmed);
-	CalculateEmotion(&Emotions.SatisfactionDisapointment, &Personality.SatisfactionDisapointment);
+	CalculateEmotion(&CurrentEmotions.JoyDistress, &Personality.JoyDistress);
+	CalculateEmotion(&CurrentEmotions.HappyforPitty, &Personality.HappyforPitty);
+	CalculateEmotion(&CurrentEmotions.AdmirationGloating, &Personality.AdmirationGloating);
+	CalculateEmotion(&CurrentEmotions.PrideShame, &Personality.PrideShame);
+	CalculateEmotion(&CurrentEmotions.ConcentrationBore, &Personality.ConcentrationBore);
+	CalculateEmotion(&CurrentEmotions.AngerRemorse, &Personality.AngerRemorse);
+	CalculateEmotion(&CurrentEmotions.GratitudeResentment, &Personality.GratitudeResentment);
+	CalculateEmotion(&CurrentEmotions.LoveHate, &Personality.LoveHate);
+	CalculateEmotion(&CurrentEmotions.HopeFear, &Personality.HopeFear);
+	CalculateEmotion(&CurrentEmotions.ReliefFearsConfirmed, &Personality.ReliefFearsConfirmed);
+	CalculateEmotion(&CurrentEmotions.SatisfactionDisapointment, &Personality.SatisfactionDisapointment);
 	UpdateActions();
 }
 
 void UAIFatimaEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor) {
-	TArray<FStringFormatArg> Arguments;
+	/*TArray<FStringFormatArg> Arguments;
 	Arguments.Add(FAIEmotionConstants::ActionNames[EmotionActionName]);
 	Arguments.Add(SourceActor->GetName());
 	Arguments.Add(TargetActor ? TargetActor->GetName() : "NONE");
 	const auto Text = FString::Format(TEXT("Perceived action: {0}, source: {1}, target {2}"), Arguments);
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, Text);
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, Text);*/
 
 	auto InformationMatchingByActions = EmotionKnowledge->Informations.FilterByPredicate([EmotionActionName, SourceActor, TargetActor](const FAIEmotionInformation& Information) {
 		return Information.EmotionActionName == EmotionActionName && Information.ActionSource.DoesActorMatchTarget(SourceActor) && Information.ActionTarget.DoesActorMatchTarget(TargetActor);
@@ -70,10 +69,11 @@ void UAIFatimaEmotionEngine::DirectValencedImpulseInternal(float Value, bool bCo
 }
 
 void UAIFatimaEmotionEngine::UpdateEmotion(const float MoodFactor, const FFatimaEmotion AppraisalEmotion) {
-	const auto Emotion = Emotions.FindEmotionWithName(AppraisalEmotion.Name);
-	if (Emotion) {
+	const auto Emotion = CurrentEmotions.FindEmotionWithName(AppraisalEmotion.Name);
+	const auto PersonalityEmotion = Personality.FindEmotionWithName(AppraisalEmotion.Name);
+	if (Emotion && PersonalityEmotion) {
 		const auto OldValue = Emotion->Amount;
-		Emotion->Amount = FMath::Clamp(Emotion->Amount + AppraisalEmotion.Amount + MoodFactor, MinEmotion, MaxEmotion);
+		Emotion->Amount = FMath::Clamp(Emotion->Amount + AppraisalEmotion.Amount + MoodFactor + PersonalityEmotion->Amount * PersonalityRelevance, MinEmotion, MaxEmotion);
 		Emotion->AmountAfterEvent = Emotion->Amount;
 		Emotion->TimeOfEvent = GetOuter()->GetWorld()->GetTimeSeconds();
 		Mood = FMath::Clamp(Mood + Emotion->Amount - OldValue, MinMood, MaxMood);
@@ -110,15 +110,30 @@ void UAIFatimaEmotionEngine::CalculateEmotion(FFatimaEmotion* Emotion, FFatimaEm
 	if (Emotion->Amount != PersonalityEmotion->Amount && !Emotion->bContinuous) {
 		const auto CurrentTime = GetOuter()->GetWorld()->GetTimeSeconds() - Emotion->TimeOfEvent;
 		Emotion->Amount = FMath::Clamp(Emotion->AmountAfterEvent * (FMath::Exp(-Emotion->DecayFactor * CurrentTime - PersonalityEmotion->Amount) + PersonalityEmotion->Amount), MinEmotion, MaxEmotion);
-		if (FMath::Abs(Emotion->Amount - PersonalityEmotion->Amount) <= EmotionThreshold) {
+		if (FMath::Abs(Emotion->Amount - PersonalityEmotion->Amount) <= PersonalityEmotion->Threshold) {
 			Emotion->Amount = PersonalityEmotion->Amount;
 		}
 	}
 }
 
 void UAIFatimaEmotionEngine::UpdateActions() {
-	auto EmotionCoefficient = (Emotions.JoyDistress.Amount - MinEmotion) / (MaxEmotion - MinEmotion);
-	const auto CurrentSpeed = 1 - EmotionCoefficient;
+	const auto EmotionCoefficient = (CurrentEmotions.JoyDistress.Amount - MinEmotion) / (MaxEmotion - MinEmotion);
+	const auto CurrentSpeed = 1 - EmotionCoefficient + 1;
+	//const auto EmotionCoefficientLove = (CurrentEmotions.LoveHate.Amount - MinEmotion) / (MaxEmotion - MinEmotion);
+	//const auto CurrentSpeed = (1 - EmotionCoefficient + 1 - EmotionCoefficientLove) / 2;
+	if (SAVE_LOG) {
+		auto Speed = FMath::Lerp<float>(300.f, 900.f, CurrentSpeed);
+		const auto SaveDirectory = FString("D:/TestSave"),
+			FileName = FString(GetOuter()->GetOuter()->GetName() + "_tt.csv"),
+			TextToSave = FString::SanitizeFloat(Speed).Append(FString(";\r\n"));
+
+		auto& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+		if (PlatformFile.CreateDirectoryTree(*SaveDirectory)) {
+			const auto AbsoluteFilePath = SaveDirectory + "/" + FileName;
+			FFileHelper::SaveStringToFile(TextToSave, *AbsoluteFilePath, FFileHelper::EEncodingOptions::AutoDetect, &IFileManager::Get(), FILEWRITE_Append);
+		}
+	}
+
 	MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], CurrentSpeed));
 }
 
