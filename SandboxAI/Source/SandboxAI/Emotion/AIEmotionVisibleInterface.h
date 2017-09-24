@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AIEmotionConstants.h"
+#include "Containers/AIEmotionConstants.h"
 #include "AIEmotionVisibleInterface.generated.h"
 
 // This class does not need to be modified.

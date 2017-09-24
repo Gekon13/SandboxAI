@@ -22,6 +22,9 @@ public: //members // TODO: expand on this
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		AActor* ControlledActor;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		UGameplayComponent* ControlledGameplayComponent;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float Scale;

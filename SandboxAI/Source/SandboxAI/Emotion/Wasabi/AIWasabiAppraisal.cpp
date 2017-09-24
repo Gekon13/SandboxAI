@@ -2,10 +2,10 @@
 
 #include "SandboxAI.h"
 #include "AIWasabiAppraisal.h"
-#include "Emotion/AIEmotionKnowledge.h"
-#include "Emotion/AIEmotionConstants.h"
-#include "Emotion/Wasabi/AIWasabiBaseEngineCore.h"
-#include "Emotion/Wasabi/AIWasabiStructures.h"
+#include "../Containers/AIEmotionKnowledge.h"
+#include "../Containers/AIEmotionConstants.h"
+#include "AIWasabiBaseEngineCore.h"
+#include "AIWasabiStructures.h"
 
 FAIWasabiAppraisal::FAIWasabiAppraisal() :
 	WasabiEngineCore(nullptr),

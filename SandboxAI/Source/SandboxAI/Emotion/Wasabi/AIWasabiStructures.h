@@ -4,8 +4,8 @@
 
 #include "SandboxAI.h"
 #include <initializer_list>
-#include "../AIEmotionConstants.h"
-#include "../AIEmotionState.h"
+#include "../Containers/AIEmotionConstants.h"
+#include "../Containers/AIEmotionState.h"
 #include "AIWasabiStructures.generated.h"
 
 USTRUCT(BlueprintType)

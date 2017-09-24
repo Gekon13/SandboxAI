@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Emotion/AIEmotionVisibleActorExample.h"
+#include "AIEmotionVisibleActorExample.h"
 #include "VisibleEnemy.generated.h"
 
 /**
@@ -13,8 +13,8 @@ UCLASS()
 class SANDBOXAI_API AVisibleEnemy : public AAIEmotionVisibleActorExample
 {
 	GENERATED_BODY()
-	
-	
-	
+
+public:
+	AVisibleEnemy();
 	
 };

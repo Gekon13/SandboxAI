@@ -23,6 +23,19 @@ bool FAIEmotionTarget::DoesActorMatchTarget(AActor* actor) const
 			return actor != nullptr && actor->IsA(TargetClass) && actor->GetFName().IsEqual(TargetName, ENameCase::IgnoreCase);
 		}
 		break;
+	case EEmotionTargetType::Team:
+		{
+			if (actor != nullptr)
+			{
+				UGameplayComponent* gameplayComponent = actor->FindComponentByClass<UGameplayComponent>();
+				return gameplayComponent != nullptr && gameplayComponent->TeamID == TeamID;
+			}
+			else 
+			{
+				return false;
+			}
+		}
+		break;
 	default:
 		return false;
 		break;

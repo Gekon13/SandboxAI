@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Emotion/AIEmotionVisibleActorExample.h"
+#include "AIEmotionVisibleActorExample.h"
 #include "VisibleFriend.generated.h"
 
 /**
@@ -14,7 +14,7 @@ class SANDBOXAI_API AVisibleFriend : public AAIEmotionVisibleActorExample
 {
 	GENERATED_BODY()
 	
-	
-	
+public:
+	AVisibleFriend();
 	
 };

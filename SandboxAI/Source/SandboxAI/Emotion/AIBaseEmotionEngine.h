@@ -3,10 +3,10 @@
 #pragma once
 
 #include "UObject/NoExportTypes.h"
-#include "AIEmotionConstants.h"
-#include "AIEmotionKnowledge.h"
-#include "AIEmotionState.h"
-#include "AIEmotionDecisionInfo.h"
+#include "Containers/AIEmotionConstants.h"
+#include "Containers/AIEmotionKnowledge.h"
+#include "Containers/AIEmotionState.h"
+#include "Containers/AIEmotionDecisionInfo.h"
 #include "Perception/AIPerceptionTypes.h"
 #include "Perception/AISense.h"
 #include "Perception/AIPerceptionSystem.h"

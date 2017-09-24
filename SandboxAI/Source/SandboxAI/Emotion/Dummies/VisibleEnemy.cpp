@@ -3,6 +3,9 @@
 #include "SandboxAI.h"
 #include "VisibleEnemy.h"
 
-
+AVisibleEnemy::AVisibleEnemy()
+{
+	GameplayComponent->TeamID = ETeamType::ENEMY;
+}
 
 

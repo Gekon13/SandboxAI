@@ -5,8 +5,8 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "AISimplexStructures.h"
-#include "Emotion/AIEmotionConstants.h"
-#include "Emotion/AIEmotionKnowledge.h"
+#include "../Containers/AIEmotionConstants.h"
+#include "../Containers/AIEmotionKnowledge.h"
 #include "AISimplexAppraisalModule.generated.h"
 
 class UAIEmotionKnowledge;

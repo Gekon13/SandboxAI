@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Emotion/AIEmotionKnowledge.h"
+#include "../Containers/AIEmotionKnowledge.h"
 #include "PsiStructures.h"
 #include "AIPsiEmotionKnowledge.generated.h"
 

@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Emotion/AIEmotionConstants.h"
-#include "Emotion/AIEmotionKnowledge.h"
+#include "../Containers/AIEmotionConstants.h"
+#include "../Containers/AIEmotionKnowledge.h"
 #include "AISimplexStructures.generated.h"
 
 //Representation of a point in PAD space

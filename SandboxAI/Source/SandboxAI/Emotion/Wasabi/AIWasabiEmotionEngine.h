@@ -3,8 +3,8 @@
 #pragma once
 
 #include "../AIBaseEmotionEngine.h"
-#include "Emotion/Wasabi/AIWasabiAppraisal.h"
-#include "Emotion/Wasabi/AIWasabiStructures.h"
+#include "AIWasabiAppraisal.h"
+#include "AIWasabiStructures.h"
 #include "AIWasabiEmotionEngine.generated.h"
 
 class UAIWasabiBaseEngineCore;

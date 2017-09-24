@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Emotion/AIEmotionConstants.h"
+#include "Emotion/Containers/AIEmotionConstants.h"
 #include "SimplexLogger.generated.h"
 
 class UAIEmotionComponent;

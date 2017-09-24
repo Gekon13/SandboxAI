@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Emotion/AIEmotionConstants.h"
+#include "../Containers/AIEmotionConstants.h"
 #include "FatimaStructures.generated.h"
 
 USTRUCT()

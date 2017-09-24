@@ -3,10 +3,10 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
-#include "AIEmotionConstants.h"
-#include "AIEmotionKnowledge.h"
+#include "Containers/AIEmotionConstants.h"
+#include "Containers/AIEmotionKnowledge.h"
+#include "Containers/AIEmotionDecisionInfo.h"
 #include "AIBaseEmotionEngine.h"
-#include "AIEmotionDecisionInfo.h"
 
 #include "Fatima/AIFatimaEmotionEngine.h"
 #include "Psi/AIPsiEmotionEngine.h"
