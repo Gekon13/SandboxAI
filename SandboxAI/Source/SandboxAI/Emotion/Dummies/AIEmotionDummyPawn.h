@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "../Containers/AIEmotionConstants.h"
+#include "../Common/AIEmotionConstants.h"
 #include "AIEmotionDummyInterface.h"
 #include "AIEmotionDummyPawn.generated.h"
 

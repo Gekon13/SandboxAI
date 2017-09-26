@@ -14,7 +14,7 @@ UAIWasabiEmotionEngine::UAIWasabiEmotionEngine() :
 	OriginalEngineCore = CreateDefaultSubobject<UAIWasabiOriginalEngineCore>(TEXT("OriginalEngineCore"));
 	ImprovedEngineCore = CreateDefaultSubobject<UAIWasabiImprovedEngineCore>(TEXT("ImprovedEngineCore"));
 
-	WasabiCoreType = EWasabiCoreType::Original;
+	WasabiCoreType = EWasabiCoreType::Improved;
 
 	_timeElapsed = 0.0f;
 }

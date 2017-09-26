@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "FixedPath/SandboxAISplineAIController.h"
-#include "Emotion/Containers/AIEmotionConstants.h"
-#include "Emotion/Containers/AIEmotionDecisionInfo.h"
+#include "Emotion/Common/AIEmotionConstants.h"
+#include "Emotion/Common/AIEmotionDecisionInfo.h"
 #include "EmotionSplineAIController.generated.h"
 
 class UAIEmotionComponent;

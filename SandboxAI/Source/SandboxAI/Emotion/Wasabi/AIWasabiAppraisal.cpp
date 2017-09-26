@@ -2,8 +2,8 @@
 
 #include "SandboxAI.h"
 #include "AIWasabiAppraisal.h"
-#include "../Containers/AIEmotionKnowledge.h"
-#include "../Containers/AIEmotionConstants.h"
+#include "../Common/AIEmotionKnowledge.h"
+#include "../Common/AIEmotionConstants.h"
 #include "AIWasabiBaseEngineCore.h"
 #include "AIWasabiStructures.h"
 

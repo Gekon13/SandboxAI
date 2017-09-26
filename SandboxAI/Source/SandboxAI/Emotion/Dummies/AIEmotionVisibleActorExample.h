@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "../AIEmotionVisibleInterface.h"
-#include "../Containers/AIEmotionConstants.h"
+#include "../Common/AIEmotionConstants.h"
 #include "AIEmotionVisibleActorExample.generated.h"
 
 class USceneComponent;

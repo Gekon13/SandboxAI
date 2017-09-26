@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "../Containers/AIEmotionConstants.h"
+#include "../Common/AIEmotionConstants.h"
 #include "PsiStructures.generated.h"
 
 

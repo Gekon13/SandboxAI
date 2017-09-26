@@ -7,7 +7,7 @@
 #include "Perception/AISense_Sight.h"
 
 #include "../Utility/AIEmotionSightStimuliComponent.h"
-#include "../Containers/AIEmotionConstants.h"
+#include "../Common/AIEmotionConstants.h"
 #include "AIEmotionDummyInterface.h"
 
 #include "AIEmotionDummyActor.generated.h"
