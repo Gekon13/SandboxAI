@@ -7,6 +7,7 @@
 #include "Common/AIEmotionKnowledge.h"
 #include "Common/AIEmotionState.h"
 #include "Common/AIEmotionDecisionInfo.h"
+#include "Common/AIEmotionPointPAD.h"
 #include "Perception/AIPerceptionTypes.h"
 #include "Perception/AISense.h"
 #include "Perception/AIPerceptionSystem.h"
@@ -82,6 +83,9 @@ public: //methods
 
 	UFUNCTION()
 	virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor);  // <<<  OVERRIDE  <<<
+
+	UFUNCTION(BlueprintCallable)
+	virtual FAIEmotionPointPAD GetPointPAD();                                       // new function from sprint 2017-09-29
 
 protected:
 	/** 

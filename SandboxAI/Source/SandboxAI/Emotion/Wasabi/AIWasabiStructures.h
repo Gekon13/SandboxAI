@@ -6,6 +6,7 @@
 #include <initializer_list>
 #include "../Common/AIEmotionConstants.h"
 #include "../Common/AIEmotionState.h"
+#include "../Common/AIEmotionPointPAD.h"
 #include "AIWasabiStructures.generated.h"
 
 USTRUCT(BlueprintType)
@@ -91,6 +92,8 @@ public:
 	void ClampPleasureBySpace();
 	void ClampArousalBySpace();
 	void ClampDominanceBySpace();
+
+	FAIEmotionPointPAD ToAIEmotionPointPAD();
 };
 
 FWasabiSpacePointPAD::FWasabiSpacePointPAD() : Super() { }

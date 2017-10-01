@@ -67,6 +67,9 @@ public:
 	UFUNCTION()
 		virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor) override; 
 
+	UFUNCTION(BlueprintCallable)
+		virtual FAIEmotionPointPAD GetPointPAD() override;
+
 	UFUNCTION()
 		FWasabiComplexStepState GetWasabiComplexStepState() const;
 

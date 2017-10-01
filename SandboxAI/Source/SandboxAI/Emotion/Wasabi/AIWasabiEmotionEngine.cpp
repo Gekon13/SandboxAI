@@ -107,6 +107,11 @@ void UAIWasabiEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emo
 	WasabiAppraisal.AppraiseAction(EmotionActionName, sourceActor, targetActor);
 }
 
+FAIEmotionPointPAD UAIWasabiEmotionEngine::GetPointPAD()
+{
+	return GetEngineCore()->GetWasabiSpacePointPAD().ToAIEmotionPointPAD();
+}
+
 FWasabiComplexStepState UAIWasabiEmotionEngine::GetWasabiComplexStepState() const
 {
 	return FWasabiComplexStepState(GetEngineCore()->GetWasabiEngineStepState(), GetEmotionState(), _timeElapsed);
