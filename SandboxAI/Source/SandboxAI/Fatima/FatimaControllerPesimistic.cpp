@@ -10,9 +10,11 @@ AFatimaControllerPesimistic::AFatimaControllerPesimistic() {
 	EmotionComponent->EmotionEngineModel = EEmotionEngineModel::Fatima;
 
 	FFatimaEmotions Personality;
-	Personality.JoyDistress.Amount = -0.45f;
+	Personality.JoyDistress.Amount = -0.41f;
 	Personality.JoyDistress.DecayFactor = 0.3f;
-	Personality.LoveHate.Amount = -0.75f;
-	Personality.LoveHate.DecayFactor = 0.3f;
+	/*Personality.LoveHate.Amount = -0.75f;
+	Personality.LoveHate.DecayFactor = 0.1f;
+	Personality.HopeFear.Amount = -0.5f;
+	Personality.HopeFear.DecayFactor = 0.22f;*/
 	EmotionComponent->GetFatimaEmotionEngine()->SetPersonality(Personality);
 }

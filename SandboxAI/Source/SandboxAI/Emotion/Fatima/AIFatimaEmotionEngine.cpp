@@ -109,7 +109,7 @@ void UAIFatimaEmotionEngine::CalculateMood(float DeltaTime) {
 void UAIFatimaEmotionEngine::CalculateEmotion(FFatimaEmotion* Emotion, FFatimaEmotion* PersonalityEmotion) const {
 	if (Emotion->Amount != PersonalityEmotion->Amount && !Emotion->bContinuous) {
 		const auto CurrentTime = GetOuter()->GetWorld()->GetTimeSeconds() - Emotion->TimeOfEvent;
-		Emotion->Amount = FMath::Clamp(Emotion->AmountAfterEvent * (FMath::Exp(-Emotion->DecayFactor * CurrentTime - PersonalityEmotion->Amount) + PersonalityEmotion->Amount), MinEmotion, MaxEmotion);
+		Emotion->Amount = FMath::Clamp(Emotion->AmountAfterEvent * (FMath::Exp(-PersonalityEmotion->DecayFactor * CurrentTime - PersonalityEmotion->Amount) + PersonalityEmotion->Amount), MinEmotion, MaxEmotion);
 		if (FMath::Abs(Emotion->Amount - PersonalityEmotion->Amount) <= PersonalityEmotion->Threshold) {
 			Emotion->Amount = PersonalityEmotion->Amount;
 		}
@@ -117,24 +117,29 @@ void UAIFatimaEmotionEngine::CalculateEmotion(FFatimaEmotion* Emotion, FFatimaEm
 }
 
 void UAIFatimaEmotionEngine::UpdateActions() {
-	const auto EmotionCoefficient = (CurrentEmotions.JoyDistress.Amount - MinEmotion) / (MaxEmotion - MinEmotion);
-	const auto CurrentSpeed = 1 - EmotionCoefficient + 1;
-	//const auto EmotionCoefficientLove = (CurrentEmotions.LoveHate.Amount - MinEmotion) / (MaxEmotion - MinEmotion);
-	//const auto CurrentSpeed = (1 - EmotionCoefficient + 1 - EmotionCoefficientLove) / 2;
+	const auto EmotionDiff = MaxEmotion - MinEmotion;
+	const auto EmotionCoefficient = (CurrentEmotions.JoyDistress.Amount - MinEmotion) / EmotionDiff;
+	const auto CurrentSpeed = 1 - EmotionCoefficient;
+	/*const auto EmotionCoefficientLove = (CurrentEmotions.LoveHate.Amount - MinEmotion) / EmotionDiff;
+	const auto EmotionCoefficientHope = (CurrentEmotions.HopeFear.Amount - MinEmotion) / EmotionDiff;
+	const auto CurrentSpeed = (1 - EmotionCoefficient + 1 - EmotionCoefficientLove + 1 - EmotionCoefficientHope) / 3;*/
 	if (SAVE_LOG) {
-		auto Speed = FMath::Lerp<float>(300.f, 900.f, CurrentSpeed);
-		const auto SaveDirectory = FString("D:/TestSave"),
-			FileName = FString(GetOuter()->GetOuter()->GetName() + "_tt.csv"),
-			TextToSave = FString::SanitizeFloat(Speed).Append(FString(";\r\n"));
-
-		auto& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
-		if (PlatformFile.CreateDirectoryTree(*SaveDirectory)) {
-			const auto AbsoluteFilePath = SaveDirectory + "/" + FileName;
-			FFileHelper::SaveStringToFile(TextToSave, *AbsoluteFilePath, FFileHelper::EEncodingOptions::AutoDetect, &IFileManager::Get(), FILEWRITE_Append);
-		}
+		SaveLogs(CurrentSpeed, "D:/TestSave");
 	}
 
 	MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], CurrentSpeed));
+}
+
+void UAIFatimaEmotionEngine::SaveLogs(const float CurrentSpeed, const FString SaveDirectory) const {
+	const auto Speed = FMath::Lerp<float>(300.f, 900.f, CurrentSpeed);
+	const auto FileName = FString(GetOuter()->GetOuter()->GetName() + "_t6n.csv"),
+		TextToSave = FString::SanitizeFloat(Speed).Append(FString(";\r\n"));
+
+	auto& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+	if (PlatformFile.CreateDirectoryTree(*SaveDirectory)) {
+		const auto AbsoluteFilePath = SaveDirectory + "/" + FileName;
+		FFileHelper::SaveStringToFile(TextToSave, *AbsoluteFilePath, FFileHelper::EEncodingOptions::AutoDetect, &IFileManager::Get(), FILEWRITE_Append);
+	}
 }
 
 void UAIFatimaEmotionEngine::UpdateGoals() {

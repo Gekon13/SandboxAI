@@ -50,6 +50,7 @@ protected:
 private:
 	void UpdateEmotion(const float MoodFactor, const FFatimaEmotion AppraisalEmotion);
 	void UpdateGoals();
+	void SaveLogs(const float CurrentSpeed, const FString SaveDirectory) const;
 
 	float MinMood, MaxMood, MinEmotion, MaxEmotion;
 	FTimerHandle GoalsTimerHandle;
