@@ -4,7 +4,7 @@
 
 #include "UObject/NoExportTypes.h"
 #include "AIWasabiStructures.h"
-#include "../AIEmotionState.h"
+#include "../Common/AIEmotionState.h"
 #include "AIWasabiBaseEngineCore.generated.h"
 
 /**

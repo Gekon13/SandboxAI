@@ -7,6 +7,12 @@
 #include "Components/TextRenderComponent.h"
 #include "Emotion/Utility/AIEmotionSightStimuliComponent.h"
 
+#ifdef TERMINATOR_API
+#include "Characters/Components/GameplayComponent.h"
+#else
+#include "MockFromTerminator/GameplayComponent.h"
+#endif
+
 #include "AIEmotionVisibleActorExample.h"
 
 AAIEmotionVisibleActorExample::AAIEmotionVisibleActorExample()
@@ -42,6 +48,8 @@ AAIEmotionVisibleActorExample::AAIEmotionVisibleActorExample()
 	TextRenderComponent->SetHiddenInGame(true);
 
 	SightStimuliComponent = CreateDefaultSubobject<UAIEmotionSightStimuliComponent>(TEXT("AIEmotion Sight Stimuli Component"));
+
+	GameplayComponent = CreateDefaultSubobject<UGameplayComponent>(TEXT("Gameplay Component"));
 }
 
 void AAIEmotionVisibleActorExample::BeginPlay()

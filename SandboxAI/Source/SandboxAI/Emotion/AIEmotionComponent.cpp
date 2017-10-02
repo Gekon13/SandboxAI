@@ -78,6 +78,8 @@ void UAIEmotionComponent::BeginPlay()
 			if (EmotionKnowledge != nullptr)
 			{
 				EmotionKnowledge->ControlledActor = ControlledPawn;
+
+				EmotionKnowledge->ControlledGameplayComponent = ControlledPawn->FindComponentByClass<UGameplayComponent>();
 			}
 		}
 	}

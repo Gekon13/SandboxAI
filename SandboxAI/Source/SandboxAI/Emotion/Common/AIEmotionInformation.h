@@ -3,8 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SandboxAI.h"
+
+//#ifdef TERMINATOR_API
+//#include "Characters/Components/GameplayComponent.h"
+//#else
+//#include "MockFromTerminator/GameplayComponent.h"
+//#endif
+
+#include "MockFromTerminator/GameplayComponent.h"
+
 #include "AIEmotionConstants.h"
-#include "AIEmotionVisibleInterface.h"
+#include "../AIEmotionVisibleInterface.h"
 #include <initializer_list>
 #include "AIEmotionInformation.generated.h"
 
@@ -15,6 +25,7 @@ enum class EEmotionTargetType : uint8
 	None = 0,
 	Class = 1,
 	Unit = 2,
+	Team = 3,
 };
 
 /** Class used to specify target of the action percived by the emotion */
@@ -29,6 +40,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FName TargetName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		ETeamType TeamID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EEmotionTargetType EmotionTargetType;
 
 public:
@@ -36,17 +49,18 @@ public:
 	FORCEINLINE FAIEmotionTarget(const FAIEmotionTarget &source);
 	FORCEINLINE FAIEmotionTarget(TSubclassOf<AActor> targetClass);
 	FORCEINLINE FAIEmotionTarget(TSubclassOf<AActor> targetClass, FName targetName);
+	FORCEINLINE FAIEmotionTarget(ETeamType teamID);
 
 	bool DoesActorMatchTarget(AActor* actor) const;
 	static FAIEmotionTarget AsClassTarget(AActor* actor);
 	static FAIEmotionTarget AsUnitTarget(AActor* actor);
 };
 
-FAIEmotionTarget::FAIEmotionTarget() : TargetClass(AActor::StaticClass()), TargetName(FName()), EmotionTargetType(EEmotionTargetType::None) {}
-FAIEmotionTarget::FAIEmotionTarget(const FAIEmotionTarget &source) : TargetClass(source.TargetClass), TargetName(source.TargetName), EmotionTargetType(source.EmotionTargetType) {}
-FAIEmotionTarget::FAIEmotionTarget(TSubclassOf<AActor> targetClass) : TargetClass(targetClass), TargetName(FName()), EmotionTargetType(EEmotionTargetType::Class) {}
-FAIEmotionTarget::FAIEmotionTarget(TSubclassOf<AActor> targetClass, FName targetName) : TargetClass(targetClass), TargetName(targetName), EmotionTargetType(EEmotionTargetType::Unit) {}
-
+FAIEmotionTarget::FAIEmotionTarget() : TargetClass(AActor::StaticClass()), TargetName(FName()), TeamID(ETeamType::NEUTRAL), EmotionTargetType(EEmotionTargetType::None) {}
+FAIEmotionTarget::FAIEmotionTarget(const FAIEmotionTarget &source) : TargetClass(source.TargetClass), TargetName(source.TargetName), TeamID(source.TeamID), EmotionTargetType(source.EmotionTargetType) {}
+FAIEmotionTarget::FAIEmotionTarget(TSubclassOf<AActor> targetClass) : TargetClass(targetClass), TargetName(FName()), TeamID(ETeamType::NEUTRAL), EmotionTargetType(EEmotionTargetType::Class) {}
+FAIEmotionTarget::FAIEmotionTarget(TSubclassOf<AActor> targetClass, FName targetName) : TargetClass(targetClass), TargetName(targetName), TeamID(ETeamType::NEUTRAL), EmotionTargetType(EEmotionTargetType::Unit) {}
+FAIEmotionTarget::FAIEmotionTarget(ETeamType teamID) : TargetClass(AActor::StaticClass()), TargetName(FName()), TeamID(teamID), EmotionTargetType(EEmotionTargetType::Team) {}
 
 /** Structure used to specify in emotion pair when particular action occurs */
 USTRUCT(BlueprintType)

@@ -14,7 +14,7 @@ UAIWasabiEmotionEngine::UAIWasabiEmotionEngine() :
 	OriginalEngineCore = CreateDefaultSubobject<UAIWasabiOriginalEngineCore>(TEXT("OriginalEngineCore"));
 	ImprovedEngineCore = CreateDefaultSubobject<UAIWasabiImprovedEngineCore>(TEXT("ImprovedEngineCore"));
 
-	WasabiCoreType = EWasabiCoreType::Original;
+	WasabiCoreType = EWasabiCoreType::Improved;
 
 	_timeElapsed = 0.0f;
 }
@@ -105,6 +105,11 @@ void UAIWasabiEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emo
 	UE_LOG(LogTemp, Log, TEXT("[%s]Perceived action: %s, source: %s, target %s"), *EmotionKnowledge->ControlledActor->GetName(), *FAIEmotionConstants::ActionNames[EmotionActionName], sourceActor != nullptr ? *sourceActor->GetName() : TEXT("None"), targetActor != nullptr ? *targetActor->GetName() : TEXT("None"));
 
 	WasabiAppraisal.AppraiseAction(EmotionActionName, sourceActor, targetActor);
+}
+
+FAIEmotionPointPAD UAIWasabiEmotionEngine::GetPointPAD()
+{
+	return GetEngineCore()->GetWasabiSpacePointPAD().ToAIEmotionPointPAD();
 }
 
 FWasabiComplexStepState UAIWasabiEmotionEngine::GetWasabiComplexStepState() const

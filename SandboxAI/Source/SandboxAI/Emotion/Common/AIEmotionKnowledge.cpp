@@ -21,8 +21,12 @@ UAIEmotionKnowledge::UAIEmotionKnowledge()
 	Informations.Add(FAIEmotionInformation(EEmotionActionName::HopePromisingGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Hope_Fear, 0.5f) })));
 	Informations.Add(FAIEmotionInformation(EEmotionActionName::ScaryGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Hope_Fear, -0.5f) })));
 
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) }), FAIEmotionTarget(AVisibleFriend::StaticClass()) ));
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f) }), FAIEmotionTarget(AVisibleEnemy::StaticClass()) ));
+	// this is from era befor gameplay component, might be useful in some cases
+	//Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) }), FAIEmotionTarget(AVisibleFriend::StaticClass()) ));
+	//Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f) }), FAIEmotionTarget(AVisibleEnemy::StaticClass()) ));
+
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) }), FAIEmotionTarget(ETeamType::FRIENDLY)));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f) }), FAIEmotionTarget(ETeamType::ENEMY)));
 }
 
 void UAIEmotionKnowledge::SetScale(float newScale)

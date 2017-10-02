@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Emotion/AIEmotionConstants.h"
+#include "../Common/AIEmotionConstants.h"
 #include "AIWasabiAppraisal.generated.h"
 
 class UAIWasabiBaseEngineCore;

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Emotion/AIEmotionConstants.h"
+#include "../Common/AIEmotionConstants.h"
 #include "AIEmotionDummyInterface.generated.h"
 
 UINTERFACE(Blueprintable)

@@ -49,6 +49,11 @@ void UAIBaseEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emoti
 	// handle emotion perception
 }
 
+FAIEmotionPointPAD UAIBaseEmotionEngine::GetPointPAD()
+{
+	return FAIEmotionPointPAD::ZeroVector;
+}
+
 void UAIBaseEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
 {
 }

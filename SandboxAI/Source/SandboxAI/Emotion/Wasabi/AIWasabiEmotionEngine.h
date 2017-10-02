@@ -3,8 +3,8 @@
 #pragma once
 
 #include "../AIBaseEmotionEngine.h"
-#include "Emotion/Wasabi/AIWasabiAppraisal.h"
-#include "Emotion/Wasabi/AIWasabiStructures.h"
+#include "AIWasabiAppraisal.h"
+#include "AIWasabiStructures.h"
 #include "AIWasabiEmotionEngine.generated.h"
 
 class UAIWasabiBaseEngineCore;
@@ -66,6 +66,9 @@ public:
 
 	UFUNCTION()
 		virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor) override; 
+
+	UFUNCTION(BlueprintCallable)
+		virtual FAIEmotionPointPAD GetPointPAD() override;
 
 	UFUNCTION()
 		FWasabiComplexStepState GetWasabiComplexStepState() const;

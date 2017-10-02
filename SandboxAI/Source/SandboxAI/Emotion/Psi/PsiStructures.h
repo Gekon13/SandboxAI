@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "../AIEmotionConstants.h"
+#include "../Common/AIEmotionConstants.h"
 #include "PsiStructures.generated.h"
 
 
@@ -9,7 +9,7 @@
 UENUM(BlueprintType)
 enum class EPsiDrive : uint8
 {
-	ENone = 0 UMETA(DisplayName = "Safety"),
+	ENone = 0 UMETA(DisplayName = "None"),
 	ESafety = 1 UMETA(DisplayName = "Safety"),
 };
 

@@ -4,14 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "AIEmotionVisibleInterface.h"
-#include "AIEmotionConstants.h"
+#include "../AIEmotionVisibleInterface.h"
+#include "../Common/AIEmotionConstants.h"
 #include "AIEmotionVisibleActorExample.generated.h"
 
 class USceneComponent;
 class UStaticMeshComponent;
 class UTextRenderComponent;
 class UAIEmotionSightStimuliComponent;
+class UGameplayComponent;
 
 UCLASS()
 class SANDBOXAI_API AAIEmotionVisibleActorExample : public AActor, public IAIEmotionVisibleInterface
@@ -29,8 +30,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion")
 		UTextRenderComponent* TextRenderComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dummy | Actor")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion")
 		UAIEmotionSightStimuliComponent* SightStimuliComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion")
+		UGameplayComponent* GameplayComponent;
 
 protected:
 	FLinearColor TextInitialColor;

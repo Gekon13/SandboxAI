@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Engine.h"
+#include "MockFromTerminator/MockFromTerminator.h"
 
 //General Log
 DECLARE_LOG_CATEGORY_EXTERN(WasabiLog, Log, All);

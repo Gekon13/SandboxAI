@@ -4,5 +4,8 @@
 #include "VisibleFriend.h"
 
 
-
+AVisibleFriend::AVisibleFriend()
+{
+	GameplayComponent->TeamID = ETeamType::FRIENDLY;
+}
 

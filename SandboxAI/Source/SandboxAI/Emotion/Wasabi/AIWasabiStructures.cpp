@@ -63,6 +63,11 @@ void FWasabiSpacePointPAD::ClampDominanceBySpace()
 	Z = FMath::Clamp<float>(Z, WasabiSpacePointPADMin.Z, WasabiSpacePointPADMin.Z);
 }
 
+FAIEmotionPointPAD FWasabiSpacePointPAD::ToAIEmotionPointPAD()
+{
+	return FAIEmotionPointPAD((*this) / FWasabiConstants::WasabiSpaceRadius);
+}
+
 void FWasabiSpacePointVMB::ClampValenceBySpace()
 {
 	X = FMath::Clamp<float>(X, WasabiSpacePointVMBMin.X, WasabiSpacePointVMBMax.X);
