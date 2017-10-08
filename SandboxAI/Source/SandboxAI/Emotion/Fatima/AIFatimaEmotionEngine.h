@@ -17,6 +17,7 @@ public:
 	void InitializeEmotionEngine(UAIEmotionKnowledge* Knowledge) override;
 	void TickEmotionEngine(float DeltaSeconds) override;
 	void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* SourceActor, AActor* TargetActor) override;
+	FAIEmotionPointPAD GetPointPAD() override;
 	void AddGoal(FFatimaGoal Goal) { Goals.Add(Goal); }
 	void SetPersonality(FFatimaEmotions NewPersonality) { Personality = NewPersonality; }
 
@@ -52,6 +53,6 @@ private:
 	void UpdateGoals();
 	void SaveLogs(const float CurrentSpeed, const FString SaveDirectory) const;
 
-	float MinMood, MaxMood, MinEmotion, MaxEmotion;
+	float MinMood, MaxMood;
 	FTimerHandle GoalsTimerHandle;
 };

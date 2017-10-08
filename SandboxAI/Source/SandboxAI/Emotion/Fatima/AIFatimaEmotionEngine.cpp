@@ -9,8 +9,6 @@ UAIFatimaEmotionEngine::UAIFatimaEmotionEngine() {
 	Mood = 0;
 	MinMood = -11.f;
 	MaxMood = 11.f;
-	MinEmotion = -1.f;
-	MaxEmotion = 1.f;
 
 	PersonalityRelevance = 0.1f;
 	MoodDecrementAmount = 0.005f;
@@ -59,6 +57,31 @@ void UAIFatimaEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emo
 	}
 }
 
+FAIEmotionPointPAD UAIFatimaEmotionEngine::GetPointPAD() {
+	TArray<FVector> EmotionsInPAD;
+	CurrentEmotions.JoyDistress.AddToPAD(&EmotionsInPAD, &Personality);
+	CurrentEmotions.HappyforPitty.AddToPAD(&EmotionsInPAD, &Personality);
+	CurrentEmotions.AdmirationGloating.AddToPAD(&EmotionsInPAD, &Personality);
+	CurrentEmotions.PrideShame.AddToPAD(&EmotionsInPAD, &Personality);
+	CurrentEmotions.ConcentrationBore.AddToPAD(&EmotionsInPAD, &Personality);
+	CurrentEmotions.AngerRemorse.AddToPAD(&EmotionsInPAD, &Personality);
+	CurrentEmotions.GratitudeResentment.AddToPAD(&EmotionsInPAD, &Personality);
+	CurrentEmotions.LoveHate.AddToPAD(&EmotionsInPAD, &Personality);
+	CurrentEmotions.HopeFear.AddToPAD(&EmotionsInPAD, &Personality);
+	CurrentEmotions.ReliefFearsConfirmed.AddToPAD(&EmotionsInPAD, &Personality);
+	CurrentEmotions.SatisfactionDisapointment.AddToPAD(&EmotionsInPAD, &Personality);
+
+	auto Tmp = FVector::ZeroVector;
+	if (EmotionsInPAD.Num() > 0) {
+		for (const auto PAD : EmotionsInPAD) {
+			Tmp += PAD;
+		}
+		return FAIEmotionPointPAD(Tmp / EmotionsInPAD.Num());
+	}
+
+	return Tmp;
+}
+
 float UAIFatimaEmotionEngine::GetEngineScale() const {
 	return 1.0f;
 }
@@ -73,7 +96,7 @@ void UAIFatimaEmotionEngine::UpdateEmotion(const float MoodFactor, const FFatima
 	const auto PersonalityEmotion = Personality.FindEmotionWithName(AppraisalEmotion.Name);
 	if (Emotion && PersonalityEmotion) {
 		const auto OldValue = Emotion->Amount;
-		Emotion->Amount = FMath::Clamp(Emotion->Amount + AppraisalEmotion.Amount + MoodFactor + PersonalityEmotion->Amount * PersonalityRelevance, MinEmotion, MaxEmotion);
+		Emotion->Amount = FMath::Clamp(Emotion->Amount + AppraisalEmotion.Amount + MoodFactor + PersonalityEmotion->Amount * PersonalityRelevance, FFatimaEmotion::MinEmotion, FFatimaEmotion::MaxEmotion);
 		Emotion->AmountAfterEvent = Emotion->Amount;
 		Emotion->TimeOfEvent = GetOuter()->GetWorld()->GetTimeSeconds();
 		Mood = FMath::Clamp(Mood + Emotion->Amount - OldValue, MinMood, MaxMood);
@@ -109,7 +132,7 @@ void UAIFatimaEmotionEngine::CalculateMood(float DeltaTime) {
 void UAIFatimaEmotionEngine::CalculateEmotion(FFatimaEmotion* Emotion, FFatimaEmotion* PersonalityEmotion) const {
 	if (Emotion->Amount != PersonalityEmotion->Amount && !Emotion->bContinuous) {
 		const auto CurrentTime = GetOuter()->GetWorld()->GetTimeSeconds() - Emotion->TimeOfEvent;
-		Emotion->Amount = FMath::Clamp(Emotion->AmountAfterEvent * (FMath::Exp(-PersonalityEmotion->DecayFactor * CurrentTime - PersonalityEmotion->Amount) + PersonalityEmotion->Amount), MinEmotion, MaxEmotion);
+		Emotion->Amount = FMath::Clamp(Emotion->AmountAfterEvent * (FMath::Exp(-PersonalityEmotion->DecayFactor * CurrentTime - PersonalityEmotion->Amount) + PersonalityEmotion->Amount), FFatimaEmotion::MinEmotion, FFatimaEmotion::MaxEmotion);
 		if (FMath::Abs(Emotion->Amount - PersonalityEmotion->Amount) <= PersonalityEmotion->Threshold) {
 			Emotion->Amount = PersonalityEmotion->Amount;
 		}
@@ -117,11 +140,10 @@ void UAIFatimaEmotionEngine::CalculateEmotion(FFatimaEmotion* Emotion, FFatimaEm
 }
 
 void UAIFatimaEmotionEngine::UpdateActions() {
-	const auto EmotionDiff = MaxEmotion - MinEmotion;
-	const auto EmotionCoefficient = (CurrentEmotions.JoyDistress.Amount - MinEmotion) / EmotionDiff;
+	const auto EmotionCoefficient = (CurrentEmotions.JoyDistress.Amount - FFatimaEmotion::MinEmotion) / FFatimaEmotion::EmotionDiff;
 	const auto CurrentSpeed = 1 - EmotionCoefficient;
-	/*const auto EmotionCoefficientLove = (CurrentEmotions.LoveHate.Amount - MinEmotion) / EmotionDiff;
-	const auto EmotionCoefficientHope = (CurrentEmotions.HopeFear.Amount - MinEmotion) / EmotionDiff;
+	/*const auto EmotionCoefficientLove = (CurrentEmotions.LoveHate.Amount - FFatimaEmotion::MinEmotion) / FFatimaEmotion::EmotionDiff;
+	const auto EmotionCoefficientHope = (CurrentEmotions.HopeFear.Amount - FFatimaEmotion::MinEmotion) / FFatimaEmotion::EmotionDiff;
 	const auto CurrentSpeed = (1 - EmotionCoefficient + 1 - EmotionCoefficientLove + 1 - EmotionCoefficientHope) / 3;*/
 	if (SAVE_LOG) {
 		SaveLogs(CurrentSpeed, "D:/TestSave");

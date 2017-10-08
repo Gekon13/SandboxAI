@@ -4,7 +4,42 @@
 
 #include "CoreMinimal.h"
 #include "../Common/AIEmotionConstants.h"
+#include "Emotion/Common/AIEmotionPointPAD.h"
 #include "FatimaStructures.generated.h"
+
+struct FFatimaEmotions;
+
+USTRUCT()
+struct FFatimaToPAD
+{
+	GENERATED_BODY()
+
+public:
+	static FAIEmotionPointPAD Admiration;
+	static FAIEmotionPointPAD Anger;
+	static FAIEmotionPointPAD Disliking;
+	static FAIEmotionPointPAD Disappointment;
+	static FAIEmotionPointPAD Distress;
+	static FAIEmotionPointPAD Fear;
+	static FAIEmotionPointPAD FearsConfirmed;
+	static FAIEmotionPointPAD Gloating;
+	static FAIEmotionPointPAD Gratification;
+	static FAIEmotionPointPAD Gratitude;
+	static FAIEmotionPointPAD HappyFor;
+	static FAIEmotionPointPAD Hate;
+	static FAIEmotionPointPAD Hope;
+	static FAIEmotionPointPAD Joy;
+	static FAIEmotionPointPAD Liking;
+	static FAIEmotionPointPAD Love;
+	static FAIEmotionPointPAD Pity;
+	static FAIEmotionPointPAD Pride;
+	static FAIEmotionPointPAD Relief;
+	static FAIEmotionPointPAD Remorse;
+	static FAIEmotionPointPAD Reproach;
+	static FAIEmotionPointPAD Resentment;
+	static FAIEmotionPointPAD Satisfaction;
+	static FAIEmotionPointPAD Shame;
+};
 
 USTRUCT()
 struct FFatimaEmotion
@@ -13,8 +48,12 @@ struct FFatimaEmotion
 
 public:
 	FFatimaEmotion() : FFatimaEmotion(EEmotionPairName::None) {}
-	FFatimaEmotion(EEmotionPairName Name) :FFatimaEmotion(Name, 0.f) {}
-	FFatimaEmotion(EEmotionPairName Name, float Value);
+	FFatimaEmotion(const EEmotionPairName Name) :FFatimaEmotion(Name, 0.f) {}
+	FFatimaEmotion(EEmotionPairName Name, float Value, FAIEmotionPointPAD PositivePoint = FAIEmotionPointPAD(), FAIEmotionPointPAD NegativePoint = FAIEmotionPointPAD());
+	FFatimaEmotion(const EEmotionPairName Name, const FAIEmotionPointPAD PositivePoint, const FAIEmotionPointPAD NegativePoint) :FFatimaEmotion(Name, 0.f, PositivePoint, NegativePoint) {}
+	void AddToPAD(TArray<FVector>* EmotionsInPAD, FFatimaEmotions* Personality) const;
+
+	static float MinEmotion, MaxEmotion, EmotionDiff;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion", meta = (ClampMin = "-1.0", ClampMax = "1.0"))
 		float Amount;
@@ -22,10 +61,13 @@ public:
 		float DecayFactor;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Emotion", meta = (ClampMin = "0.0", ClampMax = "1.0"))
 		float Threshold;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion", meta = (ClampMin = "0.0", ClampMax = "1.0"))
+		bool bCalculateInPAD;
 
 	EEmotionPairName Name;
 	float AmountAfterEvent, TimeOfEvent;
 	bool bContinuous;
+	FAIEmotionPointPAD PositivePoint, NegativePoint;
 };
 
 USTRUCT()
