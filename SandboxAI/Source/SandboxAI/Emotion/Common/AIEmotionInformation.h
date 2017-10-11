@@ -105,45 +105,52 @@ public:
 
 	FORCEINLINE FAIEmotionInformation(const FAIEmotionInformation& source);
 
+	FORCEINLINE FAIEmotionInformation(EEmotionActionName emotionActionName, const FAIEmotionDelta& emotionDelta);
 	FORCEINLINE FAIEmotionInformation(EEmotionActionName emotionActionName, const TArray<FAIEmotionDelta>& emotionDeltas);
 	FORCEINLINE FAIEmotionInformation(EEmotionActionName emotionActionName, const std::initializer_list<FAIEmotionDelta>& emotionDeltas);
 
+	FORCEINLINE FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const FAIEmotionDelta& emotionDelta);
 	FORCEINLINE FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource ,const TArray<FAIEmotionDelta>& emotionDeltas);
 	FORCEINLINE FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const std::initializer_list<FAIEmotionDelta>& emotionDeltas);
 	
+	FORCEINLINE FAIEmotionInformation(EEmotionActionName emotionActionName, const FAIEmotionDelta& emotionDelta, FAIEmotionTarget actionTarget);
 	FORCEINLINE FAIEmotionInformation(EEmotionActionName emotionActionName, const TArray<FAIEmotionDelta>& emotionDeltas, FAIEmotionTarget actionTarget);
 	FORCEINLINE FAIEmotionInformation(EEmotionActionName emotionActionName, const std::initializer_list<FAIEmotionDelta>& emotionDeltas, FAIEmotionTarget actionTarget);
 	
+	FORCEINLINE FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const FAIEmotionDelta& emotionDelta, FAIEmotionTarget actionTarget);
 	FORCEINLINE FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const TArray<FAIEmotionDelta>& emotionDeltas, FAIEmotionTarget actionTarget);
 	FORCEINLINE FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const std::initializer_list<FAIEmotionDelta>& emotionDeltas, FAIEmotionTarget actionTarget);
 };
 
 FAIEmotionInformation::FAIEmotionInformation() 
 	: EmotionActionName(EEmotionActionName::None), ActionSource(FAIEmotionTarget()), ActionTarget(FAIEmotionTarget()) {}
-
 FAIEmotionInformation::FAIEmotionInformation(const FAIEmotionInformation& source) 
 	: EmotionActionName(source.EmotionActionName), ActionSource(source.ActionSource), ActionTarget(source.ActionTarget), EmotionDeltas(source.EmotionDeltas) {}
 
+FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, const FAIEmotionDelta& emotionDelta) 
+	: EmotionActionName(emotionActionName), ActionSource(FAIEmotionTarget()), ActionTarget(FAIEmotionTarget()), EmotionDeltas(std::initializer_list<FAIEmotionDelta>({ emotionDelta })) {}
 FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, const TArray<FAIEmotionDelta>& emotionDeltas) 
 	: EmotionActionName(emotionActionName), ActionSource(FAIEmotionTarget()), ActionTarget(FAIEmotionTarget()), EmotionDeltas(emotionDeltas) {}
-
 FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, const std::initializer_list<FAIEmotionDelta>& emotionDeltas)
 	: EmotionActionName(emotionActionName), ActionSource(FAIEmotionTarget()), ActionTarget(FAIEmotionTarget()), EmotionDeltas(emotionDeltas) {}
 
+FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const FAIEmotionDelta& emotionDelta)
+	: EmotionActionName(emotionActionName), ActionSource(actionSource), ActionTarget(FAIEmotionTarget()), EmotionDeltas(std::initializer_list<FAIEmotionDelta>({ emotionDelta })) {}
 FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const TArray<FAIEmotionDelta>& emotionDeltas)
 	: EmotionActionName(emotionActionName), ActionSource(actionSource), ActionTarget(FAIEmotionTarget()), EmotionDeltas(emotionDeltas) {}
-
 FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const std::initializer_list<FAIEmotionDelta>& emotionDeltas)
 	: EmotionActionName(emotionActionName), ActionSource(actionSource), ActionTarget(FAIEmotionTarget()), EmotionDeltas(emotionDeltas) {}
 
+FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, const FAIEmotionDelta& emotionDelta, FAIEmotionTarget actionTarget)
+	: EmotionActionName(emotionActionName), ActionSource(FAIEmotionTarget()), ActionTarget(actionTarget), EmotionDeltas(std::initializer_list<FAIEmotionDelta>({ emotionDelta })) {}
 FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, const TArray<FAIEmotionDelta>& emotionDeltas, FAIEmotionTarget actionTarget)
 	: EmotionActionName(emotionActionName), ActionSource(FAIEmotionTarget()), ActionTarget(actionTarget), EmotionDeltas(emotionDeltas) {}
-
 FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, const std::initializer_list<FAIEmotionDelta>& emotionDeltas, FAIEmotionTarget actionTarget)
 	: EmotionActionName(emotionActionName), ActionSource(FAIEmotionTarget()), ActionTarget(actionTarget), EmotionDeltas(emotionDeltas) {}
 
+FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const FAIEmotionDelta& emotionDelta, FAIEmotionTarget actionTarget)
+	: EmotionActionName(emotionActionName), ActionSource(actionSource), ActionTarget(actionTarget), EmotionDeltas(std::initializer_list<FAIEmotionDelta>({ emotionDelta })) {}
 FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const TArray<FAIEmotionDelta>& emotionDeltas, FAIEmotionTarget actionTarget)
 	: EmotionActionName(emotionActionName), ActionSource(actionSource), ActionTarget(actionTarget), EmotionDeltas(emotionDeltas) {}
-
 FAIEmotionInformation::FAIEmotionInformation(EEmotionActionName emotionActionName, FAIEmotionTarget actionSource, const std::initializer_list<FAIEmotionDelta>& emotionDeltas, FAIEmotionTarget actionTarget)
 	: EmotionActionName(emotionActionName), ActionSource(actionSource), ActionTarget(actionTarget), EmotionDeltas(emotionDeltas) {}

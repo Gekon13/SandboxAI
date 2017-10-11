@@ -81,6 +81,8 @@ FRotator ASandboxAIBaseAIController::GetControlRotation() const
 
 void ASandboxAIBaseAIController::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds);
+
 #if ENABLE_DRAW_DEBUG
 	UWorld* world = GetWorld();
 	if (world != nullptr)

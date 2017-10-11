@@ -137,6 +137,9 @@ enum class EEmotionActionName : uint8
 	See						UMETA(DisplayName = "See"),
 	UnSee					UMETA(DisplayName = "Lost from sight"),
 
+	HearWalk				UMETA(DisplayName = "Hear walk"),
+	HearExplosion			UMETA(DisplayName = "Hear explosion"),
+
 	JoyfulGesture			UMETA(DisplayName = "Joyful Gesture"), // for Joy
 	DistressfulGesture		UMETA(DisplayName = "Distressful Gesture"), // for Distress
 

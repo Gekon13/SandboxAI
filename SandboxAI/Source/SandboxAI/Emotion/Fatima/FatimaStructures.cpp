@@ -3,26 +3,66 @@
 #include "SandboxAI.h"
 #include "FatimaStructures.h"
 
+//Mapping of OCC emotions into PAD space - Are Computer-Generated Emotions and Moods Plausible to Humans?
+FAIEmotionPointPAD FFatimaToPAD::Admiration = FAIEmotionPointPAD(.4f, .3f, -.24f);
+FAIEmotionPointPAD FFatimaToPAD::Anger = FAIEmotionPointPAD(-.51f, .59f, .25f);
+FAIEmotionPointPAD FFatimaToPAD::Disliking = FAIEmotionPointPAD(-.4f, -.2f, .1f);
+FAIEmotionPointPAD FFatimaToPAD::Disappointment = FAIEmotionPointPAD(-.3f, -.4f, -.4f);
+FAIEmotionPointPAD FFatimaToPAD::Distress = FAIEmotionPointPAD(-.4f, .2f, .5f);
+FAIEmotionPointPAD FFatimaToPAD::Fear = FAIEmotionPointPAD(-.64f, .6f, .43f);
+FAIEmotionPointPAD FFatimaToPAD::FearsConfirmed = FAIEmotionPointPAD(-.5f, .3f, -.7f);
+FAIEmotionPointPAD FFatimaToPAD::Gloating = FAIEmotionPointPAD(.3f, -.3f, -.1f);
+FAIEmotionPointPAD FFatimaToPAD::Gratification = FAIEmotionPointPAD(.6f, -.3f, .4f);
+FAIEmotionPointPAD FFatimaToPAD::Gratitude = FAIEmotionPointPAD(.2f, .5f, -.3f);
+FAIEmotionPointPAD FFatimaToPAD::HappyFor = FAIEmotionPointPAD(.4f, -.2f, -.2f);
+FAIEmotionPointPAD FFatimaToPAD::Hate = FAIEmotionPointPAD(-.4f, -.2f, .4f);
+FAIEmotionPointPAD FFatimaToPAD::Hope = FAIEmotionPointPAD(.2f, .2f, -.1f);
+FAIEmotionPointPAD FFatimaToPAD::Joy = FAIEmotionPointPAD(.4f, .2f, .1f);
+FAIEmotionPointPAD FFatimaToPAD::Liking = FAIEmotionPointPAD(.4f, -.16f, -.24f);
+FAIEmotionPointPAD FFatimaToPAD::Love = FAIEmotionPointPAD(.3f, .1f, .2f);
+FAIEmotionPointPAD FFatimaToPAD::Pity = FAIEmotionPointPAD(-.4f, -.2f, -.5f);
+FAIEmotionPointPAD FFatimaToPAD::Pride = FAIEmotionPointPAD(.4f, .3f, .3f);
+FAIEmotionPointPAD FFatimaToPAD::Relief = FAIEmotionPointPAD(.2f, -.3f, -.4f);
+FAIEmotionPointPAD FFatimaToPAD::Remorse = FAIEmotionPointPAD(-.3f, .1f, -.6f);
+FAIEmotionPointPAD FFatimaToPAD::Reproach = FAIEmotionPointPAD(-.3f, -.1f, .4f);
+FAIEmotionPointPAD FFatimaToPAD::Resentment = FAIEmotionPointPAD(-.2f, -.3f, -.2f);
+FAIEmotionPointPAD FFatimaToPAD::Satisfaction = FAIEmotionPointPAD(.3f, -.2f, .4f);
+FAIEmotionPointPAD FFatimaToPAD::Shame = FAIEmotionPointPAD(-.3f, .1f, -.6f);
 
-FFatimaEmotion::FFatimaEmotion(EEmotionPairName Name, float Value) :Amount(Value), Name(Name) {
+float FFatimaEmotion::MinEmotion = -1.f;
+float FFatimaEmotion::MaxEmotion = 1.f;
+float FFatimaEmotion::EmotionDiff = MaxEmotion - MinEmotion;
+
+FFatimaEmotion::FFatimaEmotion(EEmotionPairName Name, float Value, FAIEmotionPointPAD PositivePoint, FAIEmotionPointPAD NegativePoint) :Amount(Value), Name(Name), PositivePoint(PositivePoint), NegativePoint(NegativePoint) {
 	DecayFactor = 0.01f;
+	Threshold = 0.01f;
 	AmountAfterEvent = 0;
 	TimeOfEvent = 0;
 	bContinuous = false;
+	bCalculateInPAD = false;
+}
+
+void FFatimaEmotion::AddToPAD(TArray<FVector>* EmotionsInPAD, FFatimaEmotions* Personality) const {
+	const auto PersonalityEmotion = Personality->FindEmotionWithName(Name);
+	if (PersonalityEmotion->bCalculateInPAD) {
+		const auto EmotionCoefficient = (Amount - MinEmotion) / EmotionDiff;
+		const auto Point = FMath::Lerp(NegativePoint, PositivePoint, EmotionCoefficient);
+		EmotionsInPAD->Add(Point);
+	}
 }
 
 FFatimaEmotions::FFatimaEmotions() {
-	JoyDistress = FFatimaEmotion(EEmotionPairName::Joy_Distress);
-	HappyforPitty = FFatimaEmotion(EEmotionPairName::Happyfor_Pitty);
-	AdmirationGloating = FFatimaEmotion(EEmotionPairName::Admiration_Gloating);
-	PrideShame = FFatimaEmotion(EEmotionPairName::Pride_Shame);
-	ConcentrationBore = FFatimaEmotion(EEmotionPairName::Concentration_Bore);
-	AngerRemorse = FFatimaEmotion(EEmotionPairName::Anger_Remorse);
-	GratitudeResentment = FFatimaEmotion(EEmotionPairName::Gratitude_Resentment);
-	LoveHate = FFatimaEmotion(EEmotionPairName::Love_Hate);
-	HopeFear = FFatimaEmotion(EEmotionPairName::Hope_Fear);
-	ReliefFearsConfirmed = FFatimaEmotion(EEmotionPairName::Relief_FearsConfirmed);
-	SatisfactionDisapointment = FFatimaEmotion(EEmotionPairName::Satisfaction_Disapointment);
+	JoyDistress = FFatimaEmotion(EEmotionPairName::Joy_Distress, FFatimaToPAD::Joy, FFatimaToPAD::Distress);
+	HappyforPitty = FFatimaEmotion(EEmotionPairName::Happyfor_Pitty, FFatimaToPAD::HappyFor, FFatimaToPAD::Pity);
+	AdmirationGloating = FFatimaEmotion(EEmotionPairName::Admiration_Gloating, FFatimaToPAD::Admiration, FFatimaToPAD::Gloating);
+	PrideShame = FFatimaEmotion(EEmotionPairName::Pride_Shame, FFatimaToPAD::Pride, FFatimaToPAD::Shame);
+	ConcentrationBore = FFatimaEmotion(EEmotionPairName::Concentration_Bore, FFatimaToPAD::Gratification, FFatimaToPAD::Reproach);
+	AngerRemorse = FFatimaEmotion(EEmotionPairName::Anger_Remorse, FFatimaToPAD::Anger, FFatimaToPAD::Remorse);
+	GratitudeResentment = FFatimaEmotion(EEmotionPairName::Gratitude_Resentment, FFatimaToPAD::Gratitude, FFatimaToPAD::Resentment);
+	LoveHate = FFatimaEmotion(EEmotionPairName::Love_Hate, FFatimaToPAD::Love, FFatimaToPAD::Hate);
+	HopeFear = FFatimaEmotion(EEmotionPairName::Hope_Fear, FFatimaToPAD::Hope, FFatimaToPAD::Fear);
+	ReliefFearsConfirmed = FFatimaEmotion(EEmotionPairName::Relief_FearsConfirmed, FFatimaToPAD::Relief, FFatimaToPAD::FearsConfirmed);
+	SatisfactionDisapointment = FFatimaEmotion(EEmotionPairName::Satisfaction_Disapointment, FFatimaToPAD::Satisfaction, FFatimaToPAD::Disappointment);
 }
 
 FFatimaEmotion* FFatimaEmotions::FindEmotionWithName(EEmotionPairName Name) {
