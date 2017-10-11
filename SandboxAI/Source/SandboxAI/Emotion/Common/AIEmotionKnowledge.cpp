@@ -12,21 +12,23 @@ UAIEmotionKnowledge::UAIEmotionKnowledge()
 
 	AvailableActionNames.Add(FString(TEXT("Run")));
 
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::JoyfulGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) })));
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::DistressfulGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f) })));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::JoyfulGesture, FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) ));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::DistressfulGesture, FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f) ));
 
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::LovableGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Love_Hate, 0.5f) })));
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::HatefulGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Love_Hate, -0.5f) })));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::LovableGesture, FAIEmotionDelta(EEmotionPairName::Love_Hate, 0.5f) ));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::HatefulGesture, FAIEmotionDelta(EEmotionPairName::Love_Hate, -0.5f) ));
 
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::HopePromisingGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Hope_Fear, 0.5f) })));
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::ScaryGesture, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Hope_Fear, -0.5f) })));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::HopePromisingGesture, FAIEmotionDelta(EEmotionPairName::Hope_Fear, 0.5f) ));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::ScaryGesture, FAIEmotionDelta(EEmotionPairName::Hope_Fear, -0.5f) ));
 
-	// this is from era befor gameplay component, might be useful in some cases
-	//Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) }), FAIEmotionTarget(AVisibleFriend::StaticClass()) ));
-	//Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f) }), FAIEmotionTarget(AVisibleEnemy::StaticClass()) ));
 
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) }), FAIEmotionTarget(ETeamType::FRIENDLY)));
-	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, std::initializer_list<FAIEmotionDelta>({ FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f) }), FAIEmotionTarget(ETeamType::ENEMY)));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f) , FAIEmotionTarget(ETeamType::FRIENDLY)));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::See, FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f) , FAIEmotionTarget(ETeamType::ENEMY)));
+
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::HearWalk, FAIEmotionTarget(ETeamType::FRIENDLY), FAIEmotionDelta(EEmotionPairName::Joy_Distress, 0.5f)));
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::HearWalk, FAIEmotionTarget(ETeamType::ENEMY), FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f)));
+
+	Informations.Add(FAIEmotionInformation(EEmotionActionName::HearExplosion, FAIEmotionDelta(EEmotionPairName::Joy_Distress, -0.5f)));
 }
 
 void UAIEmotionKnowledge::SetScale(float newScale)
