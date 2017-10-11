@@ -5,13 +5,14 @@
 
 UAIPsiEmotionEngine::UAIPsiEmotionEngine()
 {
-	SomeName = TEXT("Psi");
-	SomeOtherName = TEXT("Psi");
-
-	Drives.Add(FPsiDrive(0.0f, 0.0f, EPsiDrive::ESafety));
+	Drives.Add(FPsiDrive(0.0f, 0.4f, EPsiDrive::ESafety));
 
 	Emotions.Add(FAISingleEmotionState(EEmotionName::Joy, 0.0f));
 	Emotions.Add(FAISingleEmotionState(EEmotionName::Distress, 0.0f));
+
+	Personality.Add(FPsiPersonalityTrait("Bravery", 1.0f, EEmotionName::Fear, EPsiDrive::ESafety));
+	Personality.Add(FPsiPersonalityTrait("Optimism", 1.0f, EEmotionName::Joy));
+	Personality.Add(FPsiPersonalityTrait("Pessimism", 1.0f, EEmotionName::Distress));
 
 	knowledge = CreateDefaultSubobject<UAIPsiEmotionKnowledge>(TEXT("PsiKnowledge"));
 }
@@ -63,7 +64,7 @@ void UAIPsiEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emotio
 	for (int i = 0; i < knowledge->Informations.Num(); ++i)
 	{
 		FAIEmotionInformation info = knowledge->Informations[i];
-		if (EmotionActionName == info.EmotionActionName && targetActor->GetName() == info.ActionSource.TargetName.ToString())
+		if (EmotionActionName == info.EmotionActionName && targetActor->StaticClass() == info.ActionSource.TargetClass)
 		{
 			for (int j = 0; j < info.EmotionDeltas.Num(); ++j)
 			{
@@ -72,9 +73,10 @@ void UAIPsiEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emotio
 				case EEmotionPairName::Joy_Distress:
 					float value = info.EmotionDeltas[j].EmotionPairDelta;
 					if (value > 0)
-						Emotions[0].Strength += FMath::Abs(value);
+						Emotions[0].Strength = FMath::Clamp(Emotions[0].Strength + FMath::Abs(value), 0.0f, 1.0f);
 					else
-						Emotions[1].Strength += FMath::Abs(value);
+
+						Emotions[1].Strength = FMath::Clamp(Emotions[1].Strength + FMath::Abs(value), 0.0f, 1.0f);
 
 					Drives[0].Value = FMath::Clamp(Drives[0].Value + FMath::Abs(value), 0.0f, 1.0f);
 					break;

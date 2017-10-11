@@ -13,10 +13,6 @@ class PROJECT_API UAIPsiEmotionEngine : public UAIBaseEmotionEngine
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString SomeName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString SomeOtherName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 		FAIEmotionState Emotions;
@@ -27,6 +23,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 		FPsiGoal Goal;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
+		TArray<FPsiPersonalityTrait> Personality;
 
 	UAIPsiEmotionKnowledge* knowledge;
 

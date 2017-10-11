@@ -26,16 +26,18 @@ struct SANDBOXAI_API FPsiPersonalityTrait
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi", meta = (ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi", meta = (ClampMin = "0.0", ClampMax = "2.0", UIMin = "0.0", UIMax = "2.0"))
 		FString Name;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi", meta = (ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi", meta = (ClampMin = "0.0", ClampMax = "2.0", UIMin = "0.0", UIMax = "2.0"))
 		float Value;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 		EEmotionName AffectedEmotion;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
+		EPsiDrive AffectedDrive;
 
 public:
-	FPsiPersonalityTrait() : Name(""), Value(0.0f), AffectedEmotion(EEmotionName::None) {}
-	FPsiPersonalityTrait(FString name, float value, EEmotionName emotion ) : Name(name), Value(value), AffectedEmotion(emotion) {}
+	FPsiPersonalityTrait() : Name(""), Value(1.0f), AffectedEmotion(EEmotionName::None), AffectedDrive(EPsiDrive::ENone) {}
+	FPsiPersonalityTrait(FString name, float value, EEmotionName emotion = EEmotionName::None, EPsiDrive drive = EPsiDrive::ENone) : Name(name), Value(FMath::Clamp(value, 0.0f, 2.0f)), AffectedEmotion(emotion), AffectedDrive(drive) {}
 };
 
 USTRUCT(BlueprintType)
