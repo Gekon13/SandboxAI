@@ -5,6 +5,7 @@
 #include "PsiStructures.h"
 #include "AIPsiEmotionKnowledge.h"
 #include "../AIBaseEmotionEngine.h"
+#include "../Common/AIEmotionPointPAD.h"
 #include "AIPsiEmotionEngine.generated.h"
 
 UCLASS(BlueprintType)
@@ -13,7 +14,6 @@ class PROJECT_API UAIPsiEmotionEngine : public UAIBaseEmotionEngine
 	GENERATED_BODY()
 
 public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 		FAIEmotionState Emotions;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
@@ -22,9 +22,11 @@ public:
 		TArray<FPsiMotivation> Motivations;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 		FPsiGoal Goal;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 		TArray<FPsiPersonalityTrait> Personality;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
+		TArray<FPsiEmotionToPad> EmotionsToPad;
 
 	UAIPsiEmotionKnowledge* knowledge;
 
@@ -36,6 +38,8 @@ public:
 	virtual void TickEmotionEngine(float DeltaSeconds) override;
 	/** Used to retrieve emotional state at any time, should be cheap to execute */
 	virtual FAIEmotionState GetEmotionState() const;
+	UFUNCTION(BlueprintCallable)
+	virtual FAIEmotionPointPAD GetPointPAD() override;
 protected:
 	virtual float GetEngineScale() const override;
 
@@ -49,6 +53,7 @@ protected:
 	virtual void ProcessDrives();
 	virtual void ProcessMotivations();
 	virtual void ProcessGoal();
+	virtual FAIEmotionPointPAD GeneratePadEmotion(FAISingleEmotionState& singleEmotion);
 	//virtual void AffectEmotions(knowledge data);
 
 };

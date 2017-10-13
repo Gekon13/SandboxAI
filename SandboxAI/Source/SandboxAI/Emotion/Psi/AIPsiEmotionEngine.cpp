@@ -14,6 +14,10 @@ UAIPsiEmotionEngine::UAIPsiEmotionEngine()
 	Personality.Add(FPsiPersonalityTrait("Optimism", 1.0f, EEmotionName::Joy));
 	Personality.Add(FPsiPersonalityTrait("Pessimism", 1.0f, EEmotionName::Distress));
 
+	EmotionsToPad.Add(FPsiEmotionToPad(EEmotionName::Joy, FAIEmotionPointPAD(.4f, .2f, .1f), FAIEmotionPointPAD(-.4f, .2f, .5f)));
+	EmotionsToPad.Add(FPsiEmotionToPad(EEmotionName::Distress, FAIEmotionPointPAD(-.4f, .2f, .5f), FAIEmotionPointPAD(.4f, .2f, .1f)));
+	EmotionsToPad.Add(FPsiEmotionToPad(EEmotionName::Fear, FAIEmotionPointPAD(-.64f, .6f, .43f), FAIEmotionPointPAD(.2f, .2f, -.1f)));
+
 	knowledge = CreateDefaultSubobject<UAIPsiEmotionKnowledge>(TEXT("PsiKnowledge"));
 }
 
@@ -32,6 +36,18 @@ void UAIPsiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 FAIEmotionState UAIPsiEmotionEngine::GetEmotionState() const
 {
 	return Emotions;
+}
+
+FAIEmotionPointPAD UAIPsiEmotionEngine::GetPointPAD()
+{
+	FAIEmotionPointPAD point = FAIEmotionPointPAD(0.f, 0.f, 0.f);
+	int size = Emotions.Num();
+	if (!size) return point;
+	for (int i = 0; i < size; ++i)
+	{
+		point += this->GeneratePadEmotion(Emotions[i]);
+	}
+	return (point / size);
 }
 
 float UAIPsiEmotionEngine::GetEngineScale() const
@@ -148,6 +164,18 @@ void UAIPsiEmotionEngine::ProcessGoal()
 	float dominant = -Emotions[0].Strength;
 	if (Emotions[0].Strength < Emotions[1].Strength) dominant = Emotions[1].Strength;
 	MakeDecision(FEmotionDecisionInfo(bestAction.Action, 0.5f + (0.5f * dominant)));
+}
+
+FAIEmotionPointPAD UAIPsiEmotionEngine::GeneratePadEmotion(FAISingleEmotionState& singleEmotion)
+{ 
+	FPsiEmotionToPad currentEtP;
+	for (int i = 0; i < EmotionsToPad.Num(); ++i)
+	{
+		if (singleEmotion.Emotion == EmotionsToPad[i].EmotionName)
+			currentEtP = EmotionsToPad[i];
+	}
+	float coefficient = (singleEmotion.Strength + 1.0f) / 2.0f;
+	return FMath::Lerp(currentEtP.Positive, currentEtP.Negative, coefficient);
 }
 
 /*

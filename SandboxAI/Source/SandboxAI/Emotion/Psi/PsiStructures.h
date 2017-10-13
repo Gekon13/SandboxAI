@@ -2,6 +2,7 @@
 
 #pragma once
 #include "../Common/AIEmotionConstants.h"
+#include "../Common/AIEmotionPointPAD.h"
 #include "PsiStructures.generated.h"
 
 
@@ -102,3 +103,44 @@ public:
 		return FPsiMotivation(Value, Type);
 	}
 };
+
+USTRUCT(BlueprintType)
+struct SANDBOXAI_API FPsiEmotionToPad
+{
+	GENERATED_BODY()
+
+public:
+	EEmotionName EmotionName;
+	FAIEmotionPointPAD Positive;
+	FAIEmotionPointPAD Negative;
+public:
+	FPsiEmotionToPad() : EmotionName(EEmotionName::None), Positive(FAIEmotionPointPAD()), Negative(FAIEmotionPointPAD()){}
+	FPsiEmotionToPad( EEmotionName emotion, FAIEmotionPointPAD positive, FAIEmotionPointPAD negative) : EmotionName(emotion), Positive(positive), Negative(negative) {}
+	
+};
+/*
+FVector Admiration = FVector(.4f, .3f, -.24f);
+FVector Anger = FVector(-.51f, .59f, .25f);
+FVector Disliking = FVector(-.4f, -.2f, .1f);
+FVector Disappointment = FVector(-.3f, -.4f, -.4f);
+FVector Distress = FVector(-.4f, .2f, .5f);
+FVector Fear = FVector(-.64f, .6f, .43f);
+FVector FearsConfirmed = FVector(-.5f, .3f, -.7f);
+FVector Gloating = FVector(.3f, -.3f, -.1f);
+FVector Gratification = FVector(.6f, -.3f, .4f);
+FVector Gratitude = FVector(.2f, .5f, -.3f);
+FVector HappyFor = FVector(.4f, -.2f, -.2f);
+FVector Hate = FVector(-.4f, -.2f, .4f);
+FVector Hope = FVector(.2f, .2f, -.1f);
+FVector Joy = FVector(.4f, .2f, .1f);
+FVector Liking = FVector(.4f, -.16f, -.24f);
+FVector Love = FVector(.3f, .1f, .2f);
+FVector Pity = FVector(-.4f, -.2f, -.5f);
+FVector Pride = FVector(.4f, .3f, .3f);
+FVector Relief = FVector(.2f, -.3f, -.4f);
+FVector Remorse = FVector(-.3f, .1f, -.6f);
+FVector Reproach = FVector(-.3f, -.1f, .4f);
+FVector Resentment = FVector(-.2f, -.3f, -.2f);
+FVector Satisfaction = FVector(.3f, -.2f, .4f);
+FVector Shame = FVector(-.3f, .1f, -.6f);
+*/
