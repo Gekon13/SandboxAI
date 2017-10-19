@@ -28,6 +28,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Psi")
 		TArray<FPsiEmotionToPad> EmotionsToPad;
 
+	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Psi")
 	UAIPsiEmotionKnowledge* knowledge;
 
 public:
@@ -49,7 +50,7 @@ protected:
 
 	virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor) override;
 
-	virtual void ProcessPsiTheory();
+	virtual void ProcessPsiTheory(float deltaSeconds);
 	virtual void ProcessDrives();
 	virtual void ProcessMotivations();
 	virtual void ProcessGoal();

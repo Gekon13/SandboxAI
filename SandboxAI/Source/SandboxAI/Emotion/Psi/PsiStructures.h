@@ -53,7 +53,7 @@ public:
 		EPsiDrive Type;
 
 public:
-	FPsiGoal() : Value(0.0f), Type(EPsiDrive::ESafety) {}
+	FPsiGoal() : Value(0.0f), Type(EPsiDrive::ENone) {}
 	FPsiGoal(float value, EPsiDrive driveType) : Value(value), Type(driveType) {}
 };
 
@@ -70,7 +70,7 @@ public:
 		EPsiDrive Type;
 
 public:
-	FPsiMotivation() : Value(0.0f), Type(EPsiDrive::ESafety) {}
+	FPsiMotivation() : Value(0.0f), Type(EPsiDrive::ENone) {}
 	FPsiMotivation(float value, EPsiDrive driveType) : Value(value), Type(driveType){}
 
 };

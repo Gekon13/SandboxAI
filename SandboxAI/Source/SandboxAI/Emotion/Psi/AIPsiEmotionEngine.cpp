@@ -30,7 +30,7 @@ void UAIPsiEmotionEngine::TickEmotionEngine(float DeltaSeconds)
 {
 	Super::TickEmotionEngine(DeltaSeconds);
 
-	ProcessPsiTheory();
+	ProcessPsiTheory(DeltaSeconds);
 }
 
 FAIEmotionState UAIPsiEmotionEngine::GetEmotionState() const
@@ -89,11 +89,13 @@ void UAIPsiEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emotio
 				case EEmotionPairName::Joy_Distress:
 					float value = info.EmotionDeltas[j].EmotionPairDelta;
 					if (value > 0)
+					{
 						Emotions[0].Strength = FMath::Clamp(Emotions[0].Strength + FMath::Abs(value), 0.0f, 1.0f);
+					}
 					else
-
+					{
 						Emotions[1].Strength = FMath::Clamp(Emotions[1].Strength + FMath::Abs(value), 0.0f, 1.0f);
-
+					}
 					Drives[0].Value = FMath::Clamp(Drives[0].Value + FMath::Abs(value), 0.0f, 1.0f);
 					break;
 				}
@@ -102,21 +104,31 @@ void UAIPsiEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emotio
 	}
 }
 
-void UAIPsiEmotionEngine::ProcessPsiTheory()
+void UAIPsiEmotionEngine::ProcessPsiTheory(float deltaSeconds)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "psi");
 	ProcessDrives();
 	ProcessMotivations();
 	ProcessGoal();
 
-	Emotions[0].Strength = FMath::Clamp(Emotions[0].Strength - 0.002f, 0.0f, 1.0f);
-	Emotions[1].Strength = FMath::Clamp(Emotions[1].Strength - 0.002f, 0.0f, 1.0f);
-	Drives[0].Value = FMath::Clamp(Drives[0].Value - 0.002f, 0.0f, 1.0f);
+	for (int i = 0; i < Emotions.Num(); ++i)
+	{
+		Emotions[i].Strength = FMath::Clamp(Emotions[i].Strength - 0.002f * deltaSeconds, 0.0f, 1.0f);
+	}
+	for (int i = 0; i < Drives.Num(); ++i)
+	{
+		Drives[i].Value = FMath::Clamp(Drives[i].Value + 0.002f * deltaSeconds, 0.0f, 1.0f);
+	}
 }
 
 void UAIPsiEmotionEngine::ProcessDrives()
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "drive");
+	if (Drives.Num() == 0)
+	{
+		return;
+	}
+
 	Motivations.Empty();
 	for (int i = 0; i < Drives.Num(); ++i)
 	{
@@ -131,6 +143,11 @@ void UAIPsiEmotionEngine::ProcessDrives()
 void UAIPsiEmotionEngine::ProcessMotivations()
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "motve");
+	if (Motivations.Num() == 0)
+	{
+		return;
+	}
+
 	int index = 0;
 	if (Motivations.Num() > 1)
 	{
@@ -146,22 +163,28 @@ void UAIPsiEmotionEngine::ProcessMotivations()
 
 void UAIPsiEmotionEngine::ProcessGoal()
 {
+	if(this->Goal.Type == EPsiDrive::ENone)	
+	{
+		return;
+	}
 	TArray<FPsiKnowledge> possibleActions;
+	FPsiKnowledge bestAction;
+	float dominant = 0.0f;
+
 	EmotionKnowledge->Informations.Num();
-	UAIPsiEmotionKnowledge* psiK = knowledge;//(UAIPsiEmotionKnowledge*)EmotionKnowledge;
-	int size = psiK->Actions.Num();
+	int size = knowledge->Actions.Num();
 	for (int i = 0; i < size; ++i)
 	{
-		if (psiK->Actions[i].Type == Goal.Type)
-			possibleActions.Add(psiK->Actions[i]);
+		if (knowledge->Actions[i].Type == Goal.Type)
+			possibleActions.Add(knowledge->Actions[i]);
 	}
-	FPsiKnowledge bestAction;
+
 	size = possibleActions.Num();
 	for (int i = 0; i < size; ++i)
 	{
 		bestAction = possibleActions[0];
 	}
-	float dominant = -Emotions[0].Strength;
+	dominant = -Emotions[0].Strength;
 	if (Emotions[0].Strength < Emotions[1].Strength) dominant = Emotions[1].Strength;
 	MakeDecision(FEmotionDecisionInfo(bestAction.Action, 0.5f + (0.5f * dominant)));
 }
