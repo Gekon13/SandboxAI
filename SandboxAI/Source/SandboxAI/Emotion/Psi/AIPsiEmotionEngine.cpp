@@ -5,7 +5,7 @@
 
 UAIPsiEmotionEngine::UAIPsiEmotionEngine()
 {
-	Drives.Add(FPsiDrive(0.0f, 0.4f, EPsiDrive::ESafety));
+	Drives.Add(FPsiDrive(0.0f, 0.0f, EPsiDrive::ESafety));
 
 	Emotions.Add(FAISingleEmotionState(EEmotionName::Joy, 0.0f));
 	Emotions.Add(FAISingleEmotionState(EEmotionName::Distress, 0.0f));
