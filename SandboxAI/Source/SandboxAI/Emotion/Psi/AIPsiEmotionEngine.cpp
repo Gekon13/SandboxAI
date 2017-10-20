@@ -80,14 +80,14 @@ void UAIPsiEmotionEngine::HandleEmotionActionPerformed(EEmotionActionName Emotio
 	for (int i = 0; i < knowledge->Informations.Num(); ++i)
 	{
 		FAIEmotionInformation info = knowledge->Informations[i];
-		if (EmotionActionName == info.EmotionActionName && targetActor->StaticClass() == info.ActionSource.TargetClass)
+		if ((info.EmotionActionName == EmotionActionName) && (info.ActionSource.DoesActorMatchTarget(sourceActor)) && (info.ActionTarget.DoesActorMatchTarget(targetActor)))
 		{
 			for (int j = 0; j < info.EmotionDeltas.Num(); ++j)
 			{
 				switch (info.EmotionDeltas[j].EmotionPairName)
 				{
 				case EEmotionPairName::Joy_Distress:
-					float value = info.EmotionDeltas[j].EmotionPairDelta;
+					float value = 2 * info.EmotionDeltas[j].EmotionPairDelta;
 					if (value > 0)
 					{
 						Emotions[0].Strength = FMath::Clamp(Emotions[0].Strength + FMath::Abs(value), 0.0f, 1.0f);
@@ -113,11 +113,11 @@ void UAIPsiEmotionEngine::ProcessPsiTheory(float deltaSeconds)
 
 	for (int i = 0; i < Emotions.Num(); ++i)
 	{
-		Emotions[i].Strength = FMath::Clamp(Emotions[i].Strength - 0.002f * deltaSeconds, 0.0f, 1.0f);
+		Emotions[i].Strength = FMath::Clamp(Emotions[i].Strength - 0.1f * deltaSeconds, 0.0f, 1.0f);
 	}
 	for (int i = 0; i < Drives.Num(); ++i)
 	{
-		Drives[i].Value = FMath::Clamp(Drives[i].Value + 0.002f * deltaSeconds, 0.0f, 1.0f);
+		Drives[i].Value = FMath::Clamp(Drives[i].Value + 0.01f * deltaSeconds, 0.0f, 1.0f);
 	}
 }
 
@@ -185,7 +185,15 @@ void UAIPsiEmotionEngine::ProcessGoal()
 		bestAction = possibleActions[0];
 	}
 	dominant = -Emotions[0].Strength;
-	if (Emotions[0].Strength < Emotions[1].Strength) dominant = Emotions[1].Strength;
+	if (Emotions[0].Strength < Emotions[1].Strength)
+	{
+		dominant = Emotions[1].Strength;
+		Emotions[1].Strength = FMath::Clamp(Emotions[1].Strength - 0.0001f, 0.0f, 1.0f);
+	}
+	else
+	{
+		Emotions[0].Strength = FMath::Clamp(Emotions[0].Strength - 0.0001f, 0.0f, 1.0f);
+	}
 	MakeDecision(FEmotionDecisionInfo(bestAction.Action, 0.5f + (0.5f * dominant)));
 }
 
