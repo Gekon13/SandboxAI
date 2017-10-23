@@ -16,7 +16,7 @@ class UAIPerceptionStimuliSourceComponent;
 
 /** Make sure to setup AIPerceptionStimuliSourceComponent since it  has field with acces from blueprints only */
 UCLASS()
-class SANDBOXAI_API AAIEmotionDummyActor : public AActor, public IAIEmotionDummyInterface
+class PROJECT_API AAIEmotionDummyActor : public AActor, public IAIEmotionDummyInterface
 {
 	GENERATED_BODY()
 	

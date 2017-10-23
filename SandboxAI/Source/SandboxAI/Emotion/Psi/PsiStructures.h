@@ -23,7 +23,7 @@ enum class EDriveCategory : uint8
 };
 
 USTRUCT(BlueprintType)
-struct SANDBOXAI_API FPsiPersonalityTrait
+struct PROJECT_API FPsiPersonalityTrait
 {
 	GENERATED_BODY()
 public:
@@ -42,7 +42,7 @@ public:
 };
 
 USTRUCT(BlueprintType)
-struct SANDBOXAI_API FPsiGoal
+struct PROJECT_API FPsiGoal
 {
 	GENERATED_BODY()
 public:
@@ -58,7 +58,7 @@ public:
 };
 
 USTRUCT(BlueprintType)
-struct SANDBOXAI_API FPsiMotivation
+struct PROJECT_API FPsiMotivation
 {
 	GENERATED_BODY()
 
@@ -76,7 +76,7 @@ public:
 };
 
 USTRUCT(BlueprintType)
-struct SANDBOXAI_API FPsiDrive
+struct PROJECT_API FPsiDrive
 {
 	GENERATED_BODY()
 
@@ -105,7 +105,7 @@ public:
 };
 
 USTRUCT(BlueprintType)
-struct SANDBOXAI_API FPsiEmotionToPad
+struct PROJECT_API FPsiEmotionToPad
 {
 	GENERATED_BODY()
 

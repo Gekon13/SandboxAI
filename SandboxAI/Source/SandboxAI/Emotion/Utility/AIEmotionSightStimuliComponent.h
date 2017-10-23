@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class SANDBOXAI_API UAIEmotionSightStimuliComponent : public UAIPerceptionStimuliSourceComponent
+class PROJECT_API UAIEmotionSightStimuliComponent : public UAIPerceptionStimuliSourceComponent
 {
 	GENERATED_BODY()
 	

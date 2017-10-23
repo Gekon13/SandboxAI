@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class SANDBOXAI_API AVisibleFriend : public AAIEmotionVisibleActorExample
+class PROJECT_API AVisibleFriend : public AAIEmotionVisibleActorExample
 {
 	GENERATED_BODY()
 	

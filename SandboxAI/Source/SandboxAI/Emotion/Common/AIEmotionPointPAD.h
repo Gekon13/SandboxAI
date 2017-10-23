@@ -9,7 +9,7 @@
  * 
  */
 USTRUCT(BlueprintType)
-struct SANDBOXAI_API FAIEmotionPointPAD : public FVector
+struct PROJECT_API FAIEmotionPointPAD : public FVector
 {
 	GENERATED_BODY()
 

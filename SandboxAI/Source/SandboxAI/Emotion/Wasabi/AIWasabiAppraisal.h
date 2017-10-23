@@ -10,7 +10,7 @@ class UAIWasabiBaseEngineCore;
 class UAIEmotionKnowledge;
 
 USTRUCT(BlueprintType)
-struct SANDBOXAI_API FAIWasabiAppraisal
+struct PROJECT_API FAIWasabiAppraisal
 {
 	GENERATED_BODY()
 

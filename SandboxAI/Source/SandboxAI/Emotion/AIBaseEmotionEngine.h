@@ -17,21 +17,17 @@ DECLARE_DELEGATE_OneParam(FPassDecision, const FEmotionDecisionInfo&);
 
 /*
 
-This iteration we adapt old models to new interface.
-
-
-for input from sensing (sight, hearing, etc.)
+legacy interface
 ASandboxAIBaseAIController::HandleEmotionStimulusElement -> UAIBaseEmotionEngine::DirectValencedImpulseInternal(float value, bool bContinuous)
 !this is for this sprint only!
 
-// for input from sensing in later sprints
+This one is used to register and unregister to and from delagates, engine can implement custom cognition
 UAIBaseEmotionEngine::OnTargetPerceptionUpdated
 !this is for later!
 
 
 for speed we use
 ASandboxAISplineAIController::SetFollowSpeedCoefficient(0.5f) -> MakeDecision(FEmotionDecisionInfo(EmotionKnowledge->AvailableActionNames[0], 0.5f));
-!this one will be expanded upon later!
 
 */
 
@@ -68,13 +64,13 @@ public: //methods
 	 * This is function used to directly influence emotion engine in particular way without interaction with cognition module
 	 *@param value - Value of impulse in scale from 0 to 1, will be 
 	 */	
-	void DirectValencedImpulse(float value, bool bContinuous = false);				// DON't TOuch
+	void DirectValencedImpulse(float value, bool bContinuous = false);				// Deprecated, but could be used to debuggin in some cases
 
 	// from AIPerceptionComponent.h
 	//DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FActorPerceptionUpdatedDelegate, AActor*, Actor, FAIStimulus, Stimulus);
 
 	//callback used by Teyon from AIPerceptionComponent, there will be call in here some day, so think about implementation
-	virtual void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);	// <<< OVERRIDE <<< real input
+	virtual void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);	// <<< CAN OVERRIDE <<< only if custom cognition in implemented and set
 
 	FORCEINLINE bool DoesImplementCustomCognition() const { return bDoesImplementCustomCongition; }
 
@@ -85,7 +81,7 @@ public: //methods
 	virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor);  // <<<  OVERRIDE  <<<
 
 	UFUNCTION(BlueprintCallable)
-	virtual FAIEmotionPointPAD GetPointPAD();                                       // new function from sprint 2017-09-29
+	virtual FAIEmotionPointPAD GetPointPAD();                                       // new function used to get unified emotional state
 
 protected:
 	/** 
@@ -95,6 +91,6 @@ protected:
 
 	virtual void DirectValencedImpulseInternal(float value, bool bContinuous);		// <<< OVERRIDE <<< fake input
 
-	/** Use this to pass decisions made by emotion engine */
-	void MakeDecision(const FEmotionDecisionInfo& decisionInfo);					// <<< CALL WHEN ENGINE MAKES DECISION <<<
+	/** Method used by derrived engines to pass decisions outside */
+	void MakeDecision(const FEmotionDecisionInfo& decisionInfo);					// <<< CALL WHEN ENGINE MAKES DECISION (during tick) <<<
 };

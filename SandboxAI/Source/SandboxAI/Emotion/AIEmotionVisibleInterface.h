@@ -16,7 +16,7 @@ class UAIEmotionVisibleInterface : public UInterface
 /**
  * 
  */
-class SANDBOXAI_API IAIEmotionVisibleInterface
+class PROJECT_API IAIEmotionVisibleInterface
 {
 	GENERATED_BODY()
 

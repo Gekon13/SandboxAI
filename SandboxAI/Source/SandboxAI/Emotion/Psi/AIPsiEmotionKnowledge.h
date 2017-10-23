@@ -8,7 +8,7 @@
 #include "AIPsiEmotionKnowledge.generated.h"
 
 USTRUCT(BlueprintType)
-struct SANDBOXAI_API FPsiKnowledge
+struct PROJECT_API FPsiKnowledge
 {
 	GENERATED_BODY()
 
@@ -32,7 +32,7 @@ public:
 };
 
 UCLASS()
-class SANDBOXAI_API UAIPsiEmotionKnowledge : public UAIEmotionKnowledge
+class PROJECT_API UAIPsiEmotionKnowledge : public UAIEmotionKnowledge
 {
 	GENERATED_BODY()
 

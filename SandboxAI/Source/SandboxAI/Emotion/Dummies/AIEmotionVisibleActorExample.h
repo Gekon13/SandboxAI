@@ -15,7 +15,7 @@ class UAIEmotionSightStimuliComponent;
 class UGameplayComponent;
 
 UCLASS()
-class SANDBOXAI_API AAIEmotionVisibleActorExample : public AActor, public IAIEmotionVisibleInterface
+class PROJECT_API AAIEmotionVisibleActorExample : public AActor, public IAIEmotionVisibleInterface
 {
 	GENERATED_BODY()
 	
