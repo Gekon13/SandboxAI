@@ -6,7 +6,7 @@
 #include "AIEmotionPointPAD.generated.h"
 
 /**
- * 
+ * Common PAD point structure for emotion classes
  */
 USTRUCT(BlueprintType)
 struct PROJECT_API FAIEmotionPointPAD : public FVector

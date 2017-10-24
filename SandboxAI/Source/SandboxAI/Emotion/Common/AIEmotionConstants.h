@@ -126,6 +126,7 @@ enum class EEmotionSimpleValency : uint8
 	Negative = 1 UMETA(DisplayName = "Negative"),
 };
 
+/** List of actions defined in emotion engines */
 UENUM(BlueprintType)
 enum class EEmotionActionName : uint8
 {
@@ -150,8 +151,10 @@ enum class EEmotionActionName : uint8
 	ScaryGesture			UMETA(DisplayName = "Scary Gesture"), // for fear
 };
 
+/** Delegate used in subscribing to action visible agents actions */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FEmotionActionPerformed, EEmotionActionName, EmotionActionName, AActor*, sourceActor, AActor*, targetActor);
 
+/** Utility */
 USTRUCT(BlueprintType)
 struct PROJECT_API FAIEmotionConstants
 {

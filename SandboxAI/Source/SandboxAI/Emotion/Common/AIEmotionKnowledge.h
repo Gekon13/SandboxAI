@@ -7,12 +7,13 @@
 #include "AIEmotionInformation.h"
 #include "AIEmotionKnowledge.generated.h"
 
+/** Class used to store and share knowledge */
 UCLASS(BlueprintType)
 class PROJECT_API UAIEmotionKnowledge : public UObject
 {
 	GENERATED_BODY()
 
-public: //members // TODO: expand on this
+public: //members // future expand on this
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<FString> AvailableActionNames;
 
@@ -26,6 +27,7 @@ public: //members // TODO: expand on this
 		UGameplayComponent* ControlledGameplayComponent;
 
 protected:
+	/** Used to scale knowledge for engine to match their theory */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float Scale;
 

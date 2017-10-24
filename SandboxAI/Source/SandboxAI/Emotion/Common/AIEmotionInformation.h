@@ -5,12 +5,6 @@
 #include "CoreMinimal.h"
 #include "SandboxAI.h"
 
-//#ifdef TERMINATOR_API
-//#include "Characters/Components/GameplayComponent.h"
-//#else
-//#include "MockFromTerminator/GameplayComponent.h"
-//#endif
-
 #include "MockFromTerminator/GameplayComponent.h"
 
 #include "AIEmotionConstants.h"

@@ -6,7 +6,7 @@
 #include "AIEmotionConstants.h"
 #include "AIEmotionState.generated.h"
 
-
+/** Structure used to store information about single emotion */
 USTRUCT(BlueprintType)
 struct PROJECT_API FAISingleEmotionState
 {
@@ -40,6 +40,7 @@ FAISingleEmotionState::FAISingleEmotionState(EEmotionName emotion, float strengt
 
 FString FAISingleEmotionState::ToString() const { return FString::Printf(TEXT("Name %s, IsActive: %s, Strength: %.4f"), *FAIEmotionConstants::EmotionNames[Emotion], bActive ? TEXT("true") : TEXT("false"), Strength); }
 
+/** Emotional state containing set of emotions */
 USTRUCT(BlueprintType)
 struct PROJECT_API FAIEmotionState
 {

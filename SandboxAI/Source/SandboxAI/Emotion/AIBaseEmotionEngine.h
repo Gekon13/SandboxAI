@@ -41,16 +41,18 @@ public:
 	FPassDecision OnPassDecision;
 
 protected: //members
-	UAIEmotionKnowledge* EmotionKnowledge;
+	
+	/** Weak pointer to Emotional knowledge created in AIEmotionComponent */
+	UAIEmotionKnowledge* EmotionKnowledge; // reference to component knowledge
 
-	/** Whether OnTargetPerceptionUpdated should be called on particular engine */
+	/** Whether OnTargetPerceptionUpdated should be called on particular engine for use of custom cognition */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool bDoesImplementCustomCongition;
 
 public: //methods
 	UAIBaseEmotionEngine();
 
-	/** Used to initialized emotion (knowledge and general) */
+	/** Used to initialize emotion engine (knowledge and general) */
 	virtual void InitializeEmotionEngine(UAIEmotionKnowledge* emotionKnowledge);	// <<< OVERRIDE <<<
 	/** Used to update emotion engine, emotion dynamic and emotion decay go here */
 	virtual void TickEmotionEngine(float deltaSeconds);								// <<< OVERRIDE <<<
@@ -62,14 +64,15 @@ public: //methods
 
 	/**
 	 * This is function used to directly influence emotion engine in particular way without interaction with cognition module
-	 *@param value - Value of impulse in scale from 0 to 1, will be 
+	 *@param value - Value of impulse in scale from 0 to 1, will
+	 *@param bContinuous -  should direct impulse be applied over time or instantly
 	 */	
 	void DirectValencedImpulse(float value, bool bContinuous = false);				// Deprecated, but could be used to debuggin in some cases
 
 	// from AIPerceptionComponent.h
 	//DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FActorPerceptionUpdatedDelegate, AActor*, Actor, FAIStimulus, Stimulus);
 
-	//callback used by Teyon from AIPerceptionComponent, there will be call in here some day, so think about implementation
+	/** Derrived emotion engine can implement this method for custom cogntion, Check: bDoesImplementCustomCongition */
 	virtual void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);	// <<< CAN OVERRIDE <<< only if custom cognition in implemented and set
 
 	FORCEINLINE bool DoesImplementCustomCognition() const { return bDoesImplementCustomCongition; }
@@ -77,18 +80,21 @@ public: //methods
 	// from AIEmotionConstants.h
 	//DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FEmotionActionPerformed, EEmotionActionName, EmotionActionName, AActor*, sourceActor, AActor*, targetActor);
 
+	/** Main callback for derrived engines to implement for reacting to stimuluses */
 	UFUNCTION()
 	virtual void HandleEmotionActionPerformed(EEmotionActionName EmotionActionName, AActor* sourceActor, AActor* targetActor);  // <<<  OVERRIDE  <<<
 
+	/** Common emotion state representation */
 	UFUNCTION(BlueprintCallable)
 	virtual FAIEmotionPointPAD GetPointPAD();                                       // new function used to get unified emotional state
 
 protected:
 	/** 
-	 * Responsible for direct impulse scaling
+	 * Responsible for impulse scaling
 	 */
 	virtual float GetEngineScale() const;											// <<< OVERRIDE <<<
 
+	/** Internal handling of direct impulse by derrived engines */
 	virtual void DirectValencedImpulseInternal(float value, bool bContinuous);		// <<< OVERRIDE <<< fake input
 
 	/** Method used by derrived engines to pass decisions outside */

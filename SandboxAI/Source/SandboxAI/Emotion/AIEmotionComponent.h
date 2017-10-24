@@ -30,11 +30,14 @@ class PROJECT_API UAIEmotionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	/** Engine model switch*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
 		EEmotionEngineModel EmotionEngineModel;
+	/** Knowledge used by derrived engine to apraise events and actions */
 	UPROPERTY(Instanced, EditAnywhere, BlueprintReadWrite, Category = "Emotion | Parameters")
 		UAIEmotionKnowledge* EmotionKnowledge;
 
+	/** Delegate used to broadcast decisions made by internal emotion engine */
 	UPROPERTY(BlueprintAssignable, Category = "Emotion")
 		FDecisionMade OnDecisionMade;
 

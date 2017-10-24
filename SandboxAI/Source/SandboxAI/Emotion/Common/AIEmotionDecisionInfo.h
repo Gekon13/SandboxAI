@@ -6,7 +6,7 @@
 #include "AIEmotionConstants.h"
 #include "AIEmotionDecisionInfo.generated.h"
 
-/// Info about action that emotion component decided to take
+/// Info about action that emotion component decided to perform
 USTRUCT(BlueprintType, Blueprintable)
 struct PROJECT_API FEmotionDecisionInfo
 {
